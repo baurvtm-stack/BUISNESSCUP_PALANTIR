@@ -2,9 +2,8 @@
  * The HTTP contract between the GearFit frontend and the API routes.
  * Human-readable version with examples: docs/api-contract.md.
  *
- * /api/recommend, /api/catalog and /api/click are live. /api/kits, /api/reminders,
- * /api/subscribe and /api/stats are being built in parallel; the adapters in ./client.ts
- * fall back gracefully until they ship, so the live site never breaks.
+ * Routes are implemented; provider-backed features need their documented environment.
+ * The adapters in ./client.ts retain graceful fallbacks when services are unavailable.
  */
 import type { Answers, Category, KitResult } from "../types";
 
@@ -82,6 +81,29 @@ export interface SubscribeRequest {
 export interface SubscribeResponse {
   /** Stripe Checkout URL. success_url must be /pro?status=success&session_id={CHECKOUT_SESSION_ID}. */
   url: string;
+  /** Secret capability saved on this device before Checkout; never put it in a URL. */
+  accessToken?: string;
+}
+
+export interface ServerProStatus {
+  pro: boolean;
+  features: string[];
+}
+
+export interface DealAlertSettings {
+  enabled: boolean;
+}
+
+export interface CatalogDeal {
+  productId: string;
+  name: string;
+  savedPrice: number;
+  currentPrice: number;
+}
+
+export interface DealAlertStatus extends DealAlertSettings {
+  deals: CatalogDeal[];
+  source: "catalog_estimates";
 }
 
 /** GET /api/subscribe?session_id=cs_… — confirm a finished checkout. */

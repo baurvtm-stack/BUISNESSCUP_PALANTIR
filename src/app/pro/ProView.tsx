@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Icon, type IconName } from "@/components/icons";
 import { Button, ButtonLink, Eyebrow, Notice } from "@/components/ui";
-import { getCheckoutStatus, MOCKS_ENABLED, startCheckout } from "@/lib/api/client";
+import { getCheckoutStatus, getServerPro, MOCKS_ENABLED, startCheckout } from "@/lib/api/client";
 import { isEmail, shortDate } from "@/lib/format";
 import { useHydrated } from "@/lib/local-store";
-import { emailStore, FREE_KIT_LIMIT, proStore } from "@/lib/saved-kits";
+import { emailStore, FREE_KIT_LIMIT, proAccessStore, proStore } from "@/lib/saved-kits";
 
 const PRICE = 4;
 
@@ -20,7 +20,7 @@ const FEATURES: { icon: IconName; title: string; body: string }[] = [
   {
     icon: "tag",
     title: "Deal alerts",
-    body: "When boots, gloves or anything else in your kits drops in price, you get one email with the link.",
+    body: "Enable alerts on a saved kit and get an email when its catalog price drops. Confirm the retailer's price before buying.",
   },
   {
     icon: "bookmark",
@@ -50,12 +50,28 @@ export default function ProView({
 }) {
   const hydrated = useHydrated();
   const pro = proStore.useValue();
+  const accessToken = proAccessStore.useValue();
   const savedEmail = emailStore.useValue();
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "loading" | "confirming" | "unavailable">(checkout === "success" ? "confirming" : "idle");
   const [error, setError] = useState<string | null>(null);
   const [welcome, setWelcome] = useState(false);
   const confirmed = useRef(false);
+  const [serverPro, setServerPro] = useState<boolean | null>(null);
+  const [serverError, setServerError] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    setServerPro(null);
+    setServerError(false);
+    if (!pro || !accessToken) return;
+    getServerPro(accessToken).then((out) => {
+      if (!active) return;
+      if (out.kind === "ok") setServerPro(out.data.pro);
+      else setServerError(true);
+    });
+    return () => { active = false; };
+  }, [pro, accessToken]);
 
   // After Stripe redirects back, confirm the session once and turn Pro on for this device.
   useEffect(() => {
@@ -98,6 +114,7 @@ export default function ProView({
     emailStore.set(address);
     const out = await startCheckout({ email: address });
     if (out.kind === "ok") {
+      proAccessStore.set(out.data.accessToken ?? null);
       window.location.assign(out.data.url);
       return;
     }
@@ -163,12 +180,23 @@ export default function ProView({
                 <p className="mt-2 text-ink-2">
                   {pro.email ? (
                     <>
-                      Alerts go to <b>{pro.email}</b>.{" "}
+                      Pro email: <b>{pro.email}</b>.{" "}
                     </>
                   ) : null}
                   Active since {shortDate(pro.activatedAt)}
                   {pro.source === "demo" ? " (demo mode)" : ""}.
                 </p>
+                <Notice tone={serverPro ? "ok" : "info"} className="mt-4">
+                  {!accessToken
+                    ? "Use the device where you started Checkout to enable email deal alerts."
+                    : serverError
+                      ? "Deal alerts are temporarily unavailable. Please try again."
+                      : serverPro === null
+                        ? "Checking your email alert access…"
+                        : serverPro
+                          ? "Deal alerts are ready. Open a saved kit, confirm replacement reminders with your Pro email, then turn on Deal alerts."
+                          : "Pro isn't active on the server yet. Refresh in a minute."}
+                </Notice>
                 <ButtonLink href="/kits" className="mt-6 w-full" size="lg" iconRight="arrowRight">
                   Open the wear tracker
                 </ButtonLink>
