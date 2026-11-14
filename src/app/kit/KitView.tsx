@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { AnimatedNumber } from "@/components/fx";
 import GearArt from "@/components/GearArt";
 import { Icon, categoryIcon } from "@/components/icons";
 import { AnimatePresence, EASE, m, MotionRoot } from "@/components/motion";
 import ReminderForm from "@/components/ReminderForm";
+import SavingsCounter from "@/components/SavingsCounter";
 import DealAlerts from "@/components/DealAlerts";
 import { Button, ButtonLink, Chip, Eyebrow, Notice, StandardBadge } from "@/components/ui";
 import { cssVars } from "@/lib/css";
@@ -83,11 +84,23 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
 
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
-  function flash(message: string) {
+  const flash = useCallback((message: string) => {
     setToast(message);
     clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(null), 2600);
-  }
+  }, []);
+
+  // A swap made further down the page moves the savings counter out of sight, so say the new number.
+  const savingsRef = useRef<HTMLDivElement>(null);
+  const savingsLabel = savingsPerYear > 1 ? usd(savingsPerYear) : "";
+  const savingsSeen = useRef(savingsLabel);
+  useEffect(() => {
+    if (savingsSeen.current === savingsLabel) return;
+    savingsSeen.current = savingsLabel;
+    const box = savingsRef.current?.getBoundingClientRect();
+    const middle = box ? (box.top + box.bottom) / 2 : -1;
+    if (savingsLabel && (middle < 72 || middle > window.innerHeight - 72)) flash(`You now save ${savingsLabel} a year`);
+  }, [savingsLabel, flash]);
 
   const draft: KitDraft = {
     token: kit.token,
@@ -215,29 +228,30 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
             </ul>
           </div>
 
+          {savingsPerYear > 1 && (
+            <SavingsCounter ref={savingsRef} perYear={totals.perYear} cheapestPerYear={kit.totals.cheapestPerYear} extraToday={extraToday} />
+          )}
           <Stat
             label="Pay today"
             value={<AnimatedNumber value={totals.upfront} duration={900} delay={200} />}
             sub={`${kit.items.length} items`}
             className="lg:col-span-3"
-            delay={140}
+            delay={200}
           />
           <Stat
             label="First to replace"
             value={next?.label.replace(/\s*\(.*\)$/, "") ?? "None"}
             sub={next ? `${next.label.match(/\((.*)\)$/)?.[1].concat(", ") ?? ""}in about ${duration(next.lifespanMonths)}` : ""}
             className="lg:col-span-4"
-            delay={200}
+            delay={260}
           />
-          {savingsPerYear > 1 ? (
-            <Savings perYear={totals.perYear} cheapestPerYear={kit.totals.cheapestPerYear} extraToday={extraToday} />
-          ) : (
+          {savingsPerYear <= 1 && (
             <Stat
               label="Cheapest compliant kit"
               value={usd(kit.totals.cheapestUpfront)}
               sub="Lowest price that meets every rule"
               className="col-span-2 lg:col-span-7"
-              delay={260}
+              delay={320}
             />
           )}
         </section>
@@ -418,53 +432,6 @@ function Stat({
       <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-3">{label}</p>
       <p className="tabular mt-1.5 font-display text-3xl font-bold leading-none sm:text-4xl">{value}</p>
       {sub && <p className="mt-1.5 text-xs text-ink-3 sm:text-sm">{sub}</p>}
-    </div>
-  );
-}
-
-/** What this kit saves per year against the cheapest kit that still passes, as two bars. */
-function Savings({ perYear, cheapestPerYear, extraToday }: { perYear: number; cheapestPerYear: number; extraToday: number }) {
-  const max = Math.max(perYear, cheapestPerYear, 1);
-  const rows = [
-    { label: "Cheapest kit that passes", value: cheapestPerYear, bar: "bg-ink-3/40" },
-    { label: "This kit", value: perYear, bar: "bg-accent" },
-  ];
-  return (
-    <div
-      className="animate-rise col-span-2 flex flex-col justify-center rounded-3xl border border-line bg-card p-4 sm:p-5 lg:col-span-7"
-      style={cssVars({ "--delay": "260ms", "--rise-y": "14px" })}
-    >
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
-        <p className="flex items-center gap-2.5 font-display text-3xl font-bold leading-none sm:text-4xl">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-ok-soft text-ok">
-            <Icon name="trendingDown" className="size-5" />
-          </span>
-          <span>
-            Save <AnimatedNumber value={cheapestPerYear - perYear} duration={900} delay={420} />
-            <span className="text-base font-semibold">/yr</span>
-          </span>
-        </p>
-        <p className="text-xs text-ink-3 sm:text-sm">{extraToday > 0 ? `Pay ${usd(extraToday)} more today, rebuy less often` : "And cheaper today too"}</p>
-      </div>
-      <dl className="mt-4 space-y-2">
-        {rows.map((row, i) => (
-          <div key={row.label} className="grid grid-cols-[minmax(0,8.5rem)_minmax(0,1fr)_4.5rem] items-center gap-3 sm:grid-cols-[minmax(0,10.5rem)_minmax(0,1fr)_4.5rem]">
-            <dt className={`truncate text-xs sm:text-sm ${i === 1 ? "font-semibold text-ink" : "text-ink-3"}`}>{row.label}</dt>
-            <dd className="contents">
-              <span className="h-3 overflow-hidden rounded-full bg-sunken" aria-hidden>
-                <span
-                  className={`animate-grow-x block h-full rounded-full transition-[width] duration-500 ${row.bar}`}
-                  style={{ width: `${Math.max(4, (row.value / max) * 100)}%`, ...cssVars({ "--i": i, "--delay": "480ms" }) }}
-                />
-              </span>
-              <span className={`tabular text-right text-sm ${i === 1 ? "font-bold" : "text-ink-2"}`}>
-                <AnimatedNumber value={row.value} countOnMount={false} />
-                /yr
-              </span>
-            </dd>
-          </div>
-        ))}
-      </dl>
     </div>
   );
 }

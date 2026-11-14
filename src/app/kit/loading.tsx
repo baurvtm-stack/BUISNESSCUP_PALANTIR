@@ -10,9 +10,9 @@ export default function KitLoading() {
         </div>
         <div className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-12" aria-hidden>
           <div className="skeleton col-span-2 h-44 rounded-3xl lg:col-span-5 lg:row-span-2 lg:h-auto" />
+          <div className="skeleton col-span-2 h-80 rounded-3xl md:h-48 lg:col-span-7" />
           <div className="skeleton h-28 rounded-3xl lg:col-span-3" />
           <div className="skeleton h-28 rounded-3xl lg:col-span-4" />
-          <div className="skeleton col-span-2 h-32 rounded-3xl lg:col-span-7" />
         </div>
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_360px]" aria-hidden>
           <div className="space-y-4">
