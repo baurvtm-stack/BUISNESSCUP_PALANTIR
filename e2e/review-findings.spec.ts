@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { encodeAnswers, parseAnswers } from "../src/lib/answers";
 
 const answers = {
   trade: "electrician", gender: "men", hoursPerWeek: 45, budget: "balanced",
   climate: "mild", shoeSize: "10", clothingSize: "L / 32x30", extraHazards: [], employer: [],
 };
-const kitToken = Buffer.from(JSON.stringify(answers)).toString("base64url");
+const kitToken = encodeAnswers(parseAnswers(answers)!);
 
 test.beforeEach(async ({ context, baseURL }) => {
   const secret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
@@ -49,3 +50,40 @@ test("free reminders at the save limit create only a cloud copy", async ({ page 
   await expect(page.getByText(/Check your inbox: we sent a confirmation link/)).toBeVisible();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("gearfit.kits.v1")!).length)).toBe(3);
 });
+
+for (const view of ["kit", "kits"] as const) {
+  test(`${view}: resend reminders and change the email after a previous signup`, async ({ page }) => {
+    const email = "earlier@example.com";
+    const slug = "Reminder0001";
+    await page.addInitScript(({ token, email, slug }) => {
+      localStorage.setItem("gearfit.kits.v1", JSON.stringify([{
+        id: "saved-reminder", slug, token, tradeId: "electrician", tradeLabel: "Electrician",
+        choices: Array(6).fill(""), createdAt: "2026-11-14", boughtAt: "2026-11-14", reminderEmail: email,
+        items: [{ category: "boots", label: "Work boots", productId: "wolverine-floorhand-ins", brand: "Wolverine", name: "Floorhand", price: 110, lifespanMonths: 12, costPerMonth: 9.17 }],
+        totals: { upfront: 110, perMonth: 9.17 },
+      }]));
+    }, { token: kitToken, email, slug });
+    const recipients: string[] = [];
+    await page.route(url => url.pathname === "/api/reminders", route => {
+      const body = route.request().postDataJSON();
+      expect(body.kitSlug).toBe(slug);
+      recipients.push(body.email);
+      return route.fulfill({ json: { status: body.email === email ? "pending" : "confirmed" } });
+    });
+    await page.goto("/kits");
+    if (view === "kit") await page.getByRole("link", { name: "Open kit", exact: true }).click();
+    else await page.getByRole("button", { name: "Reminders on", exact: true }).click();
+    const reopen = page.getByRole("button", { name: "Resend or use another email", exact: true });
+    const input = page.getByRole("textbox", { name: "Email", exact: true });
+    await reopen.click();
+    await expect(input).toHaveValue(email);
+    await page.getByRole("button", { name: "Remind me", exact: true }).click();
+    await expect(reopen).toBeVisible();
+    await reopen.click();
+    await input.fill("pro@example.com");
+    await page.getByRole("button", { name: "Remind me", exact: true }).click();
+    await page.getByRole("button", { name: "Add another email", exact: true }).click();
+    await expect(input).toHaveValue("pro@example.com");
+    expect(recipients).toEqual([email, "pro@example.com"]);
+  });
+}
