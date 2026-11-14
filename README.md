@@ -79,7 +79,9 @@ Checkout saves its secret `accessToken` on the current device before redirecting
 
 On a cloud-saved kit, turn on **Deal alerts** next to replacement reminders. Alerts require active server-side Pro and a confirmed reminder for the **same Pro email and kit**. The switch restores its server setting and explains missing consent, pending Pro activation or temporary failures. Free users get a link to Pro.
 
-Daily cron compares saved prices with a fresh, uncached Supabase catalog read; a failed read falls back to the bundled snapshot. Only a lower recorded price qualifies. These are catalog estimates, not live retailer sale guarantees. The authenticated deal demo uses fresh delivery identities in the existing table, so rehearsals do not consume real delivery deduplication. **No new migration is needed.** See the [demo steps](docs/backend-handoff.md#60-second-production-demo).
+Pro shoppers see each price drop in the card even with email alerts off, with the saved price, current estimate, saving and a tracked **Check price** link. **My kits** also shows the total saving on up to ten cloud-saved kits checked in parallel; free users and device-only kits make no price-check requests.
+
+Daily cron compares saved prices with one fresh, uncached Supabase catalog read per run; a failed read falls back to the bundled snapshot. Only a lower recorded price qualifies. These are catalog estimates, not live retailer sale guarantees. The authenticated deal demo uses fresh delivery identities in the existing table, so rehearsals do not consume real delivery deduplication. **No new migration is needed.** During the [demo](docs/backend-handoff.md#60-second-production-demo), after lowering a saved item's catalog price, **reload the saved kit: the Deal alerts card shows the drop**, then run the curl step to send the email.
 
 ## Local setup
 

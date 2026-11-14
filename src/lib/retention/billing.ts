@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { ApiError, baseUrl, db, env, hashToken } from "@/lib/retention/core";
 import { PRODUCTS } from "@/data/products";
-import type { CategoryResult } from "@/lib/types";
+import type { CategoryResult, Product } from "@/lib/types";
 import { sendEmail } from "@/lib/retention/reminders";
 import { getProducts } from "@/lib/server/catalog";
 import { proAccessTokenSchema } from "@/lib/retention/validation";
@@ -203,11 +203,11 @@ export async function processStripeEvent(event: Stripe.Event, stripe: Stripe) {
   if (saveError) throw new ApiError(503, "Subscription update unavailable");
 }
 
-export async function findDeals(items: CategoryResult[]) {
+export async function findDeals(items: CategoryResult[], products?: readonly Product[]) {
   // Price checks deliberately bypass the page/click cache so edits are visible immediately.
-  const products = await getProducts().catch(() => PRODUCTS);
+  const catalog = products ?? await getProducts().catch(() => PRODUCTS);
   return items.flatMap((item) => {
-    const current = products.find(
+    const current = catalog.find(
       (product) => product.id === item.pick.product.id,
     );
     return current && current.price < item.pick.product.price
@@ -238,6 +238,8 @@ export async function dispatchDealAlerts(): Promise<{
   let sent = 0;
   let failed = 0;
   const deadline = Date.now() + 15000;
+  if (!alerts?.length) return { sent, failed };
+  const products = await getProducts().catch(() => PRODUCTS);
   for (const alert of alerts ?? []) {
     if (Date.now() > deadline) break;
     const { error: checkedError } = await db()
@@ -284,7 +286,7 @@ export async function dispatchDealAlerts(): Promise<{
       continue;
     }
     if (!reminder) continue;
-    const deals = await findDeals(kit.items as CategoryResult[]);
+    const deals = await findDeals(kit.items as CategoryResult[], products);
     if (!deals.length) continue;
     const fingerprint = hashToken(
       JSON.stringify(
