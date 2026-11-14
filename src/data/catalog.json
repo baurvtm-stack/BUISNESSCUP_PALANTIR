@@ -2972,5 +2972,2577 @@
     "features": [
       "fr"
     ]
+  },
+  {
+    "id": "xena-omega",
+    "brand": "Xena",
+    "model": "Omega EH Steel Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 200,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://xenaworkwear.com/products/omega-eh-safety-boot",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-spice",
+    "brand": "Xena",
+    "model": "Spice EH Steel Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 208,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://xenaworkwear.com/products/spice-eh-safety-boot",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-gravity",
+    "brand": "Xena",
+    "model": "Gravity Steel Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 190,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Xena%20Gravity%20Steel%20Toe",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-rogue",
+    "brand": "Xena",
+    "model": "Rogue EH Steel Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 170,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://xenaworkwear.com/products/rogue-work-shoe",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH SRO"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-astra-lite",
+    "brand": "Xena",
+    "model": "Astra Lite EH Composite Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 120,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Xena%20Astra%20Lite%20EH%20Composite%20Toe",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH SRO"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "composite_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-astra",
+    "brand": "Xena",
+    "model": "Astra EH PR Composite Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 130,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Xena%20Astra%20EH%20PR%20Composite%20Toe",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH PR SRO"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "composite_toe",
+      "eh",
+      "puncture",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-valence",
+    "brand": "Xena",
+    "model": "Valence SD Steel Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 210,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://xenaworkwear.com/products/valence-sd-work-boot",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 SD SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-vega",
+    "brand": "Xena",
+    "model": "Vega Steel Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 195,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Xena%20Vega%20Steel%20Toe",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-luna",
+    "brand": "Xena",
+    "model": "Luna EH PR Waterproof Composite Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 165,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Xena%20Luna%20EH%20PR%20Waterproof%20Composite%20Toe",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH PR SRO"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "composite_toe",
+      "eh",
+      "puncture",
+      "slip",
+      "waterproof"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-horizon",
+    "brand": "Xena",
+    "model": "Horizon EH PR Alloy Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 185,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://xenaworkwear.com/products/horizon-eh-pr-safety-boot",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH PR SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "puncture",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-nova",
+    "brand": "Xena",
+    "model": "Nova EH Steel Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 260,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://xenaworkwear.com/products/nova-eh-safety-boot",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "xena-fusion",
+    "brand": "Xena",
+    "model": "Fusion Mt EH Steel Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 240,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11",
+      "12"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://xenaworkwear.com/products/fusion-mt-safety-boot",
+    "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
+    "standards": [
+      "ASTM F2413 I/75 C/75 Mt EH SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "Women-specific last. Only Luna is cataloged as waterproof; WR on other models means water-resistant. Verify toe variant and current stock before ordering."
+  },
+  {
+    "id": "redwing-2440",
+    "brand": "Red Wing",
+    "model": "Traction Tred Lite 6-inch Safety Toe (2440)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 285,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/safety-toe/traction-tred-lite-02440.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/safety-toe/traction-tred-lite-02440.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH SRO"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "slip",
+      "composite_toe"
+    ]
+  },
+  {
+    "id": "redwing-2452",
+    "brand": "Red Wing",
+    "model": "Exos Lite 6-inch Safety Toe (2452)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 305,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/safety-toe/exos-lite-02452.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/safety-toe/exos-lite-02452.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH PR SRO"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "slip",
+      "puncture"
+    ]
+  },
+  {
+    "id": "redwing-2240",
+    "brand": "Red Wing",
+    "model": "King Toe 6-inch Safety Toe (2240)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 255,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 40,
+      "moderate": 20,
+      "heavy": 13.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/safety-toe/king-toe-02240.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/safety-toe/king-toe-02240.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "composite_toe"
+    ]
+  },
+  {
+    "id": "redwing-2298",
+    "brand": "Red Wing",
+    "model": "King Toe BOA 6-inch Safety Toe (2298)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 275,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 40,
+      "moderate": 20,
+      "heavy": 13.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/king-toe-02298.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/king-toe-02298.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "composite_toe"
+    ]
+  },
+  {
+    "id": "redwing-2280",
+    "brand": "Red Wing",
+    "model": "King Toe 8-inch Safety Toe (2280)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 270,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 40,
+      "moderate": 20,
+      "heavy": 13.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/waterproof/king-toe-02280.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/waterproof/king-toe-02280.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "composite_toe"
+    ]
+  },
+  {
+    "id": "redwing-2244",
+    "brand": "Red Wing",
+    "model": "King Toe Insulated 8-inch Safety Toe (2244)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 275,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 40,
+      "moderate": 20,
+      "heavy": 13.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "cold",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/waterproof/king-toe-02244.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/waterproof/king-toe-02244.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "composite_toe",
+      "insulated"
+    ]
+  },
+  {
+    "id": "redwing-2204",
+    "brand": "Red Wing",
+    "model": "Rio Flex 11-inch Steel Toe Safety Toe (2204)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 295,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/waterproof/rio-flex-02204.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/waterproof/rio-flex-02204.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "slip"
+    ]
+  },
+  {
+    "id": "redwing-4215",
+    "brand": "Red Wing",
+    "model": "DynaForce 6-inch Steel Toe Safety Toe (4215)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 285,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/waterproof/dynaforce-04215.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/waterproof/dynaforce-04215.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "redwing-4200",
+    "brand": "Red Wing",
+    "model": "DynaForce 8-inch Steel Toe Safety Toe (4200)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 290,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/waterproof/dynaforce-04200.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/waterproof/dynaforce-04200.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "redwing-2478",
+    "brand": "Red Wing",
+    "model": "Traction Tred Lite 11-inch Safety Toe (2478)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 260,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/safety-toe/traction-tred-lite-02478.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/safety-toe/traction-tred-lite-02478.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH PR SRO"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "slip",
+      "composite_toe",
+      "puncture"
+    ]
+  },
+  {
+    "id": "redwing-3582",
+    "brand": "Red Wing",
+    "model": "Traction Tred Lite CSA 6-inch Safety Toe (3582)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 295,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/safety-toe/traction-tred-lite-03582.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/safety-toe/traction-tred-lite-03582.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH PR SRO"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "slip",
+      "composite_toe",
+      "puncture"
+    ]
+  },
+  {
+    "id": "redwing-2418",
+    "brand": "Red Wing",
+    "model": "Traction Tred Waterproof 8-inch Safety Toe (2418)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 285,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild",
+      "wet"
+    ],
+    "retailer_url": "https://www.redwingshoes.com/mens/work/waterproof/traction-tred-02418.html",
+    "source_url": "https://www.redwingshoes.com/mens/work/waterproof/traction-tred-02418.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH SR"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "eh",
+      "waterproof",
+      "slip",
+      "composite_toe"
+    ]
+  },
+  {
+    "id": "carhartt-rf-pr",
+    "brand": "Carhartt",
+    "model": "Rugged Flex Waterproof PR 6-inch Composite Toe (800061)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 205,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 32,
+      "moderate": 16,
+      "heavy": 10.7
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.carhartt.com/product/800061/rugged-flex-waterproof-puncture-resistant-6-composite-toe-work-boot",
+    "source_url": "https://www.carhartt.com/product/800061/rugged-flex-waterproof-puncture-resistant-6-composite-toe-work-boot",
+    "standards": [
+      "ASTM F2413-24 I/C EH PR",
+      "ASTM F3445-24 SR"
+    ],
+    "quality": 7,
+    "features": [
+      "safety_toe",
+      "composite_toe",
+      "eh",
+      "puncture",
+      "slip",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "milwaukee-nitrile-a1",
+    "brand": "Milwaukee",
+    "model": "Cut Level 1 Nitrile Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 7,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 1.5,
+      "moderate": 0.75,
+      "heavy": 0.5
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%201%20Nitrile%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A1"
+    ],
+    "quality": 6,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 1
+  },
+  {
+    "id": "milwaukee-nitrile-a2",
+    "brand": "Milwaukee",
+    "model": "Cut Level 2 Nitrile Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 9,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 1.5,
+      "moderate": 0.75,
+      "heavy": 0.5
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%202%20Nitrile%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A2"
+    ],
+    "quality": 6,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 2
+  },
+  {
+    "id": "milwaukee-nitrile-a4",
+    "brand": "Milwaukee",
+    "model": "Cut Level 4 Nitrile Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 12,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 1.5,
+      "moderate": 0.75,
+      "heavy": 0.5
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%204%20Nitrile%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A4"
+    ],
+    "quality": 6,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 4
+  },
+  {
+    "id": "milwaukee-pu-a1",
+    "brand": "Milwaukee",
+    "model": "Cut Level 1 Polyurethane Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 5,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 1.5,
+      "moderate": 0.75,
+      "heavy": 0.5
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "hot",
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%201%20Polyurethane%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A1"
+    ],
+    "quality": 6,
+    "features": [
+      "touchscreen",
+      "lightweight"
+    ],
+    "cut_level": 1
+  },
+  {
+    "id": "milwaukee-pu-a2",
+    "brand": "Milwaukee",
+    "model": "Cut Level 2 Polyurethane Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 7,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 1.5,
+      "moderate": 0.75,
+      "heavy": 0.5
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "hot",
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%202%20Polyurethane%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A2"
+    ],
+    "quality": 6,
+    "features": [
+      "touchscreen",
+      "lightweight"
+    ],
+    "cut_level": 2
+  },
+  {
+    "id": "milwaukee-pu-a3",
+    "brand": "Milwaukee",
+    "model": "Cut Level 3 Polyurethane Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 9,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 1.5,
+      "moderate": 0.75,
+      "heavy": 0.5
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "hot",
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%203%20Polyurethane%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A3"
+    ],
+    "quality": 6,
+    "features": [
+      "touchscreen",
+      "lightweight"
+    ],
+    "cut_level": 3
+  },
+  {
+    "id": "milwaukee-pu-a4",
+    "brand": "Milwaukee",
+    "model": "Cut Level 4 Polyurethane Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 11,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 1.5,
+      "moderate": 0.75,
+      "heavy": 0.5
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "hot",
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%204%20Polyurethane%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A4"
+    ],
+    "quality": 6,
+    "features": [
+      "touchscreen",
+      "lightweight"
+    ],
+    "cut_level": 4
+  },
+  {
+    "id": "milwaukee-pu-a5",
+    "brand": "Milwaukee",
+    "model": "Cut Level 5 Polyurethane Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 13,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 1.5,
+      "moderate": 0.75,
+      "heavy": 0.5
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "hot",
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%205%20Polyurethane%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A5"
+    ],
+    "quality": 6,
+    "features": [
+      "touchscreen",
+      "lightweight"
+    ],
+    "cut_level": 5
+  },
+  {
+    "id": "milwaukee-winter-a1",
+    "brand": "Milwaukee",
+    "model": "Cut Level 1 Winter Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 10,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 4,
+      "moderate": 2,
+      "heavy": 1.3
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%201%20Winter%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A1"
+    ],
+    "quality": 7,
+    "features": [
+      "insulated"
+    ],
+    "cut_level": 1,
+    "note": "Water-resistant palm coating is not a fully waterproof glove."
+  },
+  {
+    "id": "milwaukee-winter-a2",
+    "brand": "Milwaukee",
+    "model": "Cut Level 2 Winter Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 12,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 4,
+      "moderate": 2,
+      "heavy": 1.3
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%202%20Winter%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A2"
+    ],
+    "quality": 7,
+    "features": [
+      "insulated"
+    ],
+    "cut_level": 2,
+    "note": "Water-resistant palm coating is not a fully waterproof glove."
+  },
+  {
+    "id": "milwaukee-winter-a3",
+    "brand": "Milwaukee",
+    "model": "Cut Level 3 Winter Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 14,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 4,
+      "moderate": 2,
+      "heavy": 1.3
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%203%20Winter%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A3"
+    ],
+    "quality": 7,
+    "features": [
+      "insulated"
+    ],
+    "cut_level": 3,
+    "note": "Water-resistant palm coating is not a fully waterproof glove."
+  },
+  {
+    "id": "milwaukee-winter-a4",
+    "brand": "Milwaukee",
+    "model": "Cut Level 4 Winter Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 16,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 4,
+      "moderate": 2,
+      "heavy": 1.3
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%204%20Winter%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A4"
+    ],
+    "quality": 7,
+    "features": [
+      "insulated"
+    ],
+    "cut_level": 4,
+    "note": "Water-resistant palm coating is not a fully waterproof glove."
+  },
+  {
+    "id": "milwaukee-winter-a5",
+    "brand": "Milwaukee",
+    "model": "Cut Level 5 Winter Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 18,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 4,
+      "moderate": 2,
+      "heavy": 1.3
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%205%20Winter%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
+    "standards": [
+      "ANSI/ISEA 105 A5"
+    ],
+    "quality": 7,
+    "features": [
+      "insulated"
+    ],
+    "cut_level": 5,
+    "note": "Water-resistant palm coating is not a fully waterproof glove."
+  },
+  {
+    "id": "milwaukee-wear-defense-a1",
+    "brand": "Milwaukee",
+    "model": "Cut Level A1 Nitrile Dipped Gloves with WEAR-DEFENSE (48-73-6912)",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 8,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 3,
+      "moderate": 1.5,
+      "heavy": 1
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%201%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
+    "standards": [
+      "ANSI/ISEA 105-2024 A1"
+    ],
+    "quality": 7,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 1
+  },
+  {
+    "id": "milwaukee-wear-defense-a3",
+    "brand": "Milwaukee",
+    "model": "Cut Level A3 High-Dexterity Nitrile Dipped Gloves with WEAR-DEFENSE (48-73-6932)",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 16,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 3,
+      "moderate": 1.5,
+      "heavy": 1
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%203%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
+    "standards": [
+      "ANSI/ISEA 105-2024 A3"
+    ],
+    "quality": 7,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 3
+  },
+  {
+    "id": "milwaukee-wear-defense-a4",
+    "brand": "Milwaukee",
+    "model": "Cut Level A4 High-Dexterity Nitrile Dipped Gloves with WEAR-DEFENSE (48-73-6942)",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 18,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 3,
+      "moderate": 1.5,
+      "heavy": 1
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%204%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
+    "standards": [
+      "ANSI/ISEA 105-2024 A4"
+    ],
+    "quality": 7,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 4
+  },
+  {
+    "id": "milwaukee-wear-defense-a5",
+    "brand": "Milwaukee",
+    "model": "Cut Level A5 High-Dexterity Nitrile Dipped Gloves with WEAR-DEFENSE (48-73-6952)",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 19,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 3,
+      "moderate": 1.5,
+      "heavy": 1
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%205%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
+    "standards": [
+      "ANSI/ISEA 105-2024 A5"
+    ],
+    "quality": 7,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 5
+  },
+  {
+    "id": "milwaukee-wear-defense-a6",
+    "brand": "Milwaukee",
+    "model": "Cut Level A6 High-Dexterity Nitrile Dipped Gloves with WEAR-DEFENSE (48-73-6962)",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 25,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 3,
+      "moderate": 1.5,
+      "heavy": 1
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%206%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
+    "standards": [
+      "ANSI/ISEA 105-2024 A6"
+    ],
+    "quality": 7,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 6
+  },
+  {
+    "id": "ergodyne-aegir",
+    "brand": "Ergodyne",
+    "model": "Skullerz AEGIR 55001 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 16,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-aegir-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-aegir-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-aegir-afas",
+    "brand": "Ergodyne",
+    "model": "Skullerz AEGIR-AFAS 55002 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 24,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-aegir-anti-fog-anti-scratch-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-aegir-anti-fog-anti-scratch-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-dagr",
+    "brand": "Ergodyne",
+    "model": "Skullerz DAGR 52000 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 12,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-dagr-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-dagr-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-dagr-af",
+    "brand": "Ergodyne",
+    "model": "Skullerz DAGR-AF 52003 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 17,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-dagr-anti-fog-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-dagr-anti-fog-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-dagr-afas",
+    "brand": "Ergodyne",
+    "model": "Skullerz DAGR-AFAS 52005 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 23,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-dagr-anti-fog-anti-scratch-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-dagr-anti-fog-anti-scratch-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-dellenger",
+    "brand": "Ergodyne",
+    "model": "Skullerz DELLENGER 50060 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 10,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-dellenger-safety-glasses-adjustable-temples",
+    "source_url": "https://www.ergodyne.com/skullerz-dellenger-safety-glasses-adjustable-temples",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-dellenger-af",
+    "brand": "Ergodyne",
+    "model": "Skullerz DELLENGER-AF 50061 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 14,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-dellenger-anti-fog-safety-glasses-adjustable-temples",
+    "source_url": "https://www.ergodyne.com/skullerz-dellenger-anti-fog-safety-glasses-adjustable-temples",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-dellenger-afas",
+    "brand": "Ergodyne",
+    "model": "Skullerz DELLENGER-AFAS 50066 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 20,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-dellenger-anti-fog-anti-scratch-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-dellenger-anti-fog-anti-scratch-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-loki",
+    "brand": "Ergodyne",
+    "model": "Skullerz LOKI 56000 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 22,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-loki-convertible-safety-spoggles-strap",
+    "source_url": "https://www.ergodyne.com/skullerz-loki-convertible-safety-spoggles-strap",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-loki-af",
+    "brand": "Ergodyne",
+    "model": "Skullerz LOKI-AF 56003 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 26,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-loki-anti-fog-safety-spoggles",
+    "source_url": "https://www.ergodyne.com/skullerz-loki-anti-fog-safety-spoggles",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-loki-afas",
+    "brand": "Ergodyne",
+    "model": "Skullerz LOKI-AFAS 56005 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 30,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-loki-anti-scratch-anti-fog-safety-spoggles",
+    "source_url": "https://www.ergodyne.com/skullerz-loki-anti-scratch-anti-fog-safety-spoggles",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-odin",
+    "brand": "Ergodyne",
+    "model": "Skullerz ODIN 50000 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 12,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-odin-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-odin-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-odin-af",
+    "brand": "Ergodyne",
+    "model": "Skullerz ODIN-AF 50003 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 17,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-odin-anti-fog-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-odin-anti-fog-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-odin-afas",
+    "brand": "Ergodyne",
+    "model": "Skullerz ODIN-AFAS 50405 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 23,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-odin-anti-fog-anti-scratch-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-odin-anti-fog-anti-scratch-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-osmin",
+    "brand": "Ergodyne",
+    "model": "Skullerz OSMIN OTG 55101 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 19,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-osmin-over-the-glass-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-osmin-over-the-glass-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-osmin-afas",
+    "brand": "Ergodyne",
+    "model": "Skullerz OSMIN-AFAS OTG 55102 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 25,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-osmin-over-the-glass-safety-glasses-anti-fog-anti-scratch",
+    "source_url": "https://www.ergodyne.com/skullerz-osmin-over-the-glass-safety-glasses-anti-fog-anti-scratch",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-saga",
+    "brand": "Ergodyne",
+    "model": "Skullerz SAGA 59100 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 7,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-saga-frameless-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-saga-frameless-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-saga-af",
+    "brand": "Ergodyne",
+    "model": "Skullerz SAGA-AF 59103 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 10,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-saga-anti-fog-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-saga-anti-fog-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-sixten-afas",
+    "brand": "Ergodyne",
+    "model": "Skullerz SIXTEN-AFAS 58210 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 25,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-sixten-safety-glasses-side-shields-anti-fog-anti-scratch",
+    "source_url": "https://www.ergodyne.com/skullerz-sixten-safety-glasses-side-shields-anti-fog-anti-scratch",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-skoll",
+    "brand": "Ergodyne",
+    "model": "Skullerz SKOLL 59000 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 9,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-skoll-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-skoll-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-skoll-af",
+    "brand": "Ergodyne",
+    "model": "Skullerz SKOLL-AF 59003 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 13,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-skoll-anti-fog-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-skoll-anti-fog-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-thor",
+    "brand": "Ergodyne",
+    "model": "Skullerz THOR 51000 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 12,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-thor-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-thor-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-thor-af",
+    "brand": "Ergodyne",
+    "model": "Skullerz THOR-AF 51003 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 17,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-thor-anti-fog-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-thor-anti-fog-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-vali",
+    "brand": "Ergodyne",
+    "model": "Skullerz VALI 59200 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 6,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-vali-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-vali-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ]
+  },
+  {
+    "id": "ergodyne-vali-af",
+    "brand": "Ergodyne",
+    "model": "Skullerz VALI-AF 59203 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 9,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-vali-anti-fog-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-vali-anti-fog-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "ergodyne-vordr",
+    "brand": "Ergodyne",
+    "model": "Skullerz VORDR 58101 (12-pack) Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 30,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-vordr-frameless-safety-glasses",
+    "source_url": "https://www.ergodyne.com/skullerz-vordr-frameless-safety-glasses",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 6,
+    "features": [
+      "z87plus"
+    ],
+    "pack": "12 pairs"
+  },
+  {
+    "id": "ergodyne-modi-neo",
+    "brand": "Ergodyne",
+    "model": "Skullerz MODI-NEO OTG Goggles 60302 Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 28,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.ergodyne.com/skullerz-modi-otg-anti-Scratch-anti-fog-safety-goggles-neoprene-strap",
+    "source_url": "https://www.ergodyne.com/skullerz-modi-otg-anti-Scratch-anti-fog-safety-goggles-neoprene-strap",
+    "standards": [
+      "ANSI Z87.1+ (ANSI/ISEA Z87.1-2020 high impact)"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
   }
 ]
