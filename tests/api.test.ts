@@ -178,7 +178,7 @@ describe("click routes", () => {
     expect(await failure.json()).toEqual({ redirectUrl: databaseBoot.retailer_url, tracked: false });
   });
 
-  it.each([404, 503, "network"])("uses the bundled destination when catalog storage fails: %s", async failure => {
+  it.each([404, 503, "network"] as const)("uses the bundled destination when catalog storage fails: %s", async failure => {
     configure();
     const fetch = vi.fn().mockImplementation(() => failure === "network"
       ? Promise.reject(new Error(`private ${secret}`))
@@ -194,7 +194,7 @@ describe("click routes", () => {
     expect(await response.json()).toEqual({ redirectUrl: PRODUCTS[0].retailer_url, tracked: false });
   });
 
-  it.each([404, 503, "network"])("keeps a live product's redirect when its click insert fails: %s", async failure => {
+  it.each([404, 503, "network"] as const)("keeps a live product's redirect when its click insert fails: %s", async failure => {
     configure();
     const fetch = vi.fn().mockResolvedValueOnce(Response.json([databaseBoot], { headers: { "content-range": "0-0/1" } }))
       .mockImplementation(() => failure === "network"
