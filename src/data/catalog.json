@@ -1,0 +1,2976 @@
+[
+  {
+    "id": "tb-pitboss-st",
+    "brand": "Timberland PRO",
+    "model": "Pit Boss 6\" Steel Toe",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 135,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Pit%20Boss%206%22%20Steel%20Toe",
+    "source_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-pit-boss-6-steel-toe-work-boot-TB133032001",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 6,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ]
+  },
+  {
+    "id": "tb-boondock-ct-wp",
+    "brand": "Timberland PRO",
+    "model": "Boondock 6\" Composite Toe Waterproof",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 215,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 40,
+      "moderate": 20,
+      "heavy": 13.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Boondock%206%22%20Composite%20Toe%20Waterproof",
+    "source_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-boondock-6-composite-toe-waterproof-work-boot-TB1A1FZP001",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "composite_toe",
+      "eh",
+      "slip",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "tb-boondock-ins",
+    "brand": "Timberland PRO",
+    "model": "Boondock 8\" Insulated Waterproof Composite Toe",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 235,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 40,
+      "moderate": 20,
+      "heavy": 13.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "cold",
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Boondock%208%22%20Insulated%20Waterproof%20Composite%20Toe",
+    "source_url": "https://images.timberland.com/is/content/TimberlandBrand/pdf/Timberland-PRO-MEN-Region-2020-Catalog.pdf",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 8,
+    "features": [
+      "safety_toe",
+      "composite_toe",
+      "eh",
+      "slip",
+      "waterproof",
+      "insulated"
+    ]
+  },
+  {
+    "id": "tb-endurance-pr",
+    "brand": "Timberland PRO",
+    "model": "Endurance 6\" PR Steel Toe",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 150,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Endurance%206%22%20PR%20Steel%20Toe",
+    "source_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-timberland-pro-endurance-6-steel-toe-work-boot-TB152562214",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH PR"
+    ],
+    "quality": 7,
+    "features": [
+      "safety_toe",
+      "eh",
+      "puncture",
+      "slip"
+    ]
+  },
+  {
+    "id": "keen-pittsburgh",
+    "brand": "KEEN Utility",
+    "model": "Pittsburgh 6\" Waterproof Steel Toe",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 195,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 32,
+      "moderate": 16,
+      "heavy": 10.7
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=KEEN%20Utility%20Pittsburgh%206%22%20Waterproof%20Steel%20Toe",
+    "source_url": "https://www.keenfootwear.com/collections/work",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 7,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "carhartt-rf-ct-wp",
+    "brand": "Carhartt",
+    "model": "Rugged Flex 6\" Waterproof Composite Toe",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 170,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Rugged%20Flex%206%22%20Waterproof%20Composite%20Toe",
+    "source_url": "https://www.carhartt.com/product/800016",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 7,
+    "features": [
+      "safety_toe",
+      "composite_toe",
+      "eh",
+      "slip",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "cat-second-shift",
+    "brand": "Caterpillar",
+    "model": "Second Shift Steel Toe",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 110,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 18,
+      "moderate": 9,
+      "heavy": 6
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Caterpillar%20Second%20Shift%20Steel%20Toe",
+    "source_url": "https://www.catfootwear.com/US/en/work-boots/",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 5,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ]
+  },
+  {
+    "id": "cat-threshold-wp",
+    "brand": "Caterpillar",
+    "model": "Threshold Waterproof Steel Toe",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 135,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 22,
+      "moderate": 11,
+      "heavy": 7.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Caterpillar%20Threshold%20Waterproof%20Steel%20Toe",
+    "source_url": "https://www.catfootwear.com/US/en/work-boots/",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 6,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "wolverine-overpass",
+    "brand": "Wolverine",
+    "model": "Overpass 6\" Composite Toe Waterproof",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 175,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 30,
+      "moderate": 15,
+      "heavy": 10
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Wolverine%20Overpass%206%22%20Composite%20Toe%20Waterproof",
+    "source_url": "https://www.wolverine.com/US/en/overpass-carbonmax-6-inch-boot/29830M.html",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 7,
+    "features": [
+      "safety_toe",
+      "composite_toe",
+      "eh",
+      "slip",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "wolverine-floorhand-ins",
+    "brand": "Wolverine",
+    "model": "Floorhand Waterproof Steel Toe 6-inch",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 110,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 28,
+      "moderate": 14,
+      "heavy": 9.3
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Wolverine%20Floorhand%20Waterproof%20Steel%20Toe%206-inch",
+    "source_url": "https://www.wolverine.com/US/en/floorhand-waterproof-steel-toe-6-inch-work-boot/26878M.html",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 7,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip",
+      "waterproof"
+    ],
+    "note": "Non-insulated model; historical catalog ID retained."
+  },
+  {
+    "id": "redwing-supersole",
+    "brand": "Red Wing",
+    "model": "SuperSole 2.0 6-inch Steel Toe (2406)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 280,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 60,
+      "moderate": 30,
+      "heavy": 20
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Red%20Wing%20SuperSole%202.0%206-inch%20Steel%20Toe%20(2406)",
+    "source_url": "https://www.redwingshoes.com/mens/work/safety-toe/supersole-2.0-02406.html",
+    "standards": [
+      "ASTM F2413-24 I/C EH SR"
+    ],
+    "quality": 9,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "Resoleable. Service-life estimates exclude future resole fees."
+  },
+  {
+    "id": "thorogood-moc",
+    "brand": "Thorogood",
+    "model": "American Heritage 6\" Moc Toe Safety Toe",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 280,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 60,
+      "moderate": 30,
+      "heavy": 20
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Thorogood%20American%20Heritage%206%22%20Moc%20Toe%20Safety%20Toe",
+    "source_url": "https://thorogoodusa.com/work-boots/",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 9,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "Made in USA, resoleable."
+  },
+  {
+    "id": "irishsetter-ashby",
+    "brand": "Irish Setter",
+    "model": "Ashby 6-inch Aluminum Toe (83606)",
+    "category": "boots",
+    "gender": "men",
+    "price_usd": 205,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 30,
+      "moderate": 15,
+      "heavy": 10
+    },
+    "sizes": [
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "13"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Irish%20Setter%20Ashby%206-inch%20Aluminum%20Toe%20(83606)",
+    "source_url": "https://www.irishsetterboots.com/work-boots/shop-by-family/ashby/",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 7,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "Water-resistant leather is not a waterproof membrane."
+  },
+  {
+    "id": "tb-titan-w",
+    "brand": "Timberland PRO",
+    "model": "Women's TiTAN 6-inch Alloy Toe (TB126388210)",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 145,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Women's%20TiTAN%206-inch%20Alloy%20Toe%20(TB126388210)",
+    "source_url": "https://www.timberland.com/en-us/p/timberland-pro/womens-workwear-10176/womens-titan-6-alloy-toe-work-boot-TB126388210",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 6,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ]
+  },
+  {
+    "id": "keen-flint-w",
+    "brand": "KEEN Utility",
+    "model": "Women's Flint II Steel Toe",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 160,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=KEEN%20Utility%20Women's%20Flint%20II%20Steel%20Toe",
+    "source_url": "https://www.keenfootwear.com/collections/womens-steel-toe",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 7,
+    "features": [
+      "safety_toe",
+      "eh",
+      "slip"
+    ]
+  },
+  {
+    "id": "carhartt-rf-wp-w",
+    "brand": "Carhartt",
+    "model": "Women's Rugged Flex 6-inch Composite Toe (802279)",
+    "category": "boots",
+    "gender": "women",
+    "price_usd": 150,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 26,
+      "moderate": 13,
+      "heavy": 8.7
+    },
+    "sizes": [
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "11"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Rugged%20Flex%206-inch%20Composite%20Toe%20(802279)",
+    "source_url": "https://www.carhartt.com/product/802279-00111M",
+    "standards": [
+      "ASTM F2413 I/75 C/75 EH"
+    ],
+    "quality": 7,
+    "features": [
+      "safety_toe",
+      "composite_toe",
+      "eh",
+      "slip"
+    ],
+    "note": "This model is not listed as waterproof."
+  },
+  {
+    "id": "ansell-11840",
+    "brand": "Ansell",
+    "model": "HyFlex 11-840 Nitrile Foam Grip",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 45,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Ansell%20HyFlex%2011-840%20Nitrile%20Foam%20Grip",
+    "source_url": "https://www.ansell.com/us/en/products/hyflex-11-840",
+    "standards": [
+      "ANSI/ISEA 105 A1"
+    ],
+    "quality": 7,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 1,
+    "pack": "12 pairs"
+  },
+  {
+    "id": "milwaukee-cut3",
+    "brand": "Milwaukee",
+    "model": "Cut Level 3 Nitrile Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 55,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%203%20Nitrile%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/products/work-gear/gloves",
+    "standards": [
+      "ANSI/ISEA 105 A3"
+    ],
+    "quality": 7,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 3,
+    "pack": "12 pairs"
+  },
+  {
+    "id": "milwaukee-cut5",
+    "brand": "Milwaukee",
+    "model": "Cut Level 5 Nitrile Dipped Gloves (12-pair pack)",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 85,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 14,
+      "moderate": 7,
+      "heavy": 4.7
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%205%20Nitrile%20Dipped%20Gloves%20(12-pair%20pack)",
+    "source_url": "https://www.milwaukeetool.com/-/media/PDFs/Objective-Data/Cut-Level-5-Nitrile-Dipped-Gloves-Spec-Sheet-2024.pdf",
+    "standards": [
+      "ANSI/ISEA 105 A5"
+    ],
+    "quality": 8,
+    "features": [
+      "touchscreen"
+    ],
+    "cut_level": 5,
+    "pack": "12 pairs"
+  },
+  {
+    "id": "milwaukee-impact-cut5",
+    "brand": "Milwaukee",
+    "model": "Impact Cut Level 5 Nitrile Dipped Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 35,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 10,
+      "moderate": 5,
+      "heavy": 3.3
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Impact%20Cut%20Level%205%20Nitrile%20Dipped%20Gloves",
+    "source_url": "https://www.milwaukeetool.com/products/work-gear/gloves",
+    "standards": [
+      "ANSI/ISEA 105 A5",
+      "ANSI/ISEA 138"
+    ],
+    "quality": 8,
+    "features": [
+      "impact",
+      "touchscreen"
+    ],
+    "cut_level": 5
+  },
+  {
+    "id": "mechanix-mpact",
+    "brand": "Mechanix Wear",
+    "model": "M-Pact Impact Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 32,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 8,
+      "moderate": 4,
+      "heavy": 2.7
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Mechanix%20Wear%20M-Pact%20Impact%20Gloves",
+    "source_url": "https://www.mechanix.com/us-en/work-gloves/",
+    "standards": [
+      "ANSI/ISEA 138"
+    ],
+    "quality": 7,
+    "features": [
+      "impact",
+      "touchscreen"
+    ]
+  },
+  {
+    "id": "ironclad-command-impact",
+    "brand": "Ironclad",
+    "model": "Command Impact Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 35,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 10,
+      "moderate": 5,
+      "heavy": 3.3
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Ironclad%20Command%20Impact%20Gloves",
+    "source_url": "https://ironclad.com/",
+    "standards": [
+      "ANSI/ISEA 138"
+    ],
+    "quality": 7,
+    "features": [
+      "impact",
+      "touchscreen"
+    ]
+  },
+  {
+    "id": "wells-hydrahyde",
+    "brand": "Wells Lamont",
+    "model": "HydraHyde Leather Work Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 15,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 6,
+      "moderate": 3,
+      "heavy": 2
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Wells%20Lamont%20HydraHyde%20Leather%20Work%20Gloves",
+    "source_url": "https://www.wellslamont.com/hydrahyde/",
+    "standards": [],
+    "quality": 5,
+    "features": []
+  },
+  {
+    "id": "carhartt-ins-grip",
+    "brand": "Carhartt",
+    "model": "W.P. Waterproof Insulated Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 35,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 16,
+      "moderate": 8,
+      "heavy": 5.3
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "cold",
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20W.P.%20Waterproof%20Insulated%20Gloves",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 7,
+    "features": [
+      "insulated",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "mechanix-coldwork-mpact",
+    "brand": "Mechanix Wear",
+    "model": "ColdWork M-Pact Insulated Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 45,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Mechanix%20Wear%20ColdWork%20M-Pact%20Insulated%20Gloves",
+    "source_url": "https://www.mechanix.com/us-en/work-gloves/",
+    "standards": [
+      "ANSI/ISEA 138"
+    ],
+    "quality": 7,
+    "features": [
+      "insulated",
+      "impact",
+      "touchscreen"
+    ]
+  },
+  {
+    "id": "lincoln-mig-stick",
+    "brand": "Lincoln Electric",
+    "model": "Heavy Duty MIG/Stick Welding Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 20,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 6,
+      "moderate": 3,
+      "heavy": 2
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Lincoln%20Electric%20Heavy%20Duty%20MIG%2FStick%20Welding%20Gloves",
+    "source_url": "https://www.lincolnelectric.com/en/Products/Safety-PPE",
+    "standards": [],
+    "quality": 6,
+    "features": [
+      "welding"
+    ]
+  },
+  {
+    "id": "caiman-1878",
+    "brand": "Caiman",
+    "model": "1878 MIG/Stick Deerskin Welding Gloves",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 30,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 10,
+      "moderate": 5,
+      "heavy": 3.3
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Caiman%201878%20MIG%2FStick%20Deerskin%20Welding%20Gloves",
+    "source_url": "https://caimangloves.com/",
+    "standards": [],
+    "quality": 8,
+    "features": [
+      "welding"
+    ]
+  },
+  {
+    "id": "ammex-nitrile",
+    "brand": "AMMEX",
+    "model": "Gloveworks HD Black Nitrile Disposable",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 20,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 3,
+      "moderate": 1.5,
+      "heavy": 1
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=AMMEX%20Gloveworks%20HD%20Black%20Nitrile%20Disposable",
+    "source_url": "https://www.ammex.com/nitrile/",
+    "standards": [
+      "ASTM D6319"
+    ],
+    "quality": 6,
+    "features": [],
+    "pack": "100 gloves",
+    "note": "Disposable industrial glove; ASTM D6319 alone does not establish chemical permeation protection. Not selected for a mandatory chemical requirement."
+  },
+  {
+    "id": "showa-730",
+    "brand": "SHOWA",
+    "model": "730 Chemical-Resistant Nitrile",
+    "category": "gloves",
+    "gender": "unisex",
+    "price_usd": 10,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 6,
+      "moderate": 3,
+      "heavy": 2
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=SHOWA%20730%20Chemical-Resistant%20Nitrile",
+    "source_url": "https://www.showagroup.com/us-en/shop/730",
+    "standards": [
+      "EN 374 / chemical resistant"
+    ],
+    "quality": 7,
+    "features": [
+      "chemical",
+      "waterproof"
+    ]
+  },
+  {
+    "id": "3m-sf401af",
+    "brand": "3M",
+    "model": "SecureFit 400 Anti-Fog, Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 8,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 8,
+      "moderate": 4,
+      "heavy": 2.7
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=3M%20SecureFit%20400%20Anti-Fog%2C%20Clear",
+    "source_url": "https://www.3m.com/3M/en_US/p/d/v000276838/",
+    "standards": [
+      "ANSI Z87.1+"
+    ],
+    "quality": 7,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "3m-sf402af",
+    "brand": "3M",
+    "model": "SecureFit 400 Anti-Fog, Gray",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 8,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 8,
+      "moderate": 4,
+      "heavy": 2.7
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "hot"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=3M%20SecureFit%20400%20Anti-Fog%2C%20Gray",
+    "source_url": "https://multimedia.3m.com/mws/media/1742279O/3m-securefit-protective-eyewear-product-catalog.pdf",
+    "standards": [
+      "ANSI Z87.1+"
+    ],
+    "quality": 7,
+    "features": [
+      "z87plus",
+      "anti_fog",
+      "tinted"
+    ]
+  },
+  {
+    "id": "pyramex-ztek",
+    "brand": "Pyramex",
+    "model": "Ztek Safety Glasses, Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 25,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Pyramex%20Ztek%20Safety%20Glasses%2C%20Clear",
+    "source_url": "https://www.pyramexsafety.com/",
+    "standards": [
+      "ANSI Z87.1+"
+    ],
+    "quality": 5,
+    "features": [
+      "z87plus"
+    ],
+    "pack": "12 pairs"
+  },
+  {
+    "id": "uvex-genesis",
+    "brand": "Uvex",
+    "model": "Genesis Anti-Fog, Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 13,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Uvex%20Genesis%20Anti-Fog%2C%20Clear",
+    "source_url": "https://automation.honeywell.com/us/en/products/personal-protective-equipment/eye-protection",
+    "standards": [
+      "ANSI Z87.1+"
+    ],
+    "quality": 8,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "dewalt-concealer",
+    "brand": "DEWALT",
+    "model": "Concealer Anti-Fog, Clear",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 12,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 10,
+      "moderate": 5,
+      "heavy": 3.3
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=DEWALT%20Concealer%20Anti-Fog%2C%20Clear",
+    "source_url": "https://www.dewalt.com/products/work-gear/safety-protective-workwear/eye-protection",
+    "standards": [
+      "ANSI Z87.1+"
+    ],
+    "quality": 7,
+    "features": [
+      "z87plus",
+      "anti_fog"
+    ]
+  },
+  {
+    "id": "wileyx-saber",
+    "brand": "Wiley X",
+    "model": "Saber Advanced, Smoke Grey",
+    "category": "eyewear",
+    "gender": "unisex",
+    "price_usd": 45,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "hot"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Wiley%20X%20Saber%20Advanced%2C%20Smoke%20Grey",
+    "source_url": "https://www.wileyx.com/products/saber-advanced",
+    "standards": [
+      "ANSI Z87.1+"
+    ],
+    "quality": 9,
+    "features": [
+      "z87plus",
+      "tinted"
+    ]
+  },
+  {
+    "id": "3m-ear-classic",
+    "brand": "3M",
+    "model": "E-A-R Classic Foam Earplugs",
+    "category": "hearing",
+    "gender": "unisex",
+    "price_usd": 32,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 20,
+      "moderate": 10,
+      "heavy": 6.7
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=3M%20E-A-R%20Classic%20Foam%20Earplugs",
+    "source_url": "https://www.3m.com/3M/en_US/p/c/ppe/",
+    "standards": [
+      "NRR 29 dB"
+    ],
+    "quality": 6,
+    "features": [],
+    "nrr": 29,
+    "pack": "200 pairs"
+  },
+  {
+    "id": "hl-laserlite",
+    "brand": "Howard Leight",
+    "model": "Laser Lite Foam Earplugs",
+    "category": "hearing",
+    "gender": "unisex",
+    "price_usd": 30,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 20,
+      "moderate": 10,
+      "heavy": 6.7
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Howard%20Leight%20Laser%20Lite%20Foam%20Earplugs",
+    "source_url": "https://automation.honeywell.com/us/en/products/personal-protective-equipment/hearing-protection",
+    "standards": [
+      "NRR 32 dB"
+    ],
+    "quality": 6,
+    "features": [],
+    "nrr": 32,
+    "pack": "200 pairs"
+  },
+  {
+    "id": "3m-x4a",
+    "brand": "3M",
+    "model": "Peltor X4A Earmuffs",
+    "category": "hearing",
+    "gender": "unisex",
+    "price_usd": 30,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=3M%20Peltor%20X4A%20Earmuffs",
+    "source_url": "https://www.3m.com/3M/en_US/p/dc/v101643048/",
+    "standards": [
+      "NRR 27 dB"
+    ],
+    "quality": 8,
+    "features": [],
+    "nrr": 27
+  },
+  {
+    "id": "3m-x5a",
+    "brand": "3M",
+    "model": "Peltor X5A Earmuffs",
+    "category": "hearing",
+    "gender": "unisex",
+    "price_usd": 40,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=3M%20Peltor%20X5A%20Earmuffs",
+    "source_url": "https://www.3m.com/3M/en_US/p/dc/v101643023/",
+    "standards": [
+      "NRR 31 dB"
+    ],
+    "quality": 8,
+    "features": [],
+    "nrr": 31
+  },
+  {
+    "id": "hl-impact-sport",
+    "brand": "Howard Leight",
+    "model": "Impact Sport Electronic Earmuffs",
+    "category": "hearing",
+    "gender": "unisex",
+    "price_usd": 55,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Howard%20Leight%20Impact%20Sport%20Electronic%20Earmuffs",
+    "source_url": "https://automation.honeywell.com/us/en/products/personal-protective-equipment/hearing-protection",
+    "standards": [
+      "NRR 22 dB"
+    ],
+    "quality": 7,
+    "features": [
+      "electronic"
+    ],
+    "nrr": 22
+  },
+  {
+    "id": "3m-worktunes",
+    "brand": "3M",
+    "model": "WorkTunes Connect Bluetooth",
+    "category": "hearing",
+    "gender": "unisex",
+    "price_usd": 60,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=3M%20WorkTunes%20Connect%20Bluetooth",
+    "source_url": "https://www.3m.com/3M/en_US/p/c/ppe/",
+    "standards": [
+      "NRR 24 dB"
+    ],
+    "quality": 7,
+    "features": [
+      "bluetooth"
+    ],
+    "nrr": 24
+  },
+  {
+    "id": "isotunes-pro2",
+    "brand": "ISOtunes",
+    "model": "PRO 2.0 Bluetooth Earbuds",
+    "category": "hearing",
+    "gender": "unisex",
+    "price_usd": 100,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=ISOtunes%20PRO%202.0%20Bluetooth%20Earbuds",
+    "source_url": "https://isotunes.com/products/isotunes-pro-2-0",
+    "standards": [
+      "NRR 27 dB"
+    ],
+    "quality": 8,
+    "features": [
+      "bluetooth"
+    ],
+    "nrr": 27
+  },
+  {
+    "id": "msa-vgard-cap",
+    "brand": "MSA",
+    "model": "V-Gard 500 Non-Vented Cap, Fas-Trac III",
+    "category": "head",
+    "gender": "unisex",
+    "price_usd": 28,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 36,
+      "heavy": 24
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=MSA%20V-Gard%20Cap%20Style%2C%20Fas-Trac%20III",
+    "source_url": "https://us.msasafety.com/Head-Protection/Hard-Hats/V-Gard%C2%AE-500-Protective-Cap/p/000060001500001001",
+    "standards": [
+      "ANSI Z89.1 Type I Class E"
+    ],
+    "quality": 8,
+    "features": [
+      "class_e"
+    ],
+    "note": "Replace suspension yearly, shell every 5 years. Planning ceiling only, not a manufacturer expiry guarantee. Inspect before use; damage, impact, and manufacturer replacement instructions override this estimate."
+  },
+  {
+    "id": "msa-vgard-brim",
+    "brand": "MSA",
+    "model": "V-Gard Full Brim, Fas-Trac III",
+    "category": "head",
+    "gender": "unisex",
+    "price_usd": 35,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 36,
+      "heavy": 24
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "hot",
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=MSA%20V-Gard%20Full%20Brim%2C%20Fas-Trac%20III",
+    "source_url": "https://us.msasafety.com/c/V-Gard%C2%AE-Protective-Hat/p/000060001300001010?locale=en",
+    "standards": [
+      "ANSI Z89.1 Type I Class E"
+    ],
+    "quality": 8,
+    "features": [
+      "class_e"
+    ],
+    "note": "Planning ceiling only, not a manufacturer expiry guarantee. Inspect before use; damage, impact, and manufacturer replacement instructions override this estimate."
+  },
+  {
+    "id": "pyramex-ridgeline",
+    "brand": "Pyramex",
+    "model": "Ridgeline Non-Vented Cap Style Hard Hat",
+    "category": "head",
+    "gender": "unisex",
+    "price_usd": 22,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 36,
+      "heavy": 24
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Pyramex%20Ridgeline%20Cap%20Style%20Hard%20Hat",
+    "source_url": "https://www.pyramex.com/en-eu/collections/best-sellers/products/ridgeline%C2%AE-cap-style?variant=42444999589977",
+    "standards": [
+      "ANSI Z89.1 Type I Class E"
+    ],
+    "quality": 6,
+    "features": [
+      "class_e"
+    ],
+    "note": "Planning ceiling only, not a manufacturer expiry guarantee. Inspect before use; damage, impact, and manufacturer replacement instructions override this estimate."
+  },
+  {
+    "id": "milwaukee-bolt-t2",
+    "brand": "Milwaukee",
+    "model": "BOLT Full Brim Safety Helmet Type 2 Class E (48-73-1661)",
+    "category": "head",
+    "gender": "unisex",
+    "price_usd": 110,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 36,
+      "heavy": 24
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20BOLT%20Type%202%20Class%20E%20Hard%20Hat",
+    "source_url": "https://www.milwaukeetool.com/products/details/bolt-black-full-brim-safety-helmet-type-2-class-e/48-73-1661",
+    "standards": [
+      "ANSI Z89.1 Type II Class E"
+    ],
+    "quality": 8,
+    "features": [
+      "class_e",
+      "type_2"
+    ],
+    "note": "Planning ceiling only, not a manufacturer expiry guarantee. Inspect before use; damage, impact, and manufacturer replacement instructions override this estimate."
+  },
+  {
+    "id": "studson-shk1",
+    "brand": "Studson",
+    "model": "SHK-1 Type 2 Class E Safety Helmet",
+    "category": "head",
+    "gender": "unisex",
+    "price_usd": 140,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 36,
+      "heavy": 24
+    },
+    "sizes": [
+      "one-size"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Studson%20SHK-1%20Type%202%20Class%20E%20Safety%20Helmet",
+    "source_url": "https://studson.com/products/shk-1-full-brim-non-vented",
+    "standards": [
+      "ANSI Z89.1 Type II Class E"
+    ],
+    "quality": 9,
+    "features": [
+      "class_e",
+      "type_2"
+    ],
+    "note": "Planning ceiling only, not a manufacturer expiry guarantee. Inspect before use; damage, impact, and manufacturer replacement instructions override this estimate."
+  },
+  {
+    "id": "radians-sv2z",
+    "brand": "Radians",
+    "model": "SV2Z Class 2 Mesh Vest",
+    "category": "hivis",
+    "gender": "unisex",
+    "price_usd": 9,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 8,
+      "moderate": 4,
+      "heavy": 2.7
+    },
+    "sizes": [
+      "S/M",
+      "L/XL",
+      "2XL/3XL",
+      "4XL/5XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Radians%20SV2Z%20Class%202%20Mesh%20Vest",
+    "source_url": "https://www.radians.com/products/industrial-safety/high-visibility-apparel",
+    "standards": [
+      "ANSI/ISEA 107 Class 2"
+    ],
+    "quality": 5,
+    "features": [
+      "hivis"
+    ],
+    "hivis_class": 2
+  },
+  {
+    "id": "ergodyne-8210hl",
+    "brand": "Ergodyne",
+    "model": "GloWear 8210HL Class 2 Vest",
+    "category": "hivis",
+    "gender": "unisex",
+    "price_usd": 12,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "S/M",
+      "L/XL",
+      "2XL/3XL",
+      "4XL/5XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Ergodyne%20GloWear%208210HL%20Class%202%20Vest",
+    "source_url": "https://www.ergodyne.com/hi-vis",
+    "standards": [
+      "ANSI/ISEA 107 Class 2"
+    ],
+    "quality": 6,
+    "features": [
+      "hivis"
+    ],
+    "hivis_class": 2
+  },
+  {
+    "id": "ergodyne-8310hl",
+    "brand": "Ergodyne",
+    "model": "GloWear 8310HL Class 3 Vest",
+    "category": "hivis",
+    "gender": "unisex",
+    "price_usd": 22,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 12,
+      "moderate": 6,
+      "heavy": 4
+    },
+    "sizes": [
+      "S/M",
+      "L/XL",
+      "2XL/3XL",
+      "4XL/5XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Ergodyne%20GloWear%208310HL%20Class%203%20Vest",
+    "source_url": "https://www.ergodyne.com/hi-vis",
+    "standards": [
+      "ANSI/ISEA 107 Class 3"
+    ],
+    "quality": 7,
+    "features": [
+      "hivis"
+    ],
+    "hivis_class": 3
+  },
+  {
+    "id": "radians-sv55",
+    "brand": "Radians",
+    "model": "SV55 Type R Class 2 Engineer Vest",
+    "category": "hivis",
+    "gender": "unisex",
+    "price_usd": 25,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 16,
+      "moderate": 8,
+      "heavy": 5.3
+    },
+    "sizes": [
+      "S/M",
+      "L/XL",
+      "2XL/3XL",
+      "4XL/5XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Radians%20SV55%20Type%20R%20Class%202%20Engineer%20Vest",
+    "source_url": "https://www.radians.com/products/radians-sv55-class-2-heavy-woven-two-tone-engineer-vest",
+    "standards": [
+      "ANSI/ISEA 107 Type R Class 2"
+    ],
+    "quality": 7,
+    "features": [
+      "hivis"
+    ],
+    "hivis_class": 2
+  },
+  {
+    "id": "ergodyne-8385",
+    "brand": "Ergodyne",
+    "model": "GloWear 8385 Class 3 Thermal Bomber Jacket",
+    "category": "hivis",
+    "gender": "unisex",
+    "price_usd": 85,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "S/M",
+      "L/XL",
+      "2XL/3XL",
+      "4XL/5XL"
+    ],
+    "climate": [
+      "cold",
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Ergodyne%20GloWear%208385%20Class%203%20Thermal%20Bomber%20Jacket",
+    "source_url": "https://www.ergodyne.com/hi-vis",
+    "standards": [
+      "ANSI/ISEA 107 Class 3"
+    ],
+    "quality": 7,
+    "features": [
+      "hivis",
+      "insulated",
+      "waterproof"
+    ],
+    "hivis_class": 3
+  },
+  {
+    "id": "carhartt-j131",
+    "brand": "Carhartt",
+    "model": "Duck Active Jac, Thermal-Lined",
+    "category": "outerwear",
+    "gender": "men",
+    "price_usd": 135,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 72,
+      "moderate": 36,
+      "heavy": 24
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Duck%20Active%20Jac%2C%20Thermal-Lined",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 9,
+    "features": [
+      "insulated"
+    ]
+  },
+  {
+    "id": "dickies-sherpa",
+    "brand": "Dickies",
+    "model": "Sherpa-Lined Duck Hooded Jacket",
+    "category": "outerwear",
+    "gender": "men",
+    "price_usd": 80,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Dickies%20Sherpa-Lined%20Duck%20Hooded%20Jacket",
+    "source_url": "https://www.dickies.com/",
+    "standards": [],
+    "quality": 6,
+    "features": [
+      "insulated"
+    ]
+  },
+  {
+    "id": "carhartt-shoreline",
+    "brand": "Carhartt",
+    "model": "Storm Defender Shoreline Jacket",
+    "category": "outerwear",
+    "gender": "men",
+    "price_usd": 100,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Storm%20Defender%20Shoreline%20Jacket",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 7,
+    "features": [
+      "waterproof"
+    ]
+  },
+  {
+    "id": "froggtoggs-pro",
+    "brand": "Frogg Toggs",
+    "model": "Pro Action Rain Jacket",
+    "category": "outerwear",
+    "gender": "unisex",
+    "price_usd": 40,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Frogg%20Toggs%20Pro%20Action%20Rain%20Jacket",
+    "source_url": "https://www.froggtoggs.com/",
+    "standards": [],
+    "quality": 5,
+    "features": [
+      "waterproof"
+    ]
+  },
+  {
+    "id": "carhartt-active-w",
+    "brand": "Carhartt",
+    "model": "Women's Washed Duck Active Jac",
+    "category": "outerwear",
+    "gender": "women",
+    "price_usd": 120,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 72,
+      "moderate": 36,
+      "heavy": 24
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Washed%20Duck%20Active%20Jac",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 8,
+    "features": [
+      "insulated"
+    ]
+  },
+  {
+    "id": "carhartt-rain-w",
+    "brand": "Carhartt",
+    "model": "Women's Storm Defender Rain Jacket",
+    "category": "outerwear",
+    "gender": "women",
+    "price_usd": 110,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "wet"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Storm%20Defender%20Rain%20Jacket",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 7,
+    "features": [
+      "waterproof"
+    ]
+  },
+  {
+    "id": "carhartt-fr-active",
+    "brand": "Carhartt",
+    "model": "FR Loose Fit Duck Insulated Active Jac (101621)",
+    "category": "outerwear",
+    "gender": "unisex",
+    "price_usd": 250,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 72,
+      "moderate": 36,
+      "heavy": 24
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "cold"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20FR%20Duck%20Active%20Jac%2C%20Quilt-Lined",
+    "source_url": "https://www.carhartt.com/product/101621",
+    "standards": [
+      "ASTM F1506",
+      "NFPA 70E PPE Category 4"
+    ],
+    "quality": 9,
+    "features": [
+      "fr",
+      "insulated"
+    ],
+    "note": "Insulated flame-resistant work jacket. Confirm fit and arc-rating needs with the employer."
+  },
+  {
+    "id": "lincoln-fr-jacket",
+    "brand": "Lincoln Electric",
+    "model": "FR Cotton Welding Jacket (K2985)",
+    "category": "outerwear",
+    "gender": "unisex",
+    "price_usd": 45,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Lincoln%20Electric%20FR%20Cotton%20Welding%20Jacket%20(K2985)",
+    "source_url": "https://ch-delivery.lincolnelectric.com/api/public/content/1bc5cd9aa1774d1a9dc6df5bb691493d?v=96b76bd7",
+    "standards": [
+      "ASTM D6413"
+    ],
+    "quality": 6,
+    "features": [
+      "fr"
+    ],
+    "note": "Flame-resistant welding garment. Not an arc-rated NFPA 70E ensemble."
+  },
+  {
+    "id": "blackstallion-hybrid",
+    "brand": "Revco Black Stallion",
+    "model": "Cotton/Leather Hybrid Welding Jacket",
+    "category": "outerwear",
+    "gender": "unisex",
+    "price_usd": 80,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Revco%20Black%20Stallion%20Cotton%2FLeather%20Hybrid%20Welding%20Jacket",
+    "source_url": "https://www.blackstallion.com/",
+    "standards": [
+      "ASTM D6413 flame resistant"
+    ],
+    "quality": 8,
+    "features": [
+      "fr"
+    ]
+  },
+  {
+    "id": "carhartt-force-t",
+    "brand": "Carhartt",
+    "model": "Force Relaxed Fit Midweight Pocket T",
+    "category": "shirt",
+    "gender": "men",
+    "price_usd": 25,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "hot"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Force%20Relaxed%20Fit%20Midweight%20Pocket%20T",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 7,
+    "features": [
+      "lightweight"
+    ]
+  },
+  {
+    "id": "carhartt-k87",
+    "brand": "Carhartt",
+    "model": "Loose Fit Heavyweight Pocket T (K87)",
+    "category": "shirt",
+    "gender": "men",
+    "price_usd": 22,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Loose%20Fit%20Heavyweight%20Pocket%20T%20(K87)",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 8,
+    "features": []
+  },
+  {
+    "id": "dickies-heavy-t",
+    "brand": "Dickies",
+    "model": "Short Sleeve Heavyweight Crew Tee",
+    "category": "shirt",
+    "gender": "men",
+    "price_usd": 15,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 18,
+      "moderate": 9,
+      "heavy": 6
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Dickies%20Short%20Sleeve%20Heavyweight%20Crew%20Tee",
+    "source_url": "https://www.dickies.com/",
+    "standards": [],
+    "quality": 5,
+    "features": []
+  },
+  {
+    "id": "carhartt-force-t-w",
+    "brand": "Carhartt",
+    "model": "Women's Force Relaxed Fit Midweight T",
+    "category": "shirt",
+    "gender": "women",
+    "price_usd": 25,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "hot"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Force%20Relaxed%20Fit%20Midweight%20T",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 7,
+    "features": [
+      "lightweight"
+    ]
+  },
+  {
+    "id": "carhartt-heavy-t-w",
+    "brand": "Carhartt",
+    "model": "Women's Loose Fit Heavyweight T",
+    "category": "shirt",
+    "gender": "women",
+    "price_usd": 22,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Loose%20Fit%20Heavyweight%20T",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 8,
+    "features": []
+  },
+  {
+    "id": "carhartt-fr-force",
+    "brand": "Carhartt",
+    "model": "FR Force Cotton Long-Sleeve T-Shirt (100235)",
+    "category": "shirt",
+    "gender": "men",
+    "price_usd": 65,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "hot"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20FR%20Force%20Cotton%20Long-Sleeve%20T-Shirt%20(100235)",
+    "source_url": "https://www.carhartt.com/product/100235-BLKXLREG/flame-resistant-force-cotton-long-sleeve-t-shirt",
+    "standards": [
+      "ASTM F1506",
+      "NFPA 70E PPE Category 2"
+    ],
+    "quality": 8,
+    "features": [
+      "fr",
+      "lightweight"
+    ]
+  },
+  {
+    "id": "bulwark-fr-shirt",
+    "brand": "Bulwark",
+    "model": "FR Lightweight Work Shirt",
+    "category": "shirt",
+    "gender": "men",
+    "price_usd": 70,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Bulwark%20FR%20Lightweight%20Work%20Shirt",
+    "source_url": "https://www.bulwark.com/",
+    "standards": [
+      "ASTM F1506",
+      "NFPA 70E (arc-rated clothing selection)"
+    ],
+    "quality": 8,
+    "features": [
+      "fr"
+    ]
+  },
+  {
+    "id": "bulwark-fr-shirt-w",
+    "brand": "Bulwark",
+    "model": "Women's iQ Series Lightweight Comfort Woven Shirt (QS53)",
+    "category": "shirt",
+    "gender": "women",
+    "price_usd": 115,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "3XL"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Bulwark%20Women's%20FR%20Work%20Shirt",
+    "source_url": "https://www.bulwark.com/iq-series-womens-lightweight-comfort-woven-shirt/QS53.html",
+    "standards": [
+      "ASTM F1506",
+      "NFPA 70E PPE Category 2",
+      "ATPV 8.5 cal/cm2"
+    ],
+    "quality": 8,
+    "features": [
+      "fr"
+    ]
+  },
+  {
+    "id": "carhartt-b01",
+    "brand": "Carhartt",
+    "model": "Loose Fit Firm Duck Double-Front (B01)",
+    "category": "pants",
+    "gender": "men",
+    "price_usd": 60,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "30x30",
+      "30x32",
+      "32x30",
+      "32x32",
+      "32x34",
+      "34x30",
+      "34x32",
+      "34x34",
+      "36x30",
+      "36x32",
+      "36x34",
+      "38x30",
+      "38x32",
+      "40x30",
+      "40x32"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Loose%20Fit%20Firm%20Duck%20Double-Front%20(B01)",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 8,
+    "features": []
+  },
+  {
+    "id": "carhartt-rigby-df",
+    "brand": "Carhartt",
+    "model": "Rugged Flex Rigby Double-Front",
+    "category": "pants",
+    "gender": "men",
+    "price_usd": 70,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 30,
+      "moderate": 15,
+      "heavy": 10
+    },
+    "sizes": [
+      "30x30",
+      "30x32",
+      "32x30",
+      "32x32",
+      "32x34",
+      "34x30",
+      "34x32",
+      "34x34",
+      "36x30",
+      "36x32",
+      "36x34",
+      "38x30",
+      "38x32",
+      "40x30",
+      "40x32"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Rugged%20Flex%20Rigby%20Double-Front",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 8,
+    "features": [
+      "knee_pads",
+      "stretch"
+    ]
+  },
+  {
+    "id": "dickies-874",
+    "brand": "Dickies",
+    "model": "874 Original Work Pant",
+    "category": "pants",
+    "gender": "men",
+    "price_usd": 30,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 20,
+      "moderate": 10,
+      "heavy": 6.7
+    },
+    "sizes": [
+      "30x30",
+      "30x32",
+      "32x30",
+      "32x32",
+      "32x34",
+      "34x30",
+      "34x32",
+      "34x34",
+      "36x30",
+      "36x32",
+      "36x34",
+      "38x30",
+      "38x32",
+      "40x30",
+      "40x32"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Dickies%20874%20Original%20Work%20Pant",
+    "source_url": "https://www.dickies.com/",
+    "standards": [],
+    "quality": 6,
+    "features": []
+  },
+  {
+    "id": "dickies-flex-dk",
+    "brand": "Dickies",
+    "model": "FLEX Double Knee Work Pant",
+    "category": "pants",
+    "gender": "men",
+    "price_usd": 40,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 22,
+      "moderate": 11,
+      "heavy": 7.3
+    },
+    "sizes": [
+      "30x30",
+      "30x32",
+      "32x30",
+      "32x32",
+      "32x34",
+      "34x30",
+      "34x32",
+      "34x34",
+      "36x30",
+      "36x32",
+      "36x34",
+      "38x30",
+      "38x32",
+      "40x30",
+      "40x32"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Dickies%20FLEX%20Double%20Knee%20Work%20Pant",
+    "source_url": "https://www.dickies.com/",
+    "standards": [],
+    "quality": 6,
+    "features": [
+      "stretch"
+    ]
+  },
+  {
+    "id": "duluth-firehose",
+    "brand": "Duluth Trading",
+    "model": "DuluthFlex Fire Hose Work Pants",
+    "category": "pants",
+    "gender": "men",
+    "price_usd": 90,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "30x30",
+      "30x32",
+      "32x30",
+      "32x32",
+      "32x34",
+      "34x30",
+      "34x32",
+      "34x34",
+      "36x30",
+      "36x32",
+      "36x34",
+      "38x30",
+      "38x32",
+      "40x30",
+      "40x32"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Duluth%20Trading%20DuluthFlex%20Fire%20Hose%20Work%20Pants",
+    "source_url": "https://www.duluthtrading.com/",
+    "standards": [],
+    "quality": 9,
+    "features": [
+      "stretch",
+      "knee_pads"
+    ]
+  },
+  {
+    "id": "wrangler-riggs",
+    "brand": "Wrangler RIGGS",
+    "model": "Ripstop Ranger Cargo Pant",
+    "category": "pants",
+    "gender": "men",
+    "price_usd": 40,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "30x30",
+      "30x32",
+      "32x30",
+      "32x32",
+      "32x34",
+      "34x30",
+      "34x32",
+      "34x34",
+      "36x30",
+      "36x32",
+      "36x34",
+      "38x30",
+      "38x32",
+      "40x30",
+      "40x32"
+    ],
+    "climate": [
+      "hot"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Wrangler%20RIGGS%20Ripstop%20Ranger%20Cargo%20Pant",
+    "source_url": "https://www.wrangler.com/shop/men-workwear-riggs",
+    "standards": [],
+    "quality": 6,
+    "features": [
+      "lightweight"
+    ]
+  },
+  {
+    "id": "carhartt-force-ripstop",
+    "brand": "Carhartt",
+    "model": "Force Relaxed Fit Ripstop Cargo",
+    "category": "pants",
+    "gender": "men",
+    "price_usd": 55,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "30x30",
+      "30x32",
+      "32x30",
+      "32x32",
+      "32x34",
+      "34x30",
+      "34x32",
+      "34x34",
+      "36x30",
+      "36x32",
+      "36x34",
+      "38x30",
+      "38x32",
+      "40x30",
+      "40x32"
+    ],
+    "climate": [
+      "hot"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Force%20Relaxed%20Fit%20Ripstop%20Cargo",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 7,
+    "features": [
+      "lightweight",
+      "stretch"
+    ]
+  },
+  {
+    "id": "carhartt-fr-canvas",
+    "brand": "Carhartt",
+    "model": "FR Rugged Flex Canvas Pant (104986)",
+    "category": "pants",
+    "gender": "men",
+    "price_usd": 135,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "30x30",
+      "30x32",
+      "32x30",
+      "32x32",
+      "32x34",
+      "34x30",
+      "34x32",
+      "34x34",
+      "36x30",
+      "36x32",
+      "36x34",
+      "38x30",
+      "38x32",
+      "40x30",
+      "40x32"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20FR%20Rugged%20Flex%20Canvas%20Pant%20(104986)",
+    "source_url": "https://www.carhartt.com/product/104986-I26W46L30",
+    "standards": [
+      "ASTM F1506",
+      "NFPA 70E PPE Category 2"
+    ],
+    "quality": 8,
+    "features": [
+      "fr",
+      "stretch"
+    ]
+  },
+  {
+    "id": "bulwark-fr-excel",
+    "brand": "Bulwark",
+    "model": "FR EXCEL FR Work Pant",
+    "category": "pants",
+    "gender": "men",
+    "price_usd": 75,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "30x30",
+      "30x32",
+      "32x30",
+      "32x32",
+      "32x34",
+      "34x30",
+      "34x32",
+      "34x34",
+      "36x30",
+      "36x32",
+      "36x34",
+      "38x30",
+      "38x32",
+      "40x30",
+      "40x32"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Bulwark%20FR%20EXCEL%20FR%20Work%20Pant",
+    "source_url": "https://www.bulwark.com/",
+    "standards": [
+      "ASTM F1506",
+      "NFPA 70E (arc-rated clothing selection)"
+    ],
+    "quality": 8,
+    "features": [
+      "fr"
+    ]
+  },
+  {
+    "id": "carhartt-rf-df-w",
+    "brand": "Carhartt",
+    "model": "Women's Rugged Flex Relaxed Fit Double-Front",
+    "category": "pants",
+    "gender": "women",
+    "price_usd": 60,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 30,
+      "moderate": 15,
+      "heavy": 10
+    },
+    "sizes": [
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "14",
+      "16"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Rugged%20Flex%20Relaxed%20Fit%20Double-Front",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 8,
+    "features": [
+      "stretch"
+    ]
+  },
+  {
+    "id": "duluth-firehose-w",
+    "brand": "Duluth Trading",
+    "model": "Women's DuluthFlex Fire Hose Work Pants",
+    "category": "pants",
+    "gender": "women",
+    "price_usd": 90,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 48,
+      "moderate": 24,
+      "heavy": 16
+    },
+    "sizes": [
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "14",
+      "16"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Duluth%20Trading%20Women's%20DuluthFlex%20Fire%20Hose%20Work%20Pants",
+    "source_url": "https://www.duluthtrading.com/",
+    "standards": [],
+    "quality": 9,
+    "features": [
+      "stretch",
+      "knee_pads"
+    ]
+  },
+  {
+    "id": "dickies-stretch-w",
+    "brand": "Dickies",
+    "model": "Women's Relaxed Straight Stretch Twill",
+    "category": "pants",
+    "gender": "women",
+    "price_usd": 35,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 20,
+      "moderate": 10,
+      "heavy": 6.7
+    },
+    "sizes": [
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "14",
+      "16"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Dickies%20Women's%20Relaxed%20Straight%20Stretch%20Twill",
+    "source_url": "https://www.dickies.com/",
+    "standards": [],
+    "quality": 6,
+    "features": [
+      "stretch"
+    ]
+  },
+  {
+    "id": "carhartt-force-w",
+    "brand": "Carhartt",
+    "model": "Women's Force Relaxed Fit Lightweight Ripstop",
+    "category": "pants",
+    "gender": "women",
+    "price_usd": 50,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 24,
+      "moderate": 12,
+      "heavy": 8
+    },
+    "sizes": [
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "14",
+      "16"
+    ],
+    "climate": [
+      "hot"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Force%20Relaxed%20Fit%20Lightweight%20Ripstop",
+    "source_url": "https://www.carhartt.com/",
+    "standards": [],
+    "quality": 7,
+    "features": [
+      "lightweight",
+      "stretch"
+    ]
+  },
+  {
+    "id": "bulwark-fr-pant-w",
+    "brand": "Bulwark",
+    "model": "Women's Midweight FR Work Pant (PLW3)",
+    "category": "pants",
+    "gender": "women",
+    "price_usd": 80,
+    "price_approximate": true,
+    "last_checked": "2026-11-14",
+    "lifespan_months": {
+      "light": 36,
+      "moderate": 18,
+      "heavy": 12
+    },
+    "sizes": [
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "14",
+      "16"
+    ],
+    "climate": [
+      "mild"
+    ],
+    "retailer_url": "https://www.amazon.com/s?k=Bulwark%20Women's%20FR%20Work%20Pant",
+    "source_url": "https://wpg.wwof.com/Products/Details/579553",
+    "standards": [
+      "ASTM F1506",
+      "NFPA 70E PPE Category 2",
+      "ATPV 12 cal/cm2"
+    ],
+    "quality": 8,
+    "features": [
+      "fr"
+    ]
+  }
+]

@@ -69,6 +69,17 @@ export interface Product {
   /** Climates where the item is a particularly good fit. */
   goodFor?: Climate[];
   note?: string;
+  /** Catalog metadata. Legacy aliases above remain part of the public API. */
+  model?: string;
+  price_usd?: number;
+  price_approximate?: boolean;
+  last_checked?: string;
+  /** GearFit estimates at 20, 40 and 60 working hours per week. */
+  lifespan_months?: { light: number; moderate: number; heavy: number };
+  sizes?: string[];
+  climate?: Climate[];
+  retailer_url?: string;
+  source_url?: string;
 }
 
 export interface Requirement {
@@ -77,6 +88,8 @@ export interface Requirement {
   minCut?: number;
   minNrr?: number;
   minHivisClass?: 2 | 3;
+  /** A documented product standard, checked independently of marketing features. */
+  standard?: string;
   /** Hard requirements must be met; soft ones only improve the score. */
   hard: boolean;
   why: string;
