@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Icon, categoryIcon, tradeIcon } from "@/components/icons";
 import { ButtonLink, Eyebrow } from "@/components/ui";
+import { cssVars } from "@/lib/css";
 import { decodeAnswers, DEFAULT_ANSWERS } from "@/lib/answers";
 import { usd } from "@/lib/format";
 import { decodeChoices, kitHref } from "@/lib/kit-url";
@@ -156,8 +157,12 @@ export default async function ComparePage({
         </section>
 
         <section aria-label="Kits" className={`mt-6 grid grid-cols-1 gap-3 ${columns.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
-          {columns.map((c) => (
-            <div key={c.key} className={`flex flex-col rounded-3xl border bg-card p-5 ${c.current ? "border-accent ring-2 ring-accent/25" : "border-line"}`}>
+          {columns.map((c, i) => (
+            <div
+              key={c.key}
+              style={cssVars({ "--i": i, "--stagger": "90ms", "--delay": "150ms", "--rise-y": "16px" })}
+              className={`animate-rise flex flex-col rounded-3xl border bg-card p-5 ${c.current ? "border-accent ring-2 ring-accent/25" : "border-line"}`}
+            >
               <div className="flex flex-wrap gap-1.5">
                 {c.current && <span className="rounded-md bg-accent px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-[#15171a]">Your pick</span>}
                 {badges(c).map((b) => (
@@ -295,8 +300,8 @@ function MeterList({
               <span className={`truncate text-xs ${best ? "font-semibold text-ink" : "text-ink-3"}`}>{c.title}</span>
               <span className="h-2.5" aria-hidden>
                 <span
-                  className={`block h-full rounded-r-[4px] ${best ? "bg-accent-ink" : "bg-ink-3/35"}`}
-                  style={{ width: `${Math.max(3, (v / max) * 100)}%` }}
+                  className={`animate-grow-x block h-full rounded-r-[4px] [--delay:250ms] ${best ? "bg-accent-ink" : "bg-ink-3/35"}`}
+                  style={{ width: `${Math.max(3, (v / max) * 100)}%`, ...cssVars({ "--i": i }) }}
                 />
               </span>
               <span className={`tabular text-sm ${best ? "font-bold text-ink" : "text-ink-2"}`}>{format(v)}</span>
@@ -338,7 +343,7 @@ function Picker({ trades }: { trades: { id: string; label: string; blurb: string
             <Link
               key={t.id}
               href={`/compare?trade=${t.id}`}
-              className="group flex items-center gap-3 rounded-2xl border border-line bg-card p-4 transition hover:border-accent"
+              className="lift group flex items-center gap-3 rounded-2xl border border-line bg-card p-4 hover:border-accent"
             >
               <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent-ink">
                 <Icon name={tradeIcon(t.id)} className="size-5" />
