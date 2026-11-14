@@ -49,7 +49,8 @@ Called by `/go/[productId]?kit=…` before it forwards the shopper (every "Check
 ```
 
 `kitId` is the saved-kit slug when there is one, otherwise the kit token.
-Response `200 { "redirectUrl": "https://…?tag=…", "tracked": true }`. Only `http(s)` URLs or
+Response `200 { "redirectUrl": "https://www.timberland.com/…", "tracked": true }`. The URL is the
+catalog's maker page; only an Amazon fallback link gets `AFFILIATE_TAG`. Only `http(s)` URLs or
 same-site paths are followed.
 
 ## Saved kits, reminders and checkout

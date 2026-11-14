@@ -13,6 +13,7 @@
     "test": "vitest run",
     "seed": "tsx --conditions=react-server scripts/seed.ts",
     "catalog:check": "tsx --conditions=react-server scripts/seed.ts --check",
+    "catalog:links-sql": "tsx scripts/retailer-links-sql.ts",
     "smoke": "node scripts/smoke.mjs",
     "e2e": "node e2e/run.mjs"
   },

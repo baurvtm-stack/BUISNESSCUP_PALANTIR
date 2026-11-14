@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * Outbound retailer hop: logs the click via POST /api/click (which returns the
- * affiliate-tagged URL), then forwards. Falls back to the catalog URL if the API is down.
+ * Outbound retailer hop: logs the click via POST /api/click (which returns the maker
+ * page, or a tagged Amazon fallback), then forwards. Falls back to the catalog URL if the API is down.
  */
 export default async function GoPage({
   params,

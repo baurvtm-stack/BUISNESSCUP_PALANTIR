@@ -28,7 +28,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Pit%20Boss%206%22%20Steel%20Toe",
+    "retailer_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-pit-boss-6-steel-toe-work-boot-TB133032001",
     "source_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-pit-boss-6-steel-toe-work-boot-TB133032001",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -69,7 +69,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Boondock%206%22%20Composite%20Toe%20Waterproof",
+    "retailer_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-boondock-6-composite-toe-waterproof-work-boot-TB1A1FZP001",
     "source_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-boondock-6-composite-toe-waterproof-work-boot-TB1A1FZP001",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -113,7 +113,7 @@
       "cold",
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Boondock%208%22%20Insulated%20Waterproof%20Composite%20Toe",
+    "retailer_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-boondock-8-composite-toe-waterproof-insulated-work-boot-TB189646214",
     "source_url": "https://images.timberland.com/is/content/TimberlandBrand/pdf/Timberland-PRO-MEN-Region-2020-Catalog.pdf",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -157,7 +157,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Endurance%206%22%20PR%20Steel%20Toe",
+    "retailer_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-timberland-pro-endurance-6-steel-toe-work-boot-TB152562214",
     "source_url": "https://www.timberland.com/en-us/p/timberland-pro/mens-footwear-10171/mens-timberland-pro-endurance-6-steel-toe-work-boot-TB152562214",
     "standards": [
       "ASTM F2413 I/75 C/75 EH PR"
@@ -199,7 +199,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=KEEN%20Utility%20Pittsburgh%206%22%20Waterproof%20Steel%20Toe",
+    "retailer_url": "https://www.keenfootwear.com/products/mens-pittsburgh-6-waterproof-boot-steel-toe-bison",
     "source_url": "https://www.keenfootwear.com/collections/work",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -241,7 +241,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Rugged%20Flex%206%22%20Waterproof%20Composite%20Toe",
+    "retailer_url": "https://www.carhartt.com/product/800016",
     "source_url": "https://www.carhartt.com/product/800016",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -284,7 +284,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Caterpillar%20Second%20Shift%20Steel%20Toe",
+    "retailer_url": "https://www.catfootwear.com/US/en/second-shift-steel-toe-work-boot/15961M.html",
     "source_url": "https://www.catfootwear.com/US/en/work-boots/",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -325,7 +325,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Caterpillar%20Threshold%20Waterproof%20Steel%20Toe",
+    "retailer_url": "https://www.catfootwear.com/US/en/threshold-waterproof-steel-toe-work-boot/31156M.html",
     "source_url": "https://www.catfootwear.com/US/en/work-boots/",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -367,7 +367,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Wolverine%20Overpass%206%22%20Composite%20Toe%20Waterproof",
+    "retailer_url": "https://www.wolverine.com/US/en/overpass-carbonmax-6-inch-boot/29830M.html",
     "source_url": "https://www.wolverine.com/US/en/overpass-carbonmax-6-inch-boot/29830M.html",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -410,7 +410,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Wolverine%20Floorhand%20Waterproof%20Steel%20Toe%206-inch",
+    "retailer_url": "https://www.wolverine.com/US/en/floorhand-waterproof-steel-toe-6-inch-work-boot/26878M.html",
     "source_url": "https://www.wolverine.com/US/en/floorhand-waterproof-steel-toe-6-inch-work-boot/26878M.html",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -453,7 +453,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Red%20Wing%20SuperSole%202.0%206-inch%20Steel%20Toe%20(2406)",
+    "retailer_url": "https://www.redwingshoes.com/mens/work/safety-toe/supersole-2.0-02406.html",
     "source_url": "https://www.redwingshoes.com/mens/work/safety-toe/supersole-2.0-02406.html",
     "standards": [
       "ASTM F2413-24 I/C EH SR"
@@ -495,7 +495,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Thorogood%20American%20Heritage%206%22%20Moc%20Toe%20Safety%20Toe",
+    "retailer_url": "https://thorogoodusa.com/american-heritage-6-tobacco-safety-toe-moc-toe-maxwear-wedge-804-4200/",
     "source_url": "https://thorogoodusa.com/work-boots/",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -537,7 +537,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Irish%20Setter%20Ashby%206-inch%20Aluminum%20Toe%20(83606)",
+    "retailer_url": "https://www.irishsetterboots.com/work-boots/safety-toe-boots/ashby-83606.html?currency=USD",
     "source_url": "https://www.irishsetterboots.com/work-boots/shop-by-family/ashby/",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -579,7 +579,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Timberland%20PRO%20Women's%20TiTAN%206-inch%20Alloy%20Toe%20(TB126388210)",
+    "retailer_url": "https://www.timberland.com/en-us/p/timberland-pro/womens-workwear-10176/womens-titan-6-alloy-toe-work-boot-TB126388210",
     "source_url": "https://www.timberland.com/en-us/p/timberland-pro/womens-workwear-10176/womens-titan-6-alloy-toe-work-boot-TB126388210",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -620,7 +620,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=KEEN%20Utility%20Women's%20Flint%20II%20Steel%20Toe",
+    "retailer_url": "https://www.keenfootwear.com/products/womens-flint-ii-steel-toe-magnet-rose",
     "source_url": "https://www.keenfootwear.com/collections/womens-steel-toe",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -661,7 +661,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Rugged%20Flex%206-inch%20Composite%20Toe%20(802279)",
+    "retailer_url": "https://www.carhartt.com/product/802279-00111M",
     "source_url": "https://www.carhartt.com/product/802279-00111M",
     "standards": [
       "ASTM F2413 I/75 C/75 EH"
@@ -699,7 +699,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Ansell%20HyFlex%2011-840%20Nitrile%20Foam%20Grip",
+    "retailer_url": "https://www.ansell.com/us/en/products/hyflex-11-840",
     "source_url": "https://www.ansell.com/us/en/products/hyflex-11-840",
     "standards": [
       "ANSI/ISEA 105 A1"
@@ -735,7 +735,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%203%20Nitrile%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-3-nitrile-dipped-gloves/cut-level-3-nitrile-dipped-gloves",
     "source_url": "https://www.milwaukeetool.com/products/work-gear/gloves",
     "standards": [
       "ANSI/ISEA 105 A3"
@@ -771,7 +771,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%205%20Nitrile%20Dipped%20Gloves%20(12-pair%20pack)",
+    "retailer_url": "https://www.milwaukeetool.com/Products/Work-Gear/Gloves/Dipped-Gloves/Cut-Level-5-Nitrile-Dipped-Gloves",
     "source_url": "https://www.milwaukeetool.com/-/media/PDFs/Objective-Data/Cut-Level-5-Nitrile-Dipped-Gloves-Spec-Sheet-2024.pdf",
     "standards": [
       "ANSI/ISEA 105 A5"
@@ -807,7 +807,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Impact%20Cut%20Level%205%20Nitrile%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/Products/Impact-Cut-Level-5-Nitrile-Dipped-Gloves-2024",
     "source_url": "https://www.milwaukeetool.com/products/work-gear/gloves",
     "standards": [
       "ANSI/ISEA 105 A5",
@@ -844,7 +844,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Mechanix%20Wear%20M-Pact%20Impact%20Gloves",
+    "retailer_url": "https://www.mechanix.com/us-en/all-work-gloves/MPT-58.html",
     "source_url": "https://www.mechanix.com/us-en/work-gloves/",
     "standards": [
       "ANSI/ISEA 138"
@@ -879,7 +879,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Ironclad%20Command%20Impact%20Gloves",
+    "retailer_url": "https://ironclad.com/products/command-impact.html",
     "source_url": "https://ironclad.com/",
     "standards": [
       "ANSI/ISEA 138"
@@ -914,7 +914,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Wells%20Lamont%20HydraHyde%20Leather%20Work%20Gloves",
+    "retailer_url": "https://www.wellslamont.com/hydrahyde/",
     "source_url": "https://www.wellslamont.com/hydrahyde/",
     "standards": [],
     "quality": 5,
@@ -945,7 +945,7 @@
       "cold",
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20W.P.%20Waterproof%20Insulated%20Gloves",
+    "retailer_url": "https://www.carhartt.com/product/800202/waterproof-insulated-glove",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 7,
@@ -978,7 +978,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Mechanix%20Wear%20ColdWork%20M-Pact%20Insulated%20Gloves",
+    "retailer_url": "https://www.mechanix.com/us-en/winter-insulated-work-gloves/CWKMP-58.html",
     "source_url": "https://www.mechanix.com/us-en/work-gloves/",
     "standards": [
       "ANSI/ISEA 138"
@@ -1014,7 +1014,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Lincoln%20Electric%20Heavy%20Duty%20MIG%2FStick%20Welding%20Gloves",
+    "retailer_url": "https://www.lincolnelectric.com/en/products/le-na-heavydutyweldinggloves?sku=K4082-M",
     "source_url": "https://www.lincolnelectric.com/en/Products/Safety-PPE",
     "standards": [],
     "quality": 6,
@@ -1046,7 +1046,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Caiman%201878%20MIG%2FStick%20Deerskin%20Welding%20Gloves",
+    "retailer_url": "https://www.caimangloves.com/caiman-1878/",
     "source_url": "https://caimangloves.com/",
     "standards": [],
     "quality": 8,
@@ -1112,7 +1112,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=SHOWA%20730%20Chemical-Resistant%20Nitrile",
+    "retailer_url": "https://www.showagroup.com/us-en/shop/730/",
     "source_url": "https://www.showagroup.com/us-en/shop/730",
     "standards": [
       "EN 374 / chemical resistant"
@@ -1143,7 +1143,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=3M%20SecureFit%20400%20Anti-Fog%2C%20Clear",
+    "retailer_url": "https://www.3m.com/3M/en_US/p/d/v000276838/",
     "source_url": "https://www.3m.com/3M/en_US/p/d/v000276838/",
     "standards": [
       "ANSI Z87.1+"
@@ -1174,7 +1174,7 @@
     "climate": [
       "hot"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=3M%20SecureFit%20400%20Anti-Fog%2C%20Gray",
+    "retailer_url": "https://www.3m.com/3M/en_US/p/dc/v000276836/",
     "source_url": "https://multimedia.3m.com/mws/media/1742279O/3m-securefit-protective-eyewear-product-catalog.pdf",
     "standards": [
       "ANSI Z87.1+"
@@ -1206,7 +1206,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Pyramex%20Ztek%20Safety%20Glasses%2C%20Clear",
+    "retailer_url": "https://www.pyramex.com/products/ztek",
     "source_url": "https://www.pyramexsafety.com/",
     "standards": [
       "ANSI Z87.1+"
@@ -1237,7 +1237,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Uvex%20Genesis%20Anti-Fog%2C%20Clear",
+    "retailer_url": "https://ppe.honeywell.com/us/en/shop/eye-protection/safety-glasses/genesis-safety-glasses",
     "source_url": "https://automation.honeywell.com/us/en/products/personal-protective-equipment/eye-protection",
     "standards": [
       "ANSI Z87.1+"
@@ -1268,7 +1268,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=DEWALT%20Concealer%20Anti-Fog%2C%20Clear",
+    "retailer_url": "https://www.dewalt.com/en-us/product/dpg82/concealer",
     "source_url": "https://www.dewalt.com/products/work-gear/safety-protective-workwear/eye-protection",
     "standards": [
       "ANSI Z87.1+"
@@ -1299,7 +1299,7 @@
     "climate": [
       "hot"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Wiley%20X%20Saber%20Advanced%2C%20Smoke%20Grey",
+    "retailer_url": "https://www.wileyx.com/products/saber-advanced",
     "source_url": "https://www.wileyx.com/products/saber-advanced",
     "standards": [
       "ANSI Z87.1+"
@@ -1330,7 +1330,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=3M%20E-A-R%20Classic%20Foam%20Earplugs",
+    "retailer_url": "https://www.3m.com/3M/en_US/p/dc/v000057698/",
     "source_url": "https://www.3m.com/3M/en_US/p/c/ppe/",
     "standards": [
       "NRR 29 dB"
@@ -1360,7 +1360,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Howard%20Leight%20Laser%20Lite%20Foam%20Earplugs",
+    "retailer_url": "https://sps.honeywell.com/us/en/products/safety/hearing-protection/earplugs/laser-lite",
     "source_url": "https://automation.honeywell.com/us/en/products/personal-protective-equipment/hearing-protection",
     "standards": [
       "NRR 32 dB"
@@ -1390,7 +1390,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=3M%20Peltor%20X4A%20Earmuffs",
+    "retailer_url": "https://www.3m.com/3M/en_US/p/dc/v101643048/",
     "source_url": "https://www.3m.com/3M/en_US/p/dc/v101643048/",
     "standards": [
       "NRR 27 dB"
@@ -1419,7 +1419,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=3M%20Peltor%20X5A%20Earmuffs",
+    "retailer_url": "https://www.3m.com/3M/en_US/p/dc/v101643023/",
     "source_url": "https://www.3m.com/3M/en_US/p/dc/v101643023/",
     "standards": [
       "NRR 31 dB"
@@ -1448,7 +1448,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Howard%20Leight%20Impact%20Sport%20Electronic%20Earmuffs",
+    "retailer_url": "https://automation.honeywell.com/us/en/products/personal-protective-equipment/hearing-protection/electronic-earmuffs/howard-leight-impact-sport-shooting-earmuff-retail",
     "source_url": "https://automation.honeywell.com/us/en/products/personal-protective-equipment/hearing-protection",
     "standards": [
       "NRR 22 dB"
@@ -1479,7 +1479,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=3M%20WorkTunes%20Connect%20Bluetooth",
+    "retailer_url": "https://www.3m.com/3M/en_US/p/d/cbgnawus1754/",
     "source_url": "https://www.3m.com/3M/en_US/p/c/ppe/",
     "standards": [
       "NRR 24 dB"
@@ -1510,7 +1510,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=ISOtunes%20PRO%202.0%20Bluetooth%20Earbuds",
+    "retailer_url": "https://isotunes.com/products/isotunes-pro-2",
     "source_url": "https://isotunes.com/products/isotunes-pro-2-0",
     "standards": [
       "NRR 27 dB"
@@ -1541,7 +1541,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=MSA%20V-Gard%20Cap%20Style%2C%20Fas-Trac%20III",
+    "retailer_url": "https://us.msasafety.com/p/000060002100001010?locale=en",
     "source_url": "https://us.msasafety.com/Head-Protection/Hard-Hats/V-Gard%C2%AE-500-Protective-Cap/p/000060001500001001",
     "standards": [
       "ANSI Z89.1 Type I Class E"
@@ -1573,7 +1573,7 @@
       "hot",
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=MSA%20V-Gard%20Full%20Brim%2C%20Fas-Trac%20III",
+    "retailer_url": "https://us.msasafety.com/c/V-Gard%C2%AE-Protective-Hat/p/000060001300001010?locale=en",
     "source_url": "https://us.msasafety.com/c/V-Gard%C2%AE-Protective-Hat/p/000060001300001010?locale=en",
     "standards": [
       "ANSI Z89.1 Type I Class E"
@@ -1604,7 +1604,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Pyramex%20Ridgeline%20Cap%20Style%20Hard%20Hat",
+    "retailer_url": "https://www.pyramex.com/products/ridgeline%C2%AE-cap-style",
     "source_url": "https://www.pyramex.com/en-eu/collections/best-sellers/products/ridgeline%C2%AE-cap-style?variant=42444999589977",
     "standards": [
       "ANSI Z89.1 Type I Class E"
@@ -1635,7 +1635,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20BOLT%20Type%202%20Class%20E%20Hard%20Hat",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/bolt-black-full-brim-safety-helmet-type-2-class-e/48-73-1661",
     "source_url": "https://www.milwaukeetool.com/products/details/bolt-black-full-brim-safety-helmet-type-2-class-e/48-73-1661",
     "standards": [
       "ANSI Z89.1 Type II Class E"
@@ -1667,7 +1667,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Studson%20SHK-1%20Type%202%20Class%20E%20Safety%20Helmet",
+    "retailer_url": "https://studson.com/products/shk-1-full-brim-non-vented",
     "source_url": "https://studson.com/products/shk-1-full-brim-non-vented",
     "standards": [
       "ANSI Z89.1 Type II Class E"
@@ -1702,7 +1702,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Radians%20SV2Z%20Class%202%20Mesh%20Vest",
+    "retailer_url": "https://www.radians.com/products/radians-sv2z-economy-type-r-class-2-mesh-safety-vest-with-zipper",
     "source_url": "https://www.radians.com/products/industrial-safety/high-visibility-apparel",
     "standards": [
       "ANSI/ISEA 107 Class 2"
@@ -1736,7 +1736,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Ergodyne%20GloWear%208210HL%20Class%202%20Vest",
+    "retailer_url": "https://www.ergodyne.com/glowear-8210hl-mesh-hi-vis-safety-vest-type-r-class-2-economy",
     "source_url": "https://www.ergodyne.com/hi-vis",
     "standards": [
       "ANSI/ISEA 107 Class 2"
@@ -1770,7 +1770,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Ergodyne%20GloWear%208310HL%20Class%203%20Vest",
+    "retailer_url": "https://www.ergodyne.com/glowear-8310hl-class-3-economy-vest.html",
     "source_url": "https://www.ergodyne.com/hi-vis",
     "standards": [
       "ANSI/ISEA 107 Class 3"
@@ -1804,7 +1804,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Radians%20SV55%20Type%20R%20Class%202%20Engineer%20Vest",
+    "retailer_url": "https://www.radians.com/products/radians-sv55-class-2-heavy-woven-two-tone-engineer-vest",
     "source_url": "https://www.radians.com/products/radians-sv55-class-2-heavy-woven-two-tone-engineer-vest",
     "standards": [
       "ANSI/ISEA 107 Type R Class 2"
@@ -1839,7 +1839,7 @@
       "cold",
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Ergodyne%20GloWear%208385%20Class%203%20Thermal%20Bomber%20Jacket",
+    "retailer_url": "https://ergodyne.com/glowear-8385-class-3-4-in-1-jacket.html",
     "source_url": "https://www.ergodyne.com/hi-vis",
     "standards": [
       "ANSI/ISEA 107 Class 3"
@@ -1876,7 +1876,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Duck%20Active%20Jac%2C%20Thermal-Lined",
+    "retailer_url": "https://www.carhartt.com/c/active-jacs",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 9,
@@ -1908,7 +1908,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Dickies%20Sherpa-Lined%20Duck%20Hooded%20Jacket",
+    "retailer_url": "https://www.dickies.com/en-us/collections/mens-outerwear",
     "source_url": "https://www.dickies.com/",
     "standards": [],
     "quality": 6,
@@ -1940,7 +1940,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Storm%20Defender%20Shoreline%20Jacket",
+    "retailer_url": "https://www.carhartt.com/product/104670/shoreline-jacket",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 7,
@@ -1972,7 +1972,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Frogg%20Toggs%20Pro%20Action%20Rain%20Jacket",
+    "retailer_url": "https://www.froggtoggs.com/products/pro-action-jacket",
     "source_url": "https://www.froggtoggs.com/",
     "standards": [],
     "quality": 5,
@@ -2004,7 +2004,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Washed%20Duck%20Active%20Jac",
+    "retailer_url": "https://www.carhartt.com/product/104053/womens-washed-duck-active-jac",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 8,
@@ -2036,7 +2036,7 @@
     "climate": [
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Storm%20Defender%20Rain%20Jacket",
+    "retailer_url": "https://www.carhartt.com/product/102382/",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 7,
@@ -2068,7 +2068,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20FR%20Duck%20Active%20Jac%2C%20Quilt-Lined",
+    "retailer_url": "https://www.carhartt.com/product/107076-BLKXLREG",
     "source_url": "https://www.carhartt.com/product/101621",
     "standards": [
       "ASTM F1506",
@@ -2105,7 +2105,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Lincoln%20Electric%20FR%20Cotton%20Welding%20Jacket%20(K2985)",
+    "retailer_url": "https://www.lincolnelectric.com/en/products/le-na-traditionalfrclothweldingjacket?sku=K2985-L",
     "source_url": "https://ch-delivery.lincolnelectric.com/api/public/content/1bc5cd9aa1774d1a9dc6df5bb691493d?v=96b76bd7",
     "standards": [
       "ASTM D6413"
@@ -2140,7 +2140,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Revco%20Black%20Stallion%20Cotton%2FLeather%20Hybrid%20Welding%20Jacket",
+    "retailer_url": "https://blackstallion.com/products/f9-30c-bs-detail.html",
     "source_url": "https://www.blackstallion.com/",
     "standards": [
       "ASTM D6413 flame resistant"
@@ -2174,7 +2174,7 @@
     "climate": [
       "hot"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Force%20Relaxed%20Fit%20Midweight%20Pocket%20T",
+    "retailer_url": "https://www.carhartt.com/product/106652/force-relaxed-t-shirt",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 7,
@@ -2206,7 +2206,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Loose%20Fit%20Heavyweight%20Pocket%20T%20(K87)",
+    "retailer_url": "https://www.carhartt.com/product/K87/loose-fit-heavyweight-short-sleeve-pocket-t-shirt",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 8,
@@ -2236,7 +2236,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Dickies%20Short%20Sleeve%20Heavyweight%20Crew%20Tee",
+    "retailer_url": "https://www.dickies.com/en-us/products/heavyweight-short-sleeve-pocket-t-shirt-dk0ws4500ml",
     "source_url": "https://www.dickies.com/",
     "standards": [],
     "quality": 5,
@@ -2266,7 +2266,7 @@
     "climate": [
       "hot"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Force%20Relaxed%20Fit%20Midweight%20T",
+    "retailer_url": "https://www.carhartt.com/product/106650/womens-force-relaxed-t-shirt",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 7,
@@ -2298,7 +2298,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Loose%20Fit%20Heavyweight%20T",
+    "retailer_url": "https://www.carhartt.com/product/103067/loose-fit-heavyweight-short-sleeve-pocket-t-shirt",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 8,
@@ -2328,7 +2328,7 @@
     "climate": [
       "hot"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20FR%20Force%20Cotton%20Long-Sleeve%20T-Shirt%20(100235)",
+    "retailer_url": "https://www.carhartt.com/product/100235-BLKXLREG/flame-resistant-force-cotton-long-sleeve-t-shirt",
     "source_url": "https://www.carhartt.com/product/100235-BLKXLREG/flame-resistant-force-cotton-long-sleeve-t-shirt",
     "standards": [
       "ASTM F1506",
@@ -2364,7 +2364,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Bulwark%20FR%20Lightweight%20Work%20Shirt",
+    "retailer_url": "https://www.bulwark.com/men/shirts",
     "source_url": "https://www.bulwark.com/",
     "standards": [
       "ASTM F1506",
@@ -2401,7 +2401,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Bulwark%20Women's%20FR%20Work%20Shirt",
+    "retailer_url": "https://www.bulwark.com/iq-series-womens-lightweight-comfort-woven-shirt/QS53.html",
     "source_url": "https://www.bulwark.com/iq-series-womens-lightweight-comfort-woven-shirt/QS53.html",
     "standards": [
       "ASTM F1506",
@@ -2447,7 +2447,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Loose%20Fit%20Firm%20Duck%20Double-Front%20(B01)",
+    "retailer_url": "https://www.carhartt.com/product/106679/iconic-b01-firm-duck-double-front-dungaree",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 8,
@@ -2487,7 +2487,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Rugged%20Flex%20Rigby%20Double-Front",
+    "retailer_url": "https://www.carhartt.com/product/102802-MOSW30L32/mens-utility-double-front-pant---relaxed-fit---rugged-flex---canvas",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 8,
@@ -2530,7 +2530,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Dickies%20874%20Original%20Work%20Pant",
+    "retailer_url": "https://www.dickies.com/en-us/products/original-874-r-work-pants-dk000874yt9",
     "source_url": "https://www.dickies.com/",
     "standards": [],
     "quality": 6,
@@ -2570,7 +2570,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Dickies%20FLEX%20Double%20Knee%20Work%20Pant",
+    "retailer_url": "https://www.dickies.com/en-us/products/flex-regular-fit-double-knee-work-pants-dk0wp8820dn",
     "source_url": "https://www.dickies.com/",
     "standards": [],
     "quality": 6,
@@ -2612,7 +2612,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Duluth%20Trading%20DuluthFlex%20Fire%20Hose%20Work%20Pants",
+    "retailer_url": "https://www.duluthtrading.com/mens-duluthflex-fire-hose-relaxed-fit-cargo-work-pants-45507.html",
     "source_url": "https://www.duluthtrading.com/",
     "standards": [],
     "quality": 9,
@@ -2655,7 +2655,7 @@
     "climate": [
       "hot"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Wrangler%20RIGGS%20Ripstop%20Ranger%20Cargo%20Pant",
+    "retailer_url": "https://www.wrangler.com/shop/wrangler-riggs-workwear-ripstop-ranger-cargo-pant-3W060.html",
     "source_url": "https://www.wrangler.com/shop/men-workwear-riggs",
     "standards": [],
     "quality": 6,
@@ -2697,7 +2697,7 @@
     "climate": [
       "hot"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Force%20Relaxed%20Fit%20Ripstop%20Cargo",
+    "retailer_url": "https://www.carhartt.com/product/105296-I26W44L30/carhartt-force-relaxed-fit-ripstop-cargo-work-pant",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 7,
@@ -2740,7 +2740,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20FR%20Rugged%20Flex%20Canvas%20Pant%20(104986)",
+    "retailer_url": "https://www.carhartt.com/product/104986-I26W46L30",
     "source_url": "https://www.carhartt.com/product/104986-I26W46L30",
     "standards": [
       "ASTM F1506",
@@ -2786,7 +2786,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Bulwark%20FR%20EXCEL%20FR%20Work%20Pant",
+    "retailer_url": "https://www.bulwark.com/mens-midweight-excel-fr-work-pant/763303137292.html",
     "source_url": "https://www.bulwark.com/",
     "standards": [
       "ASTM F1506",
@@ -2823,7 +2823,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Rugged%20Flex%20Relaxed%20Fit%20Double-Front",
+    "retailer_url": "https://www.carhartt.com/product/105999/womens-double-knee-pant---relaxed-fit---rugged-flex---canvas",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 8,
@@ -2857,7 +2857,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Duluth%20Trading%20Women's%20DuluthFlex%20Fire%20Hose%20Work%20Pants",
+    "retailer_url": "https://www.duluthtrading.com/wm-duluthflex-fh-work-pants-27501.html",
     "source_url": "https://www.duluthtrading.com/",
     "standards": [],
     "quality": 9,
@@ -2892,7 +2892,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Dickies%20Women's%20Relaxed%20Straight%20Stretch%20Twill",
+    "retailer_url": "https://www.dickies.com/en-us/collections/womens-work-pants",
     "source_url": "https://www.dickies.com/",
     "standards": [],
     "quality": 6,
@@ -2926,7 +2926,7 @@
     "climate": [
       "hot"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Carhartt%20Women's%20Force%20Relaxed%20Fit%20Lightweight%20Ripstop",
+    "retailer_url": "https://www.carhartt.com/product/106194/womens-carhartt-force-relaxed-fit-ripstop-work-pant",
     "source_url": "https://www.carhartt.com/",
     "standards": [],
     "quality": 7,
@@ -2961,7 +2961,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Bulwark%20Women's%20FR%20Work%20Pant",
+    "retailer_url": "https://www.bulwark.com/womens-midweight-excel-fr-comfortouch-work-pant/PLW3.html",
     "source_url": "https://wpg.wwof.com/Products/Details/579553",
     "standards": [
       "ASTM F1506",
@@ -3004,7 +3004,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://xenaworkwear.com/products/omega-eh-safety-boot",
+    "retailer_url": "https://xenaworkwear.com/products/omega-eh",
     "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
     "standards": [
       "ASTM F2413 I/75 C/75 EH SR"
@@ -3092,7 +3092,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Xena%20Gravity%20Steel%20Toe",
+    "retailer_url": "https://xenaworkwear.com/products/gravity",
     "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
     "standards": [
       "ASTM F2413 I/75 C/75 SR"
@@ -3179,7 +3179,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Xena%20Astra%20Lite%20EH%20Composite%20Toe",
+    "retailer_url": "https://xenaworkwear.com/products/astra-mesh",
     "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
     "standards": [
       "ASTM F2413 I/75 C/75 EH SRO"
@@ -3224,7 +3224,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Xena%20Astra%20EH%20PR%20Composite%20Toe",
+    "retailer_url": "https://xenaworkwear.com/products/astra",
     "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
     "standards": [
       "ASTM F2413 I/75 C/75 EH PR SRO"
@@ -3313,7 +3313,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Xena%20Vega%20Steel%20Toe",
+    "retailer_url": "https://xenaworkwear.com/products/vega-safety-shoe",
     "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
     "standards": [
       "ASTM F2413 I/75 C/75 SR"
@@ -3357,7 +3357,7 @@
       "mild",
       "wet"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Xena%20Luna%20EH%20PR%20Waterproof%20Composite%20Toe",
+    "retailer_url": "https://xenaworkwear.com/products/luna",
     "source_url": "https://xenaworkwear.com/collections/safety-shoes-women",
     "standards": [
       "ASTM F2413 I/75 C/75 EH PR SRO"
@@ -4097,7 +4097,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%201%20Nitrile%20Dipped%20Gloves",
+    "retailer_url": "https://milwaukeetool.com/products/cut-level-1-nitrile-dipped-gloves",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A1"
@@ -4132,7 +4132,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%202%20Nitrile%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-2-nitrile-dipped-gloves/cut-level-2-nitrile-dipped-gloves",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A2"
@@ -4167,7 +4167,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%204%20Nitrile%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-4-nitrile-dipped-gloves-s/48-22-8945",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A4"
@@ -4203,7 +4203,7 @@
       "hot",
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%201%20Polyurethane%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/high-visibility-cut-level-1-polyurethane-dipped-gloves-l/48-73-8912",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A1"
@@ -4240,7 +4240,7 @@
       "hot",
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%202%20Polyurethane%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/high-visibility-cut-level-2-polyurethane-dipped-gloves-s/48-73-8920",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A2"
@@ -4277,7 +4277,7 @@
       "hot",
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%203%20Polyurethane%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/high-visibility-cut-level-3-polyurethane-dipped-gloves-s/48-73-8930",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A3"
@@ -4314,7 +4314,7 @@
       "hot",
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%204%20Polyurethane%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/high-visibility-cut-level-4-polyurethane-dipped/high-visibility-cut-level-4-polyurethane-dipped-gloves",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A4"
@@ -4351,7 +4351,7 @@
       "hot",
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%205%20Polyurethane%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/high-visibility-cut-level-5-polyurethane-dipped-gloves-m/48-73-8951",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A5"
@@ -4387,7 +4387,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%201%20Winter%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/Products/Cut-Level-1-Winter-Dipped-Gloves",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A1"
@@ -4423,7 +4423,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%202%20Winter%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-2-winter-dipped-gloves-xl/48-73-7923",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A2"
@@ -4459,7 +4459,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%203%20Winter%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-3-winter-dipped-gloves-l/48-22-8922",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A3"
@@ -4495,7 +4495,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%204%20Winter%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-4-winter-dipped-gloves/cut-level-4-winter-dipped-gloves",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A4"
@@ -4531,7 +4531,7 @@
     "climate": [
       "cold"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%205%20Winter%20Dipped%20Gloves",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-5-winter-dipped-gloves/cut-level-5-winter-dipped-gloves",
     "source_url": "https://www.milwaukeetool.com/News/Press-Releases/Milwaukee-Rounds-Out-Lineup-of-Winter-Dipped-Polyurethane-and-Nitrile-Gloves",
     "standards": [
       "ANSI/ISEA 105 A5"
@@ -4567,7 +4567,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%201%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-1-nitrile-dipped-gloves-w-wear-defense-protection-m/48-73-6911",
     "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
     "standards": [
       "ANSI/ISEA 105-2024 A1"
@@ -4602,7 +4602,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%203%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-3-high-dexterity-nitrile-dipped-gloves-w-wear-defense-protection-l/48-73-6932",
     "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
     "standards": [
       "ANSI/ISEA 105-2024 A3"
@@ -4637,7 +4637,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%204%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-4-high-dexterity-nitrile-dipped-gloves-w-wear-defense-protection-l/48-73-6942e",
     "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
     "standards": [
       "ANSI/ISEA 105-2024 A4"
@@ -4672,7 +4672,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%205%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-5-high-dexterity-nitrile-dipped-gloves-w-wear-defense-protection-l/48-73-6952",
     "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
     "standards": [
       "ANSI/ISEA 105-2024 A5"
@@ -4707,7 +4707,7 @@
     "climate": [
       "mild"
     ],
-    "retailer_url": "https://www.amazon.com/s?k=Milwaukee%20Cut%20Level%206%20Nitrile%20Dipped%20Gloves%20with%20WEAR-DEFENSE",
+    "retailer_url": "https://www.milwaukeetool.com/products/details/cut-level-6-high-dexterity-nitrile-dipped-gloves-w-wear-defense-protection-l/48-73-6962",
     "source_url": "https://www.milwaukeetool.com/news/press-releases/milwaukee-expands-hand-protection-lineup-with-nitrile-dipped-gloves-w-wear-defense-protection",
     "standards": [
       "ANSI/ISEA 105-2024 A6"

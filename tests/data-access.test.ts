@@ -159,17 +159,30 @@ describe("Supabase transport and click persistence", () => {
     expect(JSON.parse(options.body)).toEqual({ product_id: row.id, kit_id: "kit_123-test" });
   });
 
-  it("preserves retailer query parameters and encodes the affiliate value as data", () => {
-    const product = { ...PRODUCTS[0], retailer_url: row.retailer_url };
-    expect(affiliateUrl(product)).toBe(row.retailer_url);
+  it("tags Amazon fallback links, preserving their query and encoding the affiliate value as data", () => {
+    const fallback = "https://www.amazon.com/s?k=Test%20fixture%20Safety%20boot&i=fashion";
+    const product = { ...PRODUCTS[0], retailer_url: fallback };
+    expect(affiliateUrl(product)).toBe(fallback);
     vi.stubEnv("AFFILIATE_TAG", "gearfit&redirect=https://attacker.example");
     vi.stubEnv("AFFILIATE_PARAM", "ref");
     const destination = new URL(affiliateUrl(product));
-    expect(destination.origin).toBe("https://retailer.example");
-    expect(destination.searchParams.get("color")).toBe("brown");
+    expect(destination.origin).toBe("https://www.amazon.com");
+    expect(destination.pathname).toBe("/s");
+    expect(destination.searchParams.get("k")).toBe("Test fixture Safety boot");
+    expect(destination.searchParams.get("i")).toBe("fashion");
     expect(destination.searchParams.get("ref")).toBe("gearfit&redirect=https://attacker.example");
     expect(destination.searchParams.has("redirect")).toBe(false);
     vi.stubEnv("AFFILIATE_PARAM", "bad&parameter");
     expect(() => affiliateUrl(product)).toThrow("unavailable");
+  });
+
+  it("sends manufacturer pages unchanged even when an affiliate tag is configured", () => {
+    vi.stubEnv("AFFILIATE_TAG", "gearfit-20");
+    // A malformed parameter only matters for links that would be tagged.
+    vi.stubEnv("AFFILIATE_PARAM", "bad&parameter");
+    // Lookalike hosts and other Amazon stores do not take a US partner tag.
+    for (const retailer of [row.retailer_url, "https://amazon.com.retailer.example/boot", "https://www.amazon.co.uk/s?k=Safety%20boot"]) {
+      expect(affiliateUrl({ ...PRODUCTS[0], retailer_url: retailer })).toBe(retailer);
+    }
   });
 });

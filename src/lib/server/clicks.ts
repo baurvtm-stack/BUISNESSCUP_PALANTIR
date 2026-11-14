@@ -1,6 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { productIdSchema } from "../catalog-schema";
+import { isAmazonUrl } from "../retailer-links";
 import type { Product } from "../types";
 import { DataUnavailableError, getSupabaseConfiguration, supabaseRequest } from "./supabase";
 
@@ -21,7 +22,8 @@ export function affiliateUrl(product: Product): string {
   const url = new URL(product.retailer_url);
   if (url.protocol !== "https:" || url.username || url.password) throw new DataUnavailableError();
   const tag = process.env.AFFILIATE_TAG?.trim();
-  if (tag) {
+  // The partner tag belongs to Amazon fallback links only; maker pages get their clean URL.
+  if (tag && isAmazonUrl(url)) {
     const config = affiliateSchema.safeParse({ tag, parameter: process.env.AFFILIATE_PARAM || "tag" });
     if (!config.success) throw new DataUnavailableError();
     url.searchParams.set(config.data.parameter, config.data.tag);

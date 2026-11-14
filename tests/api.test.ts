@@ -116,22 +116,35 @@ describe("click routes", () => {
     expect(await response.json()).toEqual({ redirectUrl: PRODUCTS[0].retailer_url, tracked: false });
   });
 
-  it("logs the validated click before returning the tagged retailer URL", async () => {
+  it("logs the validated click before returning the tagged Amazon fallback URL", async () => {
     configure();
     vi.stubEnv("AFFILIATE_TAG", "gearfit-20");
-    const fetch = vi.fn().mockResolvedValueOnce(Response.json([databaseBoot], { headers: { "content-range": "0-0/1" } })).mockResolvedValueOnce(new Response(null, { status: 201 }));
+    const amazonBoot = { ...databaseBoot, retailer_url: "https://www.amazon.com/s?k=Database%20fixture%20Safety%20boot" };
+    const fetch = vi.fn().mockResolvedValueOnce(Response.json([amazonBoot], { headers: { "content-range": "0-0/1" } })).mockResolvedValueOnce(new Response(null, { status: 201 }));
     vi.stubGlobal("fetch", fetch);
     const response = await click(jsonRequest("/api/click", { productId: databaseBoot.id, kitId: "kit-token_123" }));
     expect(response.status).toBe(200);
     const result = await response.json();
     expect(result.tracked).toBe(true);
     const url = new URL(result.redirectUrl);
-    expect(url.origin).toBe("https://retailer.example");
+    expect(url.origin).toBe("https://www.amazon.com");
     expect(url.searchParams.get("tag")).toBe("gearfit-20");
-    expect(url.searchParams.get("color")).toBe("brown");
+    expect(url.searchParams.get("k")).toBe("Database fixture Safety boot");
     expect(fetch).toHaveBeenCalledTimes(2);
     expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({ product_id: databaseBoot.id, kit_id: "kit-token_123" });
     expect(JSON.stringify(result)).not.toContain(secret);
+  });
+
+  it("redirects to the manufacturer page without adding the Amazon partner tag", async () => {
+    configure();
+    vi.stubEnv("AFFILIATE_TAG", "gearfit-20");
+    const fetch = vi.fn().mockResolvedValueOnce(Response.json([databaseBoot], { headers: { "content-range": "0-0/1" } })).mockResolvedValueOnce(new Response(null, { status: 201 }));
+    vi.stubGlobal("fetch", fetch);
+    const response = await clickRedirect(new Request(`https://gearfit.example/api/click?productId=${databaseBoot.id}`));
+    expect(response.status).toBe(302);
+    expect(response.headers.get("Location")).toBe(databaseBoot.retailer_url);
+    await afterJobs[0]();
+    expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({ product_id: databaseBoot.id, kit_id: null });
   });
 
   it("returns the redirect before starting analytics, then tracks through after()", async () => {
