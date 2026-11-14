@@ -77,15 +77,28 @@ export default function ReminderForm({
       </p>
 
       {done ? (
-        <Notice tone="ok" className="mt-4">
-          {status === "confirmed" ? (
-            <>Reminders are on for <b>{shown}</b>.</>
-          ) : (
-            <>
-              Check your inbox: we sent a confirmation link to <b>{shown}</b>. Reminders start once you confirm.
-            </>
-          )}
-        </Notice>
+        <div className="mt-4">
+          <Notice tone="ok">
+            {status === "confirmed" ? (
+              <>Reminders are on for <b>{shown}</b>.</>
+            ) : (
+              <>
+                Check your inbox: we sent a confirmation link to <b>{shown}</b>. Reminders start once you confirm.
+              </>
+            )}
+          </Notice>
+          <button
+            type="button"
+            onClick={() => {
+              setEmail(shown);
+              setStatus("idle");
+              setError(null);
+            }}
+            className="mt-1 min-h-11 text-left text-sm font-semibold text-accent-ink underline-offset-4 hover:underline"
+          >
+            {status === "pending" ? "Resend or use another email" : "Add another email"}
+          </button>
+        </div>
       ) : (
         <form onSubmit={submit} className="mt-4 flex gap-2" noValidate>
           <label className="sr-only" htmlFor="reminder-email">

@@ -18,8 +18,8 @@ vi.mock("@/lib/server/kit-view", async (original) => {
   const real = await original<typeof import("@/lib/server/kit-view")>();
   return {
     ...real,
-    buildKit: vi.fn((answers: Answers) =>
-      real.buildKit(answers, { live: false }),
+    buildKit: vi.fn((answers: Answers, options?: Parameters<typeof real.buildKit>[1]) =>
+      real.buildKit(answers, { ...options, live: false }),
     ),
   };
 });
@@ -156,7 +156,7 @@ describe("saved-kit routes and the frontend request", () => {
       "kits",
       200,
     );
-    expect(vi.mocked(buildKit)).toHaveBeenLastCalledWith(answers);
+    expect(vi.mocked(buildKit)).toHaveBeenLastCalledWith(answers, { keep: body.choices });
     expect(insert.mock.calls[0][0]).not.toHaveProperty("token");
     const loaded = await GET(
       new Request(`https://gearfit.test/api/kits/${slug}`),

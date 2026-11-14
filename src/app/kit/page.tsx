@@ -32,11 +32,12 @@ export default async function KitPage({ searchParams }: Props) {
     );
   }
 
-  const kit = await buildKit(answers);
+  const keep = decodeChoices(c);
+  const kit = await buildKit(answers, { keep });
   const slug = s && /^[\w-]{1,64}$/.test(s) ? s : undefined;
   return (
     <main className="flex-1 pb-36 pt-6 sm:pb-16 sm:pt-10">
-      <KitView kit={kit} initialChoices={decodeChoices(c, kit.items.length)} sharedSlug={slug} />
+      <KitView kit={kit} initialChoices={keep} sharedSlug={slug} />
     </main>
   );
 }

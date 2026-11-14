@@ -1,6 +1,7 @@
 import { CLIMATE_REQUIREMENTS, EMPLOYER_RULES, hazardById } from "../data/hazards";
 import { PRODUCTS } from "../data/products";
 import { tradeById } from "../data/trades";
+import { coveredStandards } from "@/lib/standards";
 import type {
   Answers,
   BudgetTier,
@@ -212,6 +213,27 @@ function makePick(product: Product, reqs: Requirement[], hoursPerWeek: number): 
   };
 }
 
+/** Preserve a previously selected product without relaxing fit or mandatory protection. */
+export function withSavedChoice(
+  item: CategoryResult,
+  productId: string | undefined,
+  answers: Answers,
+  products: readonly Product[],
+): CategoryResult {
+  if (!productId || item.pick.product.id === productId ||
+    item.alternatives.some((option) => option.pick.product.id === productId)) return item;
+  const product = products.find((candidate) => candidate.id === productId);
+  if (!product || product.category !== item.category || !genderOk(product, answers.gender) ||
+    !sizeOk(product, answers) || !item.requirements.filter((req) => req.hard).every((req) => meets(product, req))) return item;
+  return {
+    ...item,
+    alternatives: [
+      { label: "Saved choice", pick: makePick(product, item.requirements, answers.hoursPerWeek) },
+      ...item.alternatives,
+    ],
+  };
+}
+
 function scoreAll(
   pool: Product[],
   reqs: Requirement[],
@@ -380,7 +402,7 @@ export function recommend(answers: Answers, products: Product[] = PRODUCTS): Kit
   const perMonth = items.reduce((s, i) => s + i.pick.costPerMonth, 0);
   const cheapestUpfront = items.reduce((s, i) => s + i.cheapest.product.price, 0);
   const cheapestPerMonth = items.reduce((s, i) => s + i.cheapest.costPerMonth, 0);
-  const standards = [...new Set(items.flatMap((i) => i.pick.product.standards))].filter((s) => /ASTM|ANSI|NFPA|NRR/.test(s));
+  const standards = coveredStandards(items.map((item) => item.pick.product));
 
   return {
     answers,

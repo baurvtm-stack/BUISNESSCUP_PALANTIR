@@ -215,14 +215,29 @@ export async function startCheckout(req: SubscribeRequest): Promise<ApiOutcome<S
 }
 
 /** GET /api/subscribe?session_id=… */
-export async function getCheckoutStatus(sessionId: string): Promise<ApiOutcome<SubscriptionStatus>> {
-  const out = await request(`/api/subscribe?session_id=${encodeURIComponent(sessionId)}`);
+export async function getCheckoutStatus(sessionId: string, timeoutMs = 8000): Promise<ApiOutcome<SubscriptionStatus>> {
+  const out = await request(`/api/subscribe?session_id=${encodeURIComponent(sessionId)}`, { timeoutMs });
   if (out.kind !== "ok") return out;
   const d = unwrap(out.data, "subscription", "data");
   const status = str(d, "status")?.toLowerCase();
   const active =
     d.active === true || d.pro === true || d.isPro === true || ["active", "trialing", "paid", "complete"].includes(status ?? "");
   return { kind: "ok", data: { active, email: str(d, "email") } };
+}
+
+/** Allow a pending checkout to settle, with a ten-second budget including request timeouts. */
+export async function confirmCheckout(sessionId: string): Promise<ApiOutcome<SubscriptionStatus>> {
+  const deadline = Date.now() + 10000;
+  let out = await getCheckoutStatus(sessionId, 2500);
+  for (const delay of [1000, 3000, 5000]) {
+    if (out.kind === "rejected" || (out.kind === "ok" && out.data.active)) return out;
+    if (deadline - Date.now() <= delay) break;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) break;
+    out = await getCheckoutStatus(sessionId, Math.min(2500, remaining));
+  }
+  return out;
 }
 
 const serverProSchema = z.object({ pro: z.boolean(), features: z.array(z.string()) });

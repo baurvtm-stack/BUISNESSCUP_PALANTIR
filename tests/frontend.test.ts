@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { TRADES } from "../src/data/trades";
+import { PRODUCTS } from "@/data/products";
 import { decodeAnswers, encodeAnswers } from "../src/lib/answers";
 import {
   getKitFromCloud,
@@ -9,7 +10,7 @@ import {
   startCheckout,
   subscribeReminders,
 } from "../src/lib/api/client";
-import { recommend } from "../src/lib/engine";
+import { recommend, withSavedChoice } from "../src/lib/engine";
 import { duration, usd } from "../src/lib/format";
 import { compareHref, decodeChoices, encodeChoices, goHref, kitHref, shortKitHref } from "../src/lib/kit-url";
 import { buildKit, getWizardData } from "../src/lib/server/kit-view";
@@ -27,6 +28,62 @@ const base: Answers = {
   budget: "balanced",
   employer: [],
 };
+
+describe("retaining a compliant saved choice", () => {
+  const answers: Answers = { ...base, gender: "men", hoursPerWeek: 45, shoeSize: "10", clothingSize: "L / 32x30" };
+
+  it.each([
+    ["milwaukee-impact-cut5", 10],
+    ["wolverine-floorhand-ins", 40],
+  ] as const)("keeps %s after a price increase pushes it out of the shown options", (id, increase) => {
+    const products = PRODUCTS.map((p) => p.id === id ? { ...p, price: p.price + increase } : p);
+    const saved = PRODUCTS.find((p) => p.id === id)!;
+    const item = recommend(answers, products).items.find((i) => i.category === saved.category)!;
+    expect([item.pick, ...item.alternatives.map((a) => a.pick)].some((p) => p.product.id === id)).toBe(false);
+    const kept = withSavedChoice(item, id, answers, products);
+    expect(kept.alternatives[0]).toMatchObject({ label: "Saved choice", pick: { product: { id, price: saved.price + increase }, missing: [] } });
+    expect(kept.alternatives[0].pick.why).toContain("45 h/week");
+    expect(kept.alternatives[0].pick.costPerMonth).toBeCloseTo((saved.price + increase) / kept.alternatives[0].pick.lifespanMonths, 2);
+  });
+
+  it("rejects missing products and mismatched category, standards, gender or size", () => {
+    const item = recommend(answers).items.find((i) => i.category === "boots")!;
+    const product = { ...item.pick.product, id: "old-saved-boot" };
+    for (const candidate of [
+      { ...product, category: "gloves" as const },
+      { ...product, standards: [] },
+      { ...product, gender: "women" as const },
+      { ...product, sizes: ["1"] },
+    ]) expect(withSavedChoice(item, product.id, answers, [candidate])).toBe(item);
+    expect(withSavedChoice(item, "missing", answers, PRODUCTS)).toBe(item);
+    expect(withSavedChoice(item, undefined, answers, PRODUCTS)).toBe(item);
+    expect(withSavedChoice(item, item.pick.product.id, answers, PRODUCTS)).toBe(item);
+  });
+
+  it("includes a retained choice before computing pros/cons and leaves empty keep unchanged", async () => {
+    const original = await buildKit(answers, { live: false });
+    expect(await buildKit(answers, { live: false, keep: [] })).toEqual(original);
+    const item = recommend(answers).items[0];
+    const extra = PRODUCTS.find((p) => p.category === item.category &&
+      withSavedChoice(item, p.id, answers, PRODUCTS) !== item)!;
+    expect(extra).toBeDefined();
+    const kept = await buildKit(answers, { live: false, keep: [extra.id] });
+    expect(kept.items[0].alternatives[0]).toMatchObject({ label: "Saved choice", pick: { product: { id: extra.id } } });
+    expect(kept.items[0].alternatives[0].pick.pros.length + kept.items[0].alternatives[0].pick.cons.length).toBeGreaterThan(0);
+  });
+
+  it("validates saved choices against relaxed sizes when the page relaxes an unavailable size", async () => {
+    const relaxed = { ...answers, shoeSize: "99", clothingSize: "NOT-A-SIZE" };
+    const unsized = { ...answers, shoeSize: undefined, clothingSize: undefined };
+    const item = recommend(unsized).items[0];
+    const extra = PRODUCTS.find((p) => p.category === item.category &&
+      withSavedChoice(item, p.id, unsized, PRODUCTS) !== item)!;
+    const kept = await buildKit(relaxed, { live: false, keep: [extra.id] });
+    expect(kept.sizeNote).toBeDefined();
+    expect(kept.answers).toEqual(relaxed);
+    expect(kept.items[0].alternatives[0].pick.product.id).toBe(extra.id);
+  });
+});
 
 describe("kit links", () => {
   it("round-trips swapped products by item position", () => {

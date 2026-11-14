@@ -95,12 +95,13 @@ export default async function ComparePage({
     for (const [i, token] of tokens.entries()) {
       const answers = decodeAnswers(token);
       if (!answers) continue;
-      const kit = await buildKit(answers);
+      const choices = decodeChoices(choiceParams[i]);
+      const kit = await buildKit(answers, { keep: choices });
       const tier = TIERS.find((t) => t.id === answers.budget)!;
       columns.push(
         toColumn(
           kit,
-          decodeChoices(choiceParams[i], kit.items.length),
+          choices,
           kit.tradeLabel,
           `the ${kit.tradeLabel.toLowerCase()} kit`,
           `${answers.hoursPerWeek} h/week · ${tier.title}`,

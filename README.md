@@ -128,6 +128,7 @@ Copy the documented defaults from [.env.example](.env.example). Vercel injects t
 | `REMINDER_TEST_MODE` | `true` enables authenticated immediate demo sends; default `false` |
 | `STRIPE_SECRET_KEY` | Test key (`sk_test_...`); live keys rejected |
 | `STRIPE_WEBHOOK_SECRET` | Signing secret (`whsec_...`) for the deployed webhook |
+| `NEXT_PUBLIC_STRIPE_MODE` | Optional; leave unset. Only `live` hides the test-card hint; the server accepts test keys only |
 | `NEXT_PUBLIC_API_MOCKS` | Keep `0`/unset in production; `1` enables local frontend mocks |
 | `NEXT_PUBLIC_SITE_URL` | Optional canonical origin for frontend metadata/share previews |
 | `VERCEL_URL` | Injected deployment hostname; final frontend metadata fallback |

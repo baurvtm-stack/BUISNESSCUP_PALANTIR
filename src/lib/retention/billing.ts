@@ -4,7 +4,7 @@ import { z } from "zod";
 import { ApiError, baseUrl, db, env, hashToken } from "@/lib/retention/core";
 import { PRODUCTS } from "@/data/products";
 import type { CategoryResult, Product } from "@/lib/types";
-import { sendEmail } from "@/lib/retention/reminders";
+import { EmailError, sendEmail } from "@/lib/retention/reminders";
 import { getProducts } from "@/lib/server/catalog";
 import { proAccessTokenSchema } from "@/lib/retention/validation";
 
@@ -12,6 +12,7 @@ export { emailSchema, kitSlugSchema } from "@/lib/retention/validation";
 export const checkoutSessionSchema = z
   .string()
   .regex(/^cs_test_[A-Za-z0-9]{1,240}$/);
+const ACTIVE_SUBSCRIPTION_STATUSES = ["active", "trialing"] as const;
 
 export function stripeClient() {
   const key = env("STRIPE_SECRET_KEY");
@@ -82,8 +83,7 @@ export async function checkoutStatus(
   ) {
     throw new ApiError(400, "Unexpected subscription plan");
   }
-  const active =
-    subscription.status === "active" || subscription.status === "trialing";
+  const active = ACTIVE_SUBSCRIPTION_STATUSES.some((status) => status === subscription.status);
   if (active) {
     const { error: saveError } = await db().rpc("apply_stripe_subscription", {
       p_event_id: `checkout:${session.id}`,
@@ -124,7 +124,7 @@ export async function resolvePro(
     .from("subscriptions")
     .select("status")
     .eq("checkout_id", checkout.id)
-    .eq("status", "active")
+    .in("status", ACTIVE_SUBSCRIPTION_STATUSES)
     .gt("current_period_end", new Date().toISOString())
     .limit(1)
     .maybeSingle();
@@ -254,7 +254,7 @@ export async function dispatchDealAlerts(): Promise<{
       .from("subscriptions")
       .select("id")
       .eq("checkout_id", alert.checkout_id)
-      .eq("status", "active")
+      .in("status", ACTIVE_SUBSCRIPTION_STATUSES)
       .gt("current_period_end", new Date().toISOString())
       .limit(1)
       .maybeSingle();
@@ -318,8 +318,18 @@ export async function dispatchDealAlerts(): Promise<{
         .eq("fingerprint", fingerprint);
       if (markError) throw new Error("Delivery acknowledgement unavailable");
       sent++;
-    } catch {
+    } catch (error) {
       failed++;
+      if (error instanceof EmailError && error.definiteFailure) {
+        // A definite rejection did not send mail; let the next daily run claim it again.
+        const { error: releaseError } = await db()
+          .from("deal_alert_deliveries")
+          .delete()
+          .eq("alert_id", alert.id)
+          .eq("fingerprint", fingerprint)
+          .is("sent_at", null);
+        if (releaseError) throw new ApiError(503, "Could not release failed deal delivery");
+      }
     }
   }
   return { sent, failed };
@@ -380,7 +390,7 @@ export async function demoDealAlerts(kitSlug: string): Promise<{
       .from("subscriptions")
       .select("id")
       .eq("checkout_id", alert.checkout_id)
-      .eq("status", "active")
+      .in("status", ACTIVE_SUBSCRIPTION_STATUSES)
       .gt("current_period_end", new Date().toISOString())
       .limit(1)
       .maybeSingle();

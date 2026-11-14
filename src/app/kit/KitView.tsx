@@ -12,9 +12,10 @@ import { Button, ButtonLink, Chip, Eyebrow, Notice, StandardBadge } from "@/comp
 import { cssVars } from "@/lib/css";
 import type { KitItemSnapshot } from "@/lib/api/contract";
 import { duration, usd } from "@/lib/format";
-import { ensureCloudSlug, saveKit, shareUrl, type KitDraft } from "@/lib/kit-actions";
+import { ensureCloudSlug, saveCloudKit, saveKit, shareUrl, type KitDraft } from "@/lib/kit-actions";
 import { compareHref, goHref, kitHref, shortKitHref } from "@/lib/kit-url";
 import { FREE_KIT_LIMIT, findSavedKit, proStore, savedKits, updateKit } from "@/lib/saved-kits";
+import { coveredStandards } from "@/lib/standards";
 import type { KitView as Kit, ViewItem, ViewPick } from "@/lib/server/kit-view";
 
 const CLIMATE = { hot: "Hot climate", mild: "Mild climate", cold: "Cold climate", wet: "Rainy climate" } as const;
@@ -45,6 +46,7 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const chosen = useMemo(() => kit.items.map((item, i) => optionFor(item, choices[i])), [kit.items, choices]);
+  const standards = useMemo(() => coveredStandards(chosen.map((pick) => pick.product)), [chosen]);
   const saved = findSavedKit(kits, kit.token, choices);
   const untouched = choices.join(",") === normalize(kit.items, initialChoices).join(",");
   // A short link's slug identifies this exact kit; after a swap it no longer does.
@@ -117,6 +119,7 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
 
   async function getSlug(): Promise<string | null> {
     if (saved) return ensureCloudSlug(saved);
+    if (!pro && kits.length >= FREE_KIT_LIMIT) return saveCloudKit(draft);
     const result = await saveKit(draft);
     return result.slug ?? null;
   }
@@ -306,7 +309,7 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
             </div>
             <DealAlerts key={slug ?? "unsaved"} kitSlug={slug} isPro={!!pro} />
 
-            {kit.standards.length > 0 && (
+            {standards.length > 0 && (
               <div className="rounded-3xl border border-line bg-card p-5 sm:p-6">
                 <div className="flex items-center gap-2.5">
                   <span className="flex size-9 items-center justify-center rounded-xl bg-ok-soft text-ok">
@@ -315,7 +318,7 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
                   <h2 className="font-display text-2xl font-bold leading-none">Standards covered</h2>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-1.5">
-                  {kit.standards.map((s) => (
+                  {standards.map((s) => (
                     <StandardBadge key={s}>{s}</StandardBadge>
                   ))}
                 </div>
