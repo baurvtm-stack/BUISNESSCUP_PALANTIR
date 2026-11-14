@@ -328,7 +328,8 @@ export async function dispatchDealAlerts(): Promise<{
           .eq("alert_id", alert.id)
           .eq("fingerprint", fingerprint)
           .is("sent_at", null);
-        if (releaseError) throw new ApiError(503, "Could not release failed deal delivery");
+        // Already counted as failed; a cleanup error must not stop other alerts.
+        if (releaseError) continue;
       }
     }
   }
