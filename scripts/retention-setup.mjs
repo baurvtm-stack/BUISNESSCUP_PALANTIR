@@ -18,4 +18,4 @@ const sql =
   "\nNOTIFY pgrst, 'reload schema';\nCOMMIT;\n";
 const output = new URL("../supabase/retention-setup.sql", import.meta.url);
 writeFileSync(output, sql);
-console.log(`Generated ${fileURLToPath(output)}`);
+process.stdout.write(`Generated ${fileURLToPath(output)}\n`);
