@@ -17,10 +17,6 @@ export function stripeClient() {
   return new Stripe(key, { maxNetworkRetries: 2, timeout: 10000 });
 }
 
-export function isPro(status: string) {
-  return status === "active";
-}
-
 /** The redirect is only a lookup key; Stripe and the server checkout binding
  * establish access. Persist an activation even when a webhook is delayed. */
 export async function checkoutStatus(
