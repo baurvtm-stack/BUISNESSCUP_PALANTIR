@@ -228,9 +228,13 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
             </ul>
           </div>
 
-          {savingsPerYear > 1 && (
-            <SavingsCounter ref={savingsRef} perYear={totals.perYear} cheapestPerYear={kit.totals.cheapestPerYear} extraToday={extraToday} />
-          )}
+          <SavingsCounter
+            ref={savingsRef}
+            perYear={totals.perYear}
+            cheapestPerYear={kit.totals.cheapestPerYear}
+            cheapestUpfront={kit.totals.cheapestUpfront}
+            extraToday={extraToday}
+          />
           <Stat
             label="Pay today"
             value={<AnimatedNumber value={totals.upfront} duration={900} delay={200} />}
@@ -245,15 +249,6 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
             className="lg:col-span-4"
             delay={260}
           />
-          {savingsPerYear <= 1 && (
-            <Stat
-              label="Cheapest compliant kit"
-              value={usd(kit.totals.cheapestUpfront)}
-              sub="Lowest price that meets every rule"
-              className="col-span-2 lg:col-span-7"
-              delay={320}
-            />
-          )}
         </section>
 
         <div className="mt-4 flex gap-2 sm:hidden print:hidden">

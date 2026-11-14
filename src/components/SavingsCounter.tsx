@@ -6,9 +6,13 @@ import { cssVars } from "@/lib/css";
 import { usd } from "@/lib/format";
 
 /**
- * The number the kit page leads with: what this kit saves a year against the cheapest kit
- * that still passes, on an odometer. The amount is the subtraction the page has always shown
- * (the cheapest kit's yearly cost of wear minus this kit's); only the display is new.
+ * The number the kit page leads with, on an odometer, for every kit whatever its sizing.
+ *
+ * When this kit costs less a year to wear than the cheapest kit that still passes, the card
+ * shows that saving: the subtraction the page has always shown (the cheapest kit's yearly cost
+ * of wear minus this kit's). When it saves $1 a year or less (often a "Lowest price today" kit,
+ * which is the cheapest kit), the card shows what the old "Cheapest compliant kit" stat did:
+ * the lowest price that passes today. No new figures, only the display.
  *
  * The wheels are drawn and moved by CSS alone (see "Savings odometer" in globals.css): the
  * server render already points each wheel at its digit, a keyframe spins it up on first
@@ -18,39 +22,54 @@ import { usd } from "@/lib/format";
 export default function SavingsCounter({
   perYear,
   cheapestPerYear,
+  cheapestUpfront,
   extraToday,
   ref,
 }: {
   perYear: number;
   cheapestPerYear: number;
+  cheapestUpfront: number;
   extraToday: number;
   ref?: Ref<HTMLDivElement>;
 }) {
+  const saves = cheapestPerYear - perYear > 1;
   // Formatted like every other dollar amount on the page, so the wheels can't disagree with it.
-  const label = usd(cheapestPerYear - perYear);
+  const label = usd(saves ? cheapestPerYear - perYear : cheapestUpfront);
   const amount = Number(label.replace(/\D/g, ""));
 
-  // Remember the last amount shown, to flag how far a swap moved it.
-  const [shown, setShown] = useState(amount);
+  // Remember the last amount shown, to flag how far a swap moved the saving. Switching between
+  // the saving and the lowest price just rolls the wheels: a flag only compares like with like.
+  const [shown, setShown] = useState({ saves, amount });
   const [change, setChange] = useState<{ by: number; n: number } | null>(null);
-  if (shown !== amount) {
-    setShown(amount);
-    setChange({ by: amount - shown, n: (change?.n ?? 0) + 1 });
+  if (shown.saves !== saves || shown.amount !== amount) {
+    setShown({ saves, amount });
+    setChange(shown.saves === saves ? { by: amount - shown.amount, n: (change?.n ?? 0) + 1 } : null);
   }
 
   const extra = Math.round(extraToday);
-  const today =
-    extra > 0 ? `Pay ${usd(extra)} more today, rebuy less often` : extra < 0 ? `And ${usd(-extra)} cheaper today too` : "Same price today, rebuy less often";
+  const caption = saves
+    ? extra > 0
+      ? `Pay ${usd(extra)} more today, rebuy less often`
+      : extra < 0
+        ? `And ${usd(-extra)} cheaper today too`
+        : "Same price today, rebuy less often"
+    : extra > 0
+      ? `This kit costs ${usd(extra)} more today`
+      : "This kit is the lowest price that passes";
+  const sentence = saves
+    ? `You save ${label} a year against the cheapest kit that passes.`
+    : `The cheapest kit that passes costs ${label} today.`;
 
   // One wheel per digit, keyed by its place (0 = ones), so a wheel stays put when the amount gains a digit.
   let place = String(amount).length;
   const wheels = [...label.replace("$", "")].map((ch) => (/\d/.test(ch) ? { ch, place: --place, digit: Number(ch) } : { ch, place, digit: null }));
 
-  // The cheapest kit fills its bar; this kit stops short of it, and the striped rest is the saving.
+  // The dearer kit fills its bar. When this kit is the cheaper one to wear, the striped rest of its bar is the saving.
+  const top = Math.max(cheapestPerYear, perYear, 1);
   const rows = [
-    { label: "Cheapest kit that passes", value: cheapestPerYear, share: 100, mine: false },
-    { label: "This kit", value: perYear, share: Math.max(4, Math.min(100, (perYear / Math.max(cheapestPerYear, 1)) * 100)), mine: true },
-  ];
+    { label: "Cheapest kit that passes", value: cheapestPerYear, mine: false },
+    { label: "This kit", value: perYear, mine: true },
+  ].map((row) => ({ ...row, share: Math.max(4, Math.min(100, (row.value / top) * 100)) }));
 
   return (
     <div
@@ -65,10 +84,10 @@ export default function SavingsCounter({
       <div className="relative flex flex-col gap-5 md:flex-row md:items-center md:gap-7">
         <div className="shrink-0">
           <p className="sr-only">
-            You save {label} a year against the cheapest kit that passes. {today}.
+            {sentence} {caption}.
           </p>
           <p className="flex h-5 items-center gap-2 text-xs font-semibold uppercase tracking-[0.1em] text-steel-muted print:text-black" aria-hidden>
-            You save
+            {saves ? "You save" : "Cheapest kit that passes"}
             {change && (
               <span
                 key={change.n}
@@ -100,10 +119,10 @@ export default function SavingsCounter({
                 <span key={amount} className="sheen print:hidden" style={cssVars({ "--delay": change ? "900ms" : "2000ms" })} />
               </span>
             </span>
-            <span className="pb-2 text-2xl font-bold tracking-tight sm:text-[28px]">a year</span>
+            <span className="pb-2 text-2xl font-bold tracking-tight sm:text-[28px]">{saves ? "a year" : "today"}</span>
           </p>
-          <p className="mt-3 text-xs text-steel-muted sm:text-sm print:text-black" aria-hidden>
-            {today}
+          <p className="mt-3 max-w-[22rem] text-xs text-steel-muted sm:text-sm print:text-black" aria-hidden>
+            {caption}
           </p>
         </div>
 
@@ -116,7 +135,7 @@ export default function SavingsCounter({
                   <AnimatedNumber value={row.value} countOnMount={false} />
                   /yr
                 </dd>
-                <dd className={`col-span-2 h-3 overflow-hidden rounded-full print:border print:border-black/30 ${row.mine ? "odo-kept" : "bg-white/8"}`} aria-hidden>
+                <dd className={`col-span-2 h-3 overflow-hidden rounded-full print:border print:border-black/30 ${row.mine && saves ? "odo-kept" : "bg-white/8"}`} aria-hidden>
                   <span
                     className={`animate-grow-x block h-full rounded-full transition-[width] duration-500 print:bg-black/40 ${row.mine ? "bg-accent" : "bg-white/30"}`}
                     style={{ width: `${row.share}%`, ...cssVars({ "--i": i, "--delay": "480ms" }) }}
@@ -126,8 +145,14 @@ export default function SavingsCounter({
             ))}
           </dl>
           <p className="mt-3 flex items-center gap-2 text-xs text-steel-muted print:hidden" aria-hidden>
-            <span className="odo-kept inline-block h-2.5 w-5 shrink-0 rounded-full" />
-            The striped part stays in your pocket
+            {saves ? (
+              <>
+                <span className="odo-kept inline-block h-2.5 w-5 shrink-0 rounded-full" />
+                The striped part stays in your pocket
+              </>
+            ) : (
+              "Cost of wear a year"
+            )}
           </p>
         </div>
       </div>
