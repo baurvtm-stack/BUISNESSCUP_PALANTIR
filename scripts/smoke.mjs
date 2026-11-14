@@ -8,6 +8,8 @@ const originSchema = z.url().refine((value) => {
 }, "Use an HTTP(S) origin without credentials, a path, query or fragment");
 const productSchema = z.object({
   id: z.string().min(1),
+  brand: z.string().min(1),
+  name: z.string().min(1),
   retailer_url: z.url().refine((value) => new URL(value).protocol === "https:"),
 });
 const catalogSchema = z.object({
@@ -109,12 +111,15 @@ async function smoke(origin) {
     if (!location.success) throw new Error("redirect has no absolute Location URL");
     const target = new URL(location.data);
     const expected = new URL(product.retailer_url);
-    if (target.origin !== expected.origin || target.pathname !== expected.pathname ||
-        target.username || target.password) {
+    // Visitors outside the US get a US price comparison (src/lib/retailer-links.ts).
+    const comparison = target.origin === "https://www.google.com" && target.pathname === "/search" &&
+      target.searchParams.get("gl") === "us" && target.searchParams.get("q") === `${product.brand} ${product.name}`;
+    if (!comparison && (target.origin !== expected.origin || target.pathname !== expected.pathname ||
+        target.username || target.password)) {
       throw new Error("redirect does not match the product's retailer URL");
     }
     await response.body?.cancel();
-    return `HTTP 302 to ${target.hostname} (not followed)`;
+    return `HTTP 302 to ${target.hostname}${comparison ? " (US price comparison for a visitor outside the US)" : ""} (not followed)`;
   });
 
   process.stdout.write(`${passed} passed, ${failed} failed\n`);

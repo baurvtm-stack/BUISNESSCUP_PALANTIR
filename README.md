@@ -14,7 +14,7 @@ GearFit turns those decisions into one kit with documented standards, approximat
 
 1. Answer five steps: trade; hazards; climate and hours/week; employer requirements; sizes and budget.
 2. The deterministic engine filters by required protection and standards for one of 11 trades, then ranks eligible products by price, lifetime cost and quality. Hours/week scale lifespan; product ID breaks ties. An unmet safety requirement produces a warning.
-3. Compare the full kit and alternatives side by side, swap products, and follow a retailer link to check the current price. Each option lists pros and cons computed from catalog data only (price, estimated wear life, cost per month, quality score, rated levels against the requirement, features, sizing), ranked among the options shown; a metric where every option ties produces no line. Optional affiliate tags are added on the server.
+3. Compare the full kit and alternatives side by side, swap products, and follow **Check price** to the maker's product page for the current price. Visitors outside the US, where many US stores refuse connections, get a US Google Shopping comparison for the same model. Each option lists pros and cons computed from catalog data only (price, estimated wear life, cost per month, quality score, rated levels against the requirement, features, sizing), ranked among the options shown; a metric where every option ties produces no line. An optional affiliate tag is added on the server, to Amazon fallback links only.
 4. Save on the device or create a public `/k/<slug>` link. Cloud saves rebuild the kit on the server, preserving eligible swaps while ignoring client prices and safety claims.
 5. Download calendar replacement dates or opt into email reminders. Confirmed reminders become due seven days before estimated replacement. Pro uses **Stripe test mode**, at $4/month, with subscription status verified on the server.
 
@@ -99,7 +99,7 @@ PowerShell: use `Copy-Item .env.example .env.local` instead of `cp`. Leave datab
 ### Supabase and Vercel
 
 1. In Supabase SQL Editor, apply `supabase/migrations/202611140001_catalog.sql`, then `202611140002_clicks.sql` once.
-2. Set the Supabase URL and server key in `.env.local`. Run `npm run catalog:check`, then `npm run seed`. The seed upserts by product ID without deleting other products or clicks.
+2. Set the Supabase URL and server key in `.env.local`. Run `npm run catalog:check`, then `npm run seed`. The seed upserts by product ID without deleting other products or clicks. To update only the Check price links of an already seeded catalog, paste `supabase/manufacturer-links.sql` into SQL Editor instead. It changes `retailer_url` only and is safe to run again.
 3. Paste `supabase/retention-setup.sql` and run it **once**. Alternatively apply the four `20261114100001`–`20261114100004` migrations in order; do not apply both methods or replay an existing schema.
 4. Import the repo into Vercel, select Node.js 24, configure variables for the intended environments and redeploy. `vercel.json` supplies Next.js build settings and the daily cron.
 5. Configure a Stripe **test** webhook at `<APP_URL>/api/stripe/webhook` for `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated` and `customer.subscription.deleted`.
@@ -117,7 +117,7 @@ Copy the documented defaults from [.env.example](.env.example). Vercel injects t
 | `SUPABASE_URL` | Project API URL; pair with a server key to enable persistence |
 | `SUPABASE_SECRET_KEY` | Preferred Supabase server key (`sb_secret_...`) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Legacy fallback, used only when the preferred key is blank |
-| `AFFILIATE_TAG` | Optional partner tag; blank leaves links untagged |
+| `AFFILIATE_TAG` | Optional Amazon partner tag, added to Amazon fallback links only; blank leaves links untagged |
 | `AFFILIATE_PARAM` | Partner query parameter; defaults to `tag` |
 | `APP_URL` | Canonical origin for email/checkout, e.g. `https://palantirbuisness.vercel.app`; local HTTP supported |
 | `VERCEL_PROJECT_PRODUCTION_URL` | Injected production hostname; HTTPS fallback when `APP_URL` is blank |
@@ -131,11 +131,11 @@ Copy the documented defaults from [.env.example](.env.example). Vercel injects t
 | `NEXT_PUBLIC_API_MOCKS` | Keep `0`/unset in production; `1` enables local frontend mocks |
 | `NEXT_PUBLIC_SITE_URL` | Optional canonical origin for frontend metadata/share previews |
 | `VERCEL_URL` | Injected deployment hostname; final frontend metadata fallback |
-| `VERCEL` | Injected `1` selects Vercel's trusted forwarded-IP header for rate limits |
+| `VERCEL` | Injected `1` selects Vercel's trusted forwarded-IP header for rate limits and its visitor-country header for Check price |
 | `PLAYWRIGHT_BASE_URL` | Test runner only: explicit existing target; blank starts an isolated production app at `http://localhost:3000` |
 | `VERCEL_AUTOMATION_BYPASS_SECRET` | Optional test/Actions secret for protected Vercel previews; sent only to the selected app origin |
 
-An affiliate tag requires a matching retailer partnership to earn commission. Raw IPs are not stored; without `RATE_LIMIT_SECRET`, bucket hashes offer weaker privacy against guessed addresses.
+An affiliate tag earns commission only with a matching Amazon Associates account. Maker pages are never tagged. Raw IPs are not stored; without `RATE_LIMIT_SECRET`, bucket hashes offer weaker privacy against guessed addresses.
 
 ## Tests and review
 

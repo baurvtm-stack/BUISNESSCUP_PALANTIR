@@ -3,6 +3,7 @@ import catalog from "../src/data/catalog.json";
 import { catalogSchema, toProduct } from "../src/lib/catalog-schema";
 import { DEFAULT_ANSWERS } from "../src/lib/answers";
 import { recommend, meets } from "../src/lib/engine";
+import { isAmazonUrl } from "../src/lib/retailer-links";
 import { TRADES } from "../src/data/trades";
 
 const rows = catalogSchema.parse(catalog);
@@ -47,6 +48,23 @@ describe("checked-in catalog integrity", () => {
         expect(url.hostname, row.id).not.toMatch(/(?:^|\.)(?:example\.(?:com|org|net)|localhost)$/);
         expect(url.hostname, row.id).toContain(".");
       }
+    }
+  });
+
+  it("sends Check price to maker pages, keeping model-specific Amazon searches as documented fallbacks only", () => {
+    // docs/catalog-sources.md names each fallback; update both together.
+    const fallbacks = rows.filter((row) => isAmazonUrl(row.retailer_url));
+    expect(fallbacks.map((row) => row.id)).toEqual(["ammex-nitrile"]);
+    for (const row of fallbacks) {
+      const url = new URL(row.retailer_url);
+      expect(url.hostname, row.id).toBe("www.amazon.com");
+      expect(url.pathname, row.id).toBe("/s");
+      expect(url.searchParams.get("k"), row.id).toBe(`${row.brand} ${row.model}`);
+    }
+    for (const row of rows) {
+      // Stored exactly as the redirect sends it: normalized, with no partner identifiers.
+      expect(new URL(row.retailer_url).toString(), row.id).toBe(row.retailer_url);
+      expect([...new URL(row.retailer_url).searchParams.keys()], row.id).not.toContainEqual(expect.stringMatching(/^(?:tag|ref|aff|utm_)/i));
     }
   });
 

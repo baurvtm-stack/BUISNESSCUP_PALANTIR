@@ -2,7 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PRODUCTS } from "../src/data/products";
 import { catalogSchema, type CatalogRow } from "../src/lib/catalog-schema";
 import { getProduct, getProducts } from "../src/lib/server/catalog";
-import { affiliateUrl, logClick } from "../src/lib/server/clicks";
+import { logClick, outboundUrl, visitorCountry } from "../src/lib/server/clicks";
+import { isAmazonUrl } from "../src/lib/retailer-links";
 import { getSupabaseConfiguration, supabaseRequest } from "../src/lib/server/supabase";
 
 vi.mock("server-only", () => ({}));
@@ -23,7 +24,7 @@ function configured() {
 }
 
 beforeEach(() => {
-  for (const name of ["SUPABASE_URL", "SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY", "AFFILIATE_TAG", "AFFILIATE_PARAM"]) {
+  for (const name of ["SUPABASE_URL", "SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY", "AFFILIATE_TAG", "AFFILIATE_PARAM", "VERCEL"]) {
     vi.stubEnv(name, "");
   }
 });
@@ -159,17 +160,55 @@ describe("Supabase transport and click persistence", () => {
     expect(JSON.parse(options.body)).toEqual({ product_id: row.id, kit_id: "kit_123-test" });
   });
 
-  it("preserves retailer query parameters and encodes the affiliate value as data", () => {
-    const product = { ...PRODUCTS[0], retailer_url: row.retailer_url };
-    expect(affiliateUrl(product)).toBe(row.retailer_url);
+  it("tags Amazon fallback links, preserving their query and encoding the affiliate value as data", () => {
+    const fallback = "https://www.amazon.com/s?k=Test%20fixture%20Safety%20boot&i=fashion";
+    const product = { ...PRODUCTS[0], retailer_url: fallback };
+    expect(outboundUrl(product)).toBe(fallback);
     vi.stubEnv("AFFILIATE_TAG", "gearfit&redirect=https://attacker.example");
     vi.stubEnv("AFFILIATE_PARAM", "ref");
-    const destination = new URL(affiliateUrl(product));
-    expect(destination.origin).toBe("https://retailer.example");
-    expect(destination.searchParams.get("color")).toBe("brown");
+    const destination = new URL(outboundUrl(product));
+    expect(destination.origin).toBe("https://www.amazon.com");
+    expect(destination.pathname).toBe("/s");
+    expect(destination.searchParams.get("k")).toBe("Test fixture Safety boot");
+    expect(destination.searchParams.get("i")).toBe("fashion");
     expect(destination.searchParams.get("ref")).toBe("gearfit&redirect=https://attacker.example");
     expect(destination.searchParams.has("redirect")).toBe(false);
     vi.stubEnv("AFFILIATE_PARAM", "bad&parameter");
-    expect(() => affiliateUrl(product)).toThrow("unavailable");
+    expect(() => outboundUrl(product)).toThrow("unavailable");
+  });
+
+  it("sends manufacturer pages unchanged even when an affiliate tag is configured", () => {
+    vi.stubEnv("AFFILIATE_TAG", "gearfit-20");
+    // A malformed parameter only matters for links that would be tagged.
+    vi.stubEnv("AFFILIATE_PARAM", "bad&parameter");
+    // Lookalike hosts and other Amazon stores do not take a US partner tag.
+    for (const retailer of [row.retailer_url, "https://amazon.com.retailer.example/boot", "https://www.amazon.co.uk/s?k=Safety%20boot"]) {
+      expect(outboundUrl({ ...PRODUCTS[0], retailer_url: retailer })).toBe(retailer);
+    }
+  });
+
+  it("sends visitors outside the US to an untagged US price comparison for the same model", () => {
+    vi.stubEnv("AFFILIATE_TAG", "gearfit-20");
+    for (const retailer_url of [row.retailer_url, "https://www.amazon.com/s?k=Safety%20boot"]) {
+      const product = { ...PRODUCTS[0], brand: "Test & fixture", name: "Safety boot 7\"", retailer_url };
+      const destination = new URL(outboundUrl(product, "KZ"));
+      expect(destination.origin + destination.pathname).toBe("https://www.google.com/search");
+      expect(Object.fromEntries(destination.searchParams)).toEqual({ tbm: "shop", gl: "us", hl: "en", q: 'Test & fixture Safety boot 7"' });
+      const home = new URL(outboundUrl(product, "US"));
+      expect(home.hostname).toBe(new URL(retailer_url).hostname);
+      expect(home.searchParams.get("tag")).toBe(isAmazonUrl(retailer_url) ? "gearfit-20" : null);
+      expect(outboundUrl(product, null)).toBe(home.toString());
+    }
+  });
+
+  it("reads the visitor country only from Vercel's edge header", () => {
+    const request = (country?: string) => new Request("https://gearfit.example/api/click", {
+      headers: country === undefined ? {} : { "x-vercel-ip-country": country },
+    });
+    expect(visitorCountry(request("KZ"))).toBeNull();
+    vi.stubEnv("VERCEL", "1");
+    expect(visitorCountry(request("KZ"))).toBe("KZ");
+    expect(visitorCountry(request(" us "))).toBe("US");
+    for (const value of [undefined, "", "Kazakhstan", "K1"]) expect(visitorCountry(request(value)), String(value)).toBeNull();
   });
 });
