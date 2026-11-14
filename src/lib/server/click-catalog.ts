@@ -7,7 +7,7 @@ import { getProducts } from "@/lib/server/catalog";
 
 // Outbound links may use a recent catalog even when storage is unavailable.
 // Keep this policy separate from recommendation/catalog APIs, which report DB failures.
-const cachedCatalog = unstable_cache(
+export const cachedCatalog = unstable_cache(
   () => getProducts(),
   ["click-catalog-v1", process.env.SUPABASE_URL?.trim() || "bundled"],
   { revalidate: 60 },
