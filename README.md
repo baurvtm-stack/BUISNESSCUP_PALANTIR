@@ -14,7 +14,7 @@ GearFit turns those decisions into one kit with documented standards, approximat
 
 1. Answer five steps: trade; hazards; climate and hours/week; employer requirements; sizes and budget.
 2. The deterministic engine filters by required protection and standards for one of 11 trades, then ranks eligible products by price, lifetime cost and quality. Hours/week scale lifespan; product ID breaks ties. An unmet safety requirement produces a warning.
-3. Compare the full kit and alternatives, swap products, and follow a retailer link to check the current price. Optional affiliate tags are added on the server.
+3. Compare the full kit and alternatives side by side, swap products, and follow a retailer link to check the current price. Each option lists pros and cons computed from catalog data only (price, estimated wear life, cost per month, quality score, rated levels against the requirement, features, sizing), ranked among the options shown; a metric where every option ties produces no line. Optional affiliate tags are added on the server.
 4. Save on the device or create a public `/k/<slug>` link. Cloud saves rebuild the kit on the server, preserving eligible swaps while ignoring client prices and safety claims.
 5. Download calendar replacement dates or opt into email reminders. Confirmed reminders become due seven days before estimated replacement. Pro uses **Stripe test mode**, at $4/month, with subscription status verified on the server.
 
@@ -39,7 +39,7 @@ flowchart TD
     Next -->|Click redirect| Retailer[Retailer]
 ```
 
-- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS 4. `src/lib/server/kit-view.ts` supplies server-rendered kits and catalog views using the same 60-second catalog cache as click redirects, with snapshot fallback and size relaxation when needed. Safety filters stay mandatory. Entrances and count-ups are CSS and small helpers in `src/components/fx.tsx`; Motion (lazy bundle, `src/components/motion.tsx`) handles exits and height changes on `/build` and `/kit` only. All motion respects `prefers-reduced-motion`.
+- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS 4. `src/lib/server/kit-view.ts` supplies server-rendered kits and catalog views using the same 60-second catalog cache as click redirects, with snapshot fallback and size relaxation when needed. Safety filters stay mandatory. Entrances and count-ups are CSS and small helpers in `src/components/fx.tsx`; Motion (lazy bundle, `src/components/motion.tsx`) handles exits and height changes on `/build` and `/kit` only. All motion respects `prefers-reduced-motion`. Product visuals are in-house SVG illustrations of the gear type (`src/components/GearArt.tsx`), not retailer photos; details such as a safety-toe cap or a tinted lens follow catalog fields. Pros and cons come from `src/lib/pros-cons.ts`.
 - **Engine and data:** `src/lib/engine.ts`, `src/data/catalog.json` and Zod schemas. The catalog APIs use the snapshot when database credentials are absent; a configured but unavailable/empty catalog returns 503. Landing-page reference facts use the snapshot.
 - **Persistence:** Supabase stores products, clicks, saved kit snapshots, consent, reminder deliveries, rate limits and test subscriptions. RLS/service-role access keeps direct table access server-side.
 - **Retention:** Resend handles double opt-in and reminders. Vercel cron processes due deliveries; Stripe Checkout status and signed webhooks persist subscription state.

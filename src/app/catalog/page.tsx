@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Icon, categoryIcon } from "@/components/icons";
+import GearArt from "@/components/GearArt";
 import { Eyebrow, StandardBadge } from "@/components/ui";
 import { usd } from "@/lib/format";
 import { goHref } from "@/lib/kit-url";
@@ -41,9 +41,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
         <ul className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
           {list.map((p) => (
             <li key={p.id} className="flex gap-3.5 rounded-2xl border border-line bg-card p-4">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-sunken" aria-hidden>
-                <Icon name={categoryIcon(p.category)} className="size-6" strokeWidth={1.7} />
-              </span>
+              <GearArt product={p} className="size-16 self-start" />
               <div className="min-w-0 flex-1">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3">
                   {p.categoryLabel}

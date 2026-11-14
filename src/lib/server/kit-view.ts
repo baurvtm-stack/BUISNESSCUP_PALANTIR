@@ -13,6 +13,7 @@ import { EMPLOYER_RULES, HAZARDS } from "../../data/hazards";
 import { TRADES } from "../../data/trades";
 import { encodeAnswers } from "../answers";
 import { CATEGORY_LABELS, describeRequirement, effectiveLifespan, recommend } from "../engine";
+import { prosAndCons } from "../pros-cons";
 import type { Answers, Category, EmployerRule, Gender, KitResult, Pick, Product, Requirement } from "../types";
 import { getProduct } from "./catalog";
 import { cachedCatalog } from "@/lib/server/click-catalog";
@@ -27,7 +28,11 @@ const liveProducts = cache(async (): Promise<Product[]> => {
   }
 });
 
-export type ViewPick = Pick & { url: string };
+/**
+ * A pick plus its store link and how it compares with the other options shown for the item.
+ * Pros and cons are computed from catalog data only (see lib/pros-cons).
+ */
+export type ViewPick = Pick & { url: string; pros: string[]; cons: string[] };
 
 export interface ViewItem {
   label: string;
@@ -53,7 +58,21 @@ export interface KitView {
   sizeNote?: string;
 }
 
-const withUrl = (pick: Pick): ViewPick => ({ ...pick, url: buyUrl(pick.product) });
+/** Turns one engine result into the options the kit page shows, each with honest pros and cons. */
+function viewOptions(item: KitResult["items"][number], answers: Answers): { pick: ViewPick; alternatives: ViewItem["alternatives"] } {
+  const options = [item.pick, ...item.alternatives.map((a) => a.pick)];
+  // After a budget-cap swap the shown pick is no longer the engine's top score.
+  const capped = item.alternatives.some((a) => a.label === "Original pick");
+  const notes = prosAndCons(options, {
+    requirements: item.requirements,
+    climate: answers.climate,
+    gender: answers.gender,
+    optionsConsidered: item.optionsConsidered,
+    topScoredId: capped ? undefined : item.pick.product.id,
+  });
+  const [pick, ...alternatives] = options.map((o, i): ViewPick => ({ ...o, url: buyUrl(o.product), ...notes[i] }));
+  return { pick, alternatives: alternatives.map((alt, i) => ({ label: item.alternatives[i].label, pick: alt })) };
+}
 
 /**
  * The engine drops a whole category when nothing comes in the requested size (old links,
@@ -98,8 +117,7 @@ export async function buildKit(answers: Answers, { live = true }: { live?: boole
       mustHave: [...new Set(i.requirements.filter((r) => r.hard).map(describeRequirement))].filter(
         (d) => d !== "rated protection",
       ),
-      pick: withUrl(i.pick),
-      alternatives: i.alternatives.map((a) => ({ label: a.label, pick: withUrl(a.pick) })),
+      ...viewOptions(i, answers),
     })),
   };
 }
