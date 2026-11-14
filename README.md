@@ -67,111 +67,137 @@ Trade rules are conservative buying-guide defaults, not a substitute for a workp
 
 ## Retention backend deployment
 
-Use the **existing shared Supabase project**, not a new project. Apply `supabase/migrations/*.sql` in filename order with the Supabase SQL editor (or the team's linked Supabase CLI). These migrations create new tables/functions; apply once. RLS is enabled with no browser policies; only server-side service-role access is allowed. They do not change the catalog, engine, UI or click ingestion. Coordinate with the click owner to persist events in `public.clicks`; stats counts its rows if present and reports `null` otherwise.
+The retention routes implement the frontend's [API contract](docs/api-contract.md). Save now creates a public `/k/<slug>` link, reminders return to `/reminders`, and Stripe returns to `/pro`. This branch includes PR #3's live catalog integration: its `buildKit` uses the live catalog with a bundled snapshot fallback and the page's size relaxation. The earlier frontend handoff above describes the pre-PR #3 state.
 
-Shared deployment: Supabase project `qcocsowyfyqprfddndcg`, production origin `https://palantirbuisness.vercel.app` (Vercel tracks `main`). Retention migration versions are `20261114100001` through `20261114100004`, distinct from the catalog team's `202611140001` and `202611140002`. The runtime service-role key grants Data API access, not SQL migration execution: applying migrations requires the dashboard SQL editor, a database connection, or a Supabase management access token. Keep these administrative credentials out of the application and repository. Before applying, inspect the target schema and migration history to avoid replaying already-applied SQL.
+Use the existing Supabase project `qcocsowyfyqprfddndcg`. First apply the two catalog/click migrations described above and seed the catalog. **Paste `supabase/retention-setup.sql` into SQL Editor and run it once.** It contains `BEGIN`, the four retention migrations (`20261114100001`–`20261114100004`), a PostgREST schema reload notification, and `COMMIT`. It does not replay or modify PR #2's migrations. Alternatively apply the four individual files in order; use one method only. These migrations have been edited before their first deployment, so do not replay this setup over a previously applied retention schema. Regenerate the combined file with `node scripts/retention-setup.mjs` after any migration edit.
 
-Copy `.env.example` to `.env.local` for local development. Configure the same values in Vercel Production and Preview as appropriate, then redeploy. Never use `NEXT_PUBLIC_` for these secrets.
+Tables and RPCs are private to the server service role; public responses contain no subscriber addresses or payment tokens except the caller's own checkout response. Public kit links are bearer links: anyone with the slug can view the saved gear. The service API key can read/write data but cannot apply SQL migrations. Never commit `.env.local` or enter a key in chat.
 
-| Variable | Purpose |
+Configure these values in Vercel **Production**, then redeploy. Preview currently has no provider credentials; a successful Preview build does not verify email, billing or persistence. Run the live smoke/demo after #2, #3 and this PR are merged. Builds and the original catalog fallback do not require these services; retention APIs return a redacted 503 when required services are missing.
+
+| Variable | Purpose / default |
 | --- | --- |
-| `SUPABASE_URL` | Existing shared project API URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-only service-role key for that same project |
-| `APP_URL` | Canonical HTTPS production origin; localhost HTTP allowed in development. Used for Stripe redirects and email links; never derived from request Host |
-| `RATE_LIMIT_SECRET` | Random 32+ byte secret for hashing client IPs |
-| `CRON_SECRET` | Independent random 32+ byte bearer secret for Vercel Cron and demo calls |
-| `RESEND_API_KEY` | Resend API key |
-| `RESEND_FROM` | Verified sender, e.g. `GearFit <reminders@your-domain.com>` |
-| `REMINDER_TEST_MODE` | `true` enables secret-protected immediate demo reminder; default false |
-| `STRIPE_SECRET_KEY` | `sk_test_...` only; live keys are rejected |
-| `STRIPE_WEBHOOK_SECRET` | `whsec_...` for the exact deployed webhook destination |
+| `SUPABASE_URL` | Existing shared Supabase project URL |
+| `SUPABASE_SECRET_KEY` | Preferred server key (`sb_secret_...`); same precedence as the catalog DAL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Legacy server key fallback when `SUPABASE_SECRET_KEY` is blank |
+| `APP_URL` | Canonical HTTPS origin, e.g. `https://palantirbuisness.vercel.app`; local development may use `http://localhost:3000` |
+| `VERCEL_PROJECT_PRODUCTION_URL` | Vercel-provided hostname. When `APP_URL` is blank, links use `https://${VERCEL_PROJECT_PRODUCTION_URL}`. Do not override it with a preview hostname. |
+| `VERCEL` | Vercel sets `1`; selects its trusted `x-vercel-forwarded-for` header for rate limits. Other environments share a `local` bucket. |
+| `RATE_LIMIT_SECRET` | Recommended random 32+ byte secret for HMAC-hashing IP buckets. If absent, SHA-256 without a salt keeps limits working; this provides weaker privacy against guessed IP addresses. Raw IPs are never stored. |
+| `CRON_SECRET` | Required independent random bearer secret for cron and demo calls |
+| `RESEND_API_KEY` | Resend server API key |
+| `RESEND_FROM` | Sender, e.g. `GearFit <onboarding@resend.dev>` for the account owner's test inbox, or a verified domain sender |
+| `REMINDER_TEST_MODE` | `true` enables the authenticated immediate demo; default `false` |
+| `STRIPE_SECRET_KEY` | `sk_test_...` only; live keys are rejected; $4 USD/month price is set on the server |
+| `STRIPE_WEBHOOK_SECRET` | `whsec_...` belonging to the deployed webhook destination |
+| `AFFILIATE_TAG`, `AFFILIATE_PARAM` | Existing click configuration; optional tag and parameter name (default `tag`) |
+| `NEXT_PUBLIC_API_MOCKS` | Leave unset or `0` in production. `1` simulates missing endpoints for local frontend demos only. |
+| `NEXT_PUBLIC_SITE_URL` | Optional public canonical origin for frontend metadata/share previews |
+| `VERCEL_URL` | Vercel-provided deployment hostname; the existing frontend's final metadata fallback |
 
-Configure a Stripe **test** webhook destination at `APP_URL/api/stripe/webhook` for `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`. For local work, `stripe listen --forward-to localhost:3000/api/stripe/webhook` provides a different local webhook secret. The monthly price is fixed server-side at **$4 USD**; no Stripe Price ID setup is needed. Complete Checkout using **4242 4242 4242 4242**, any future expiry and any CVC. Only signed webhook confirmation activates Pro; the redirect alone does not. This is demo billing, not revenue.
+In Stripe **test mode**, create a webhook destination at `${APP_URL}/api/stripe/webhook` for `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`. Set its signing secret in Vercel. Local `stripe listen --forward-to localhost:3000/api/stripe/webhook` uses a different signing secret. Checkout confirmation retrieves the session and subscription from Stripe, verifies the server checkout binding, and records an active/trialing subscription using `apply_stripe_subscription` even if the webhook is late. The webhook remains necessary for later subscription changes. A redirect alone never establishes server-side Pro. See [Stripe's success-page guidance](https://docs.stripe.com/payments/checkout/custom-success-page).
 
-`vercel.json` schedules daily `GET /api/cron/reminders` at **08:00 UTC (13:00 UTC+5)**. Vercel supplies `Authorization: Bearer CRON_SECRET`. This is after the Nov 15 noon submission deadline, so use the immediate demo endpoint for judging. Daily cron is compatible with Hobby scheduling; do not depend on exact-minute execution. Resend onboarding sender can only email the account owner's address; verify a sending domain for other recipients.
+**Resend's onboarding sender only delivers to the Resend account owner's inbox; other recipients need a verified sending domain.** See [Resend's sender restriction](https://resend.com/docs/knowledge-base/403-error-resend-dev-domain). Use an inbox you control for rehearsal. Vercel cron runs `GET /api/cron/reminders` daily at **08:00 UTC / 13:00 UTC+5** with `Authorization: Bearer CRON_SECRET`. That is after the noon deadline, so use the authenticated demo endpoint during judging.
 
-## Retention API / frontend handoff
+## Retention API examples
 
-JSON POSTs require `Content-Type: application/json`; maximum body 128 KiB. Errors are `{ "error": "..." }` (validation also includes `fields`). Statuses: 400 invalid input, 401 invalid cron secret, 403 inactive Pro/test mode disabled, 404 absent kit, 409 missing email consent, 413 too large, 415 wrong content type, 429 limited, 503 service/configuration failure. Public POSTs are atomically rate-limited in Supabase, across Vercel instances. Stripe webhooks use signature authentication rather than public-user limits. All retention responses avoid caching.
+All JSON POSTs require `Content-Type: application/json`, with a 128 KiB limit. Errors use `{ "error": "..." }`; validation can add `fields`. Statuses include 400 invalid input, 401 invalid cron secret, 403 inactive Pro/demo disabled, 404 unknown resource, 409 missing email consent, 413 oversized body, 415 wrong content type, 429 rate limit (with `Retry-After`), and 503 unavailable configuration/provider. Responses are not cached. Rate limits are durable SQL counters shared by Vercel instances.
 
-### Save and load kits (no account/login)
+### Saved kits
 
-`POST /api/kits`
-
-```json
-{"answers":{"trade":"electrician","climate":"mild","gender":"men","hoursPerWeek":40,"budget":"balanced","extraHazards":[],"employer":[]}}
-```
-
-201 response:
-
-```json
-{"slug":"AbCdEf123_-x","createdAt":"2026-11-14T10:00:00.000Z"}
-```
-
-Optional `items` accepts the current UI's selected items, in engine order, each with at least `{"pick":{"product":{"id":"product-id"}}}`. Omit it to save default picks. Server checks selected IDs against that item's engine options and stores canonical prices, standards and effective lifespans; it never trusts client-edited safety metadata. Free allowance: **3 saves per client IP per rolling 24 hours**. Pro has no saved-kit quota; both plans retain a 60 POST/hour abuse limit. Shared networks share the free allowance; no-login identity cannot enforce a per-person quota. Kit links are public bearer links: do not put private contact information in answers.
-
-`GET /api/kits/AbCdEf123_-x` → 200:
+`POST /api/kits` accepts the exact `ensureCloudSlug` request:
 
 ```json
-{"id":"uuid","slug":"AbCdEf123_-x","answers":{"trade":"electrician"},"items":[{"category":"boots","pick":{"product":{"id":"thorogood-moc","price":280},"lifespanMonths":30}}],"created_at":"2026-11-14T10:00:00Z"}
+{
+  "answers": { "trade": "plumber", "climate": "mild", "gender": "men", "hoursPerWeek": 40, "budget": "balanced", "extraHazards": [], "employer": [] },
+  "token": "eyJ0cmFkZ...",
+  "choices": ["", "stale-product"],
+  "tradeLabel": "Plumber",
+  "items": [],
+  "totals": { "upfront": 412, "perMonth": 27.4 }
+}
 ```
 
-Example above is abbreviated; actual answers and items contain full snapshots. Frontend must load this endpoint for a slug and render the stored picks. Current `/kit?k=...` still recomputes the original URL answers and does not load slugs. No frontend files were edited. Email links currently expose the saved-kit JSON endpoint until frontend integration supplies a saved-kit view.
+Response **201** `{"slug":"AbCdEf123_-x","createdAt":"2026-11-14T10:00:00.000Z"}`. Only validated `answers` and optional `choices` (max 20 product IDs or empty strings) affect storage. `token`, `tradeLabel`, `items`, and `totals` are accepted and discarded. `buildKit(answers)` rebuilds current server picks. Each choice must belong to that position's pick/alternatives; an empty, missing or stale choice keeps the pick. Storage is `{category,label,pick}` per item, without alternatives; client prices, lifespans and safety claims cannot overwrite it.
 
-### Replacement reminders and demo
+There is one abuse limit of **200 saves/hour/IP**. The frontend's `FREE_KIT_LIMIT` controls the three free kits per device; cloud saves have no per-IP free quota and do not need a Pro token. A shared venue therefore has 200 saves/hour rather than three saves for everyone.
 
-`POST /api/reminders` with `{"email":"worker@example.com","kitSlug":"AbCdEf123_-x"}` → 202 `{"status":"confirmation_required","message":"If confirmation is needed, check your email."}`. Limit 5/hour/IP, plus 3/hour/email globally. Duplicate active signup is a no-op; new or expired confirmation sends an email. The email contains a 24-hour link. `GET /api/reminders/confirm?token=...` renders a confirmation form without changing consent, so link scanners cannot subscribe users. Pressing the form posts to that URL → 200 `{"status":"confirmed","message":"Your replacement reminders are enabled."}`. Confirmation tokens are stored hashed.
-
-`GET` or `POST /api/reminders/unsubscribe?token=...` → 200 `{"status":"unsubscribed"}` (with a message). No login required. Cancels unsent replacements and suppresses Pro deal email for that kit. Mail contains both a visible unsubscribe link and List-Unsubscribe headers.
-
-`GET /api/cron/reminders`, with `Authorization: Bearer <CRON_SECRET>`, sends due items for confirmed subscribers only. Due date = kit creation + effective lifespan × 30.4 days. Each item generates one replacement email; saving a new kit starts a new cycle. This is an estimate, not a safety inspection or live wear sensor. Cron processes bounded batches; rerun authenticated GET to drain a backlog. Response includes sent/failed counts for reminders and deals.
-
-For the immediate demo, set `REMINDER_TEST_MODE=true`, save a kit, sign up **with an inbox you control**, and confirm the email. Then:
-
-```bash
-curl -X POST "$APP_URL/api/cron/reminders" \
-  -H "Authorization: Bearer $CRON_SECRET" -H 'Content-Type: application/json' \
-  -d '{"kitSlug":"AbCdEf123_-x"}'
-```
-
-200 `{"sent":1,"failed":0,"queued":1}`. Demo sends a clearly labeled email immediately, only to confirmed subscribers of that kit. It is idempotent: one demo per signup, separate from real reminder dates. Unsubscribe and repeat to demonstrate suppression. Turn test mode off after judging. Keep cron secrets on the server/operator terminal, never in browser JS.
-
-### Pro checkout, status, wear and deals
-
-`POST /api/subscribe` with `{"email":"worker@example.com"}` → 201:
+`GET /api/kits/AbCdEf123_-x` → **200** (illustrative item values):
 
 ```json
-{"url":"https://checkout.stripe.com/c/pay/...","accessToken":"opaque-secret-token","testMode":true}
+{
+  "slug": "AbCdEf123_-x",
+  "answers": { "trade": "plumber", "extraHazards": [], "climate": "mild", "gender": "men", "hoursPerWeek": 40, "budget": "balanced", "employer": [] },
+  "items": [{ "category": "boots", "label": "Work boots", "productId": "tb-pitboss-st", "brand": "Timberland PRO", "name": "Pit Boss", "price": 150, "lifespanMonths": 12, "costPerMonth": 12.5 }],
+  "createdAt": "2026-11-14T10:00:00.000Z"
+}
 ```
 
-Limit 5/hour/IP. **Retain accessToken before navigating to url.** Send it as `Authorization: Bearer <accessToken>` for Pro APIs and unlimited kit saves. Treat it as a secret; never put it in links or analytics. It is bound to this checkout, not any existing subscriber with the same submitted email. Store securely on the client for this no-account demo; losing it loses Pro access from that browser. Do not create a second paid checkout just to recover a lost token; account recovery is outside this hackathon backend.
+Unknown slug → **404** `{"error":"Kit not found"}`. `items[].productId` restores swaps on the frontend `/k/<slug>` page.
 
-`POST /api/stripe/webhook`: raw Stripe event JSON plus `Stripe-Signature` → 200 `{"received":true}`. Stripe sends this endpoint; frontend must not call it. Duplicate events are deduplicated atomically; current subscription state is retrieved from Stripe and older state cannot overwrite newer events. Canceling a test subscription disables Pro through this webhook.
+### Reminders and cron
 
-`GET /api/pro`, with token → 200 `{"pro":true,"features":["unlimited_saved_kits","wear_tracking","deal_alerts"]}`; an inactive/missing token returns 200 `{"pro":false,"features":[]}`. Frontend can poll after Checkout until the webhook arrives. Other Pro endpoints return 403 without an active token.
+| Request | Response / action |
+| --- | --- |
+| `POST /api/reminders` body `{"email":"worker@example.com","kitSlug":"AbCdEf123_-x"}` | **200** `{"status":"pending"}` after sending confirmation; `{"status":"confirmed"}` for an already active signup. 30/hour/IP and 10/hour/email. |
+| `GET /api/reminders/confirm?token=<opaque-token>` | **200 HTML** mobile confirmation form. Does not confirm consent; link scanners cannot subscribe someone. Invalid token → **303** `/reminders?status=invalid`. |
+| `POST /api/reminders/confirm?token=<opaque-token>` (form, no JSON body required) | **303** `/reminders?status=confirmed&kit=AbCdEf123_-x`, `status=expired&kit=AbCdEf123_-x`, or `status=invalid`. GET/POST share 60/hour/IP. |
+| `GET /api/reminders/unsubscribe?token=<opaque-token>` | **303** `/reminders?status=unsubscribed&kit=AbCdEf123_-x`, or `status=invalid`; 60/hour/IP. |
+| `POST /api/reminders/unsubscribe?token=<opaque-token>` (mail provider's one-click unsubscribe) | **200** `{"status":"unsubscribed"}`; invalid token → **400** `{ "error": "Invalid unsubscribe link" }`. Shares the 60/hour/IP limit. |
+| `GET /api/cron/reminders`, bearer `CRON_SECRET` | **200** `{"sent":1,"failed":0,"queued":0,"deals":{"sent":0,"failed":0}}`; sends due confirmed items and opted-in Pro deal alerts. |
+| `POST /api/cron/reminders`, bearer `CRON_SECRET`, body `{"kitSlug":"AbCdEf123_-x"}` | Requires `REMINDER_TEST_MODE=true`. **200** `{"sent":1,"failed":0,"queued":1}` for one confirmed recipient. Each deliberate call creates a fresh demo delivery ID/idempotency key, using the first item's real name. No confirmed recipients → all counts zero. |
 
-`POST /api/pro/wear`, with token:
+Confirmation tokens expire after 24 hours and are stored hashed. `confirm_reminder` returns `{status,slug}`; an old consumed link cannot reactivate a later unsubscribe. Unsubscribe cancels unsent replacements and suppresses deal mail. Every email links to `${APP_URL}/k/<slug>`. Real reminder `due_at = kit.created_at + lifespanMonths × 30.4 days − 7 days`; daily cron sends on or after that time, once per item. A past-due signup is eligible at the next cron run. No live wear sensor or manufacturer service-life guarantee is implied.
+
+Real jobs retain deduplication and leases across retries. Rehearsals are separate from real jobs. Resend [idempotency keys expire after 24 hours](https://resend.com/docs/api-reference/emails/send-email); ambiguous deliveries older than 23 hours remain quarantined for operator review. Check provider delivery before manually resetting a failed/ambiguous job. Turn demo mode off after judging.
+
+### Checkout and retained Pro APIs
+
+`POST /api/subscribe` body `{"email":"worker@example.com"}` → **200** `{"url":"https://checkout.stripe.com/c/pay/cs_test_...","accessToken":"opaque-secret-capability","testMode":true}`. Limit **30/hour/IP**. Monthly price is fixed at $4 USD. The URLs are:
+
+- Success: `${APP_URL}/pro?status=success&session_id={CHECKOUT_SESSION_ID}`
+- Cancel: `${APP_URL}/pro?status=cancel`
+
+`GET /api/subscribe?session_id=cs_test_...` → **200** `{"active":true,"email":"worker@example.com"}` when Checkout is complete and the bound subscription is active/trialing; otherwise `active:false`. Unknown/foreign sessions return 404; malformed/live IDs return 400. Active responses also persist through `apply_stripe_subscription`, event ID `checkout:<session id>`, so stats do not depend on webhook arrival.
+
+`POST /api/stripe/webhook`, raw signed Stripe event JSON such as `{"id":"evt_...","type":"customer.subscription.updated","data":{"object":{"id":"sub_..."}}}` plus `Stripe-Signature` → **200** `{"received":true}`. The example is abbreviated: Stripe sends the full signed event. Duplicate events are deduplicated; current state is retrieved from Stripe, and canceled subscriptions cannot be reactivated by stale delivery. Do not call this endpoint from the frontend.
+
+The current UI **does not call `/api/pro`, `/api/pro/wear`, `/api/pro/deals` or retain `accessToken`**. Those capabilities are preserved for a later client; device wear tracking continues as implemented by the frontend. They require the capability returned by the originating Checkout, not a claimed email address. Keep the token out of URLs and logs. Losing it loses that server capability; recovery is outside this no-account demo.
+
+| Request (bearer `accessToken`) | Response example |
+| --- | --- |
+| `GET /api/pro` | **200** `{"pro":true,"features":["unlimited_saved_kits","wear_tracking","deal_alerts"]}`; inactive/missing token → `{"pro":false,"features":[]}`. |
+| `POST /api/pro/wear` body `{"kitSlug":"AbCdEf123_-x","productId":"tb-pitboss-st","date":"2026-11-14","hours":8}` | **200** `{"saved":true}`; replaces absolute hours for that item/day, 0–24. |
+| `GET /api/pro/wear?kitSlug=AbCdEf123_-x` | **200** `{"entries":[{"product_id":"tb-pitboss-st","worn_on":"2026-11-14","hours":8}]}`; latest 1,000 entries for this capability. |
+| `POST /api/pro/deals` body `{"kitSlug":"AbCdEf123_-x","enabled":true}` | **200** `{"enabled":true}`; enabling requires confirmed reminder consent for this email/kit. `false` disables it. |
+| `GET /api/pro/deals?kitSlug=AbCdEf123_-x` | **200** `{"deals":[],"source":"catalog_estimates"}`; compares the retained bundled catalog against saved prices, never invents retailer discounts. |
+
+### Stats
+
+`GET /api/stats` → **200**:
 
 ```json
-{"kitSlug":"AbCdEf123_-x","productId":"thorogood-moc","date":"2026-11-14","hours":8}
+{"kitsCreated":12,"clicks":34,"clickTrackingAvailable":true,"reminderSignups":5,"confirmedReminders":3,"proConversions":1,"activePro":1,"stripeMode":"test"}
 ```
 
-200 `{"saved":true}`. Records absolute hours for that item/date, 0–24; retries replace rather than double-count. Future/invalid dates and products outside the saved kit are rejected. `GET /api/pro/wear?kitSlug=AbCdEf123_-x` → `{"entries":[{"product_id":"thorogood-moc","worn_on":"2026-11-14","hours":8}]}`. Returns latest 1,000 entries. Wear logs are personal to the Pro token and do not change the immutable kit or baseline reminder schedule.
+Field names remain compatible. The frontend maps `proConversions` to its `proSubscribers` label. Counts come from SQL, including the existing `public.clicks` table; zero clicks is `0`. Signups include pending/unsubscribed email-kit records; confirmed reminders count current consent. Pro conversions count distinct emails ever active/trialing, and active Pro counts current unexpired active/trialing subscriptions. These are test conversions, not revenue or unique-person marketing metrics.
 
-`POST /api/pro/deals` with token and `{"kitSlug":"AbCdEf123_-x","enabled":true}` → `{"enabled":true}`. Requires confirmed reminder consent for this email/kit; `false` disables alerts. `GET /api/pro/deals?kitSlug=AbCdEf123_-x` → `{"deals":[],"source":"catalog_estimates"}`. Daily cron emails once per changed price fingerprint when a saved item's current catalog estimate falls below its saved price. No fabricated deals or live retailer scraping; the catalog engineer must update prices for drops to exist. Unsubscribe suppresses email. Both endpoints require active Pro.
+## 60-second production demo
 
-### Pitch metrics
+Prerequisites: merge #2 and #3 before retention, apply SQL once, seed catalog, set Production env, redeploy, use a permitted Resend inbox, enable demo mode. Have the inbox and test card ready.
 
-`GET /api/stats` → 200:
+1. **0–15 s:** Build a kit, swap an item, tap **Save**, open `/k/<slug>` on a phone and check the selected product.
+2. **15–30 s:** Choose **Remind me**, enter your email, open its link, press **Confirm** and land on `/reminders?status=confirmed&kit=<slug>`.
+3. **30–40 s:** Run the following operator command and open the demo email. Repeat if needed; every call gets a new demo delivery.
 
-```json
-{"kitsCreated":12,"clicks":null,"clickTrackingAvailable":false,"reminderSignups":5,"confirmedReminders":3,"proConversions":1,"activePro":1,"stripeMode":"test"}
-```
+   ```bash
+   curl -X POST "$APP_URL/api/cron/reminders" \
+     -H "Authorization: Bearer $CRON_SECRET" \
+     -H "Content-Type: application/json" \
+     -d '{"kitSlug":"<slug>"}'
+   ```
 
-Counts are actual SQL counts, with no email addresses. `reminderSignups` counts unique email/kit signup records including pending/unsubscribed; `confirmedReminders` counts currently confirmed subscriptions. `proConversions` is distinct emails that activated test subscriptions. `clicks:null` means `public.clicks` is not integrated yet, not zero clicks. These counts cannot establish LTV or CAC on their own. For the pitch, label $4/month revenue and lifetime/churn/CAC projections as assumptions, distinguish test conversions from paying customers, and report observed signup/conversion ratios separately.
+4. **40–55 s:** Open `/pro`, pay with test card **4242 4242 4242 4242**, any future expiry and CVC, return to `/pro` and see **Pro is active**.
+5. **55–60 s:** Open `GET /api/stats` and show the increased kit, reminder and Pro counts. Actual email/Checkout latency can lengthen the demo.
 
-## Reliability and validation
-
-Run `npm run lint`, `npm test`, and `npm run build` before every push. Unit tests cover validation, selection integrity, opt-in boundaries, webhook handling and capabilities; SQL tests execute migrations in embedded Postgres (PGlite). Builds do not need service secrets. Live readiness still requires applying migrations, configuring provider credentials/webhook/domain, wiring frontend controls, and running the demo on the deployed origin.
-
-Mail uses database claims plus stable Resend idempotency keys. Resend retains keys for 24 hours; ambiguous attempts older than 23 hours stop for operator review instead of risking duplicate email. Inspect `reminder_deliveries` / `deal_alert_deliveries` after failures; verify provider delivery before resetting an ambiguous attempt. Cron does not provide exactly-once transactional delivery across two services. Successful sends are never automatically repeated. Only anonymous aggregates are exposed publicly; emails, payment bindings, wear logs and tokens stay behind service-role APIs.
+Run `npm run lint`, `npm test`, and `npm run build` before every push. Tests cover the exact frontend payload, canonical snapshots, stale choices, redirects, Stripe session binding, limits/config fallbacks and real Postgres migration/RPC execution. Live delivery, Checkout, webhook callbacks and deployed counts require the post-merge production smoke above.
