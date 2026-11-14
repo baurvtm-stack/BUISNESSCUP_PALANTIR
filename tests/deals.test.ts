@@ -25,6 +25,8 @@ let enabled: boolean;
 let confirmed: boolean;
 let active: boolean;
 let providerStatus: number;
+let providerStatuses: number[];
+let failDeliveryDelete: boolean;
 let brokenTable: string | undefined;
 let kitExists: boolean;
 let claimed: Set<string>;
@@ -37,6 +39,8 @@ beforeEach(() => {
   active = true;
   kitExists = true;
   providerStatus = 200;
+  providerStatuses = [];
+  failDeliveryDelete = false;
   brokenTable = undefined;
   claimed = new Set();
   alertCount = 1;
@@ -57,7 +61,7 @@ beforeEach(() => {
     const body = init?.body ? JSON.parse(String(init.body)) : {};
     if (url.hostname === "api.resend.com") {
       emails.push({ key: new Headers(init?.headers).get("idempotency-key"), text: body.text, to: body.to });
-      return Response.json({}, { status: providerStatus });
+      return Response.json({}, { status: providerStatuses.shift() ?? providerStatus });
     }
     const table = url.pathname.split("/").at(-1)!;
     const method = init?.method ?? "GET";
@@ -70,6 +74,7 @@ beforeEach(() => {
       return Response.json(granted);
     }
     if (table === "deal_alert_deliveries" && method === "DELETE" && url.searchParams.get("sent_at") === "is.null") {
+      if (failDeliveryDelete) return Response.json({ message: "Delete unavailable" }, { status: 503 });
       const alert = url.searchParams.get("alert_id")?.replace(/^eq\./, "");
       const fingerprint = url.searchParams.get("fingerprint")?.replace(/^eq\./, "");
       claimed.delete(`${alert}:${fingerprint}`);
@@ -175,6 +180,23 @@ describe("daily deal delivery failures", () => {
     expect(await dispatchDealAlerts()).toEqual({ sent: 1, failed: 0 });
     expect(emails).toHaveLength(2);
     expect(emails[1].key).toBe(emails[0].key);
+  });
+
+  it("counts a failed cleanup once and still sends the next alert", async () => {
+    alertCount = 2;
+    providerStatuses = [429, 200];
+    failDeliveryDelete = true;
+    expect(await dispatchDealAlerts()).toEqual({ sent: 1, failed: 1 });
+    expect(emails).toHaveLength(2);
+    const releases = calls.filter((call) => call.table === "deal_alert_deliveries" && call.method === "DELETE");
+    expect(releases).toHaveLength(1);
+    expect(releases[0].query.get("alert_id")).toBe(`eq.${alertId}`);
+    expect(releases[0].query.get("sent_at")).toBe("is.null");
+    const fingerprint = releases[0].query.get("fingerprint")!.replace(/^eq\./, "");
+    expect(claimed.has(`${alertId}:${fingerprint}`)).toBe(true);
+    const sent = calls.filter((call) => call.table === "deal_alert_deliveries" && call.method === "PATCH");
+    expect(sent).toHaveLength(1);
+    expect(sent[0].query.get("alert_id")).toBe(`eq.${alertId.slice(0, -1)}1`);
   });
 
   it("keeps an ambiguous 500 quarantined instead of risking duplicate mail", async () => {
