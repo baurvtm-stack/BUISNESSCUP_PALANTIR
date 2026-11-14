@@ -51,15 +51,51 @@ describe("Checkout confirmation retries", () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
-  it("includes stalled requests in the total ten-second budget", async () => {
+  it.each([false, true])("allows a six-second verification response (retry: %s)", async (retry) => {
+    if (retry) fetchMock.mockResolvedValueOnce(Response.json({ error: "Unavailable" }, { status: 503 }));
+    fetchMock.mockImplementation((_url, init) => new Promise((resolve, reject) => {
+      const timer = setTimeout(() => resolve(Response.json({ active: true })), 6000);
+      init.signal.addEventListener("abort", () => {
+        clearTimeout(timer);
+        reject(new Error("Timed out"));
+      });
+    }));
+    const start = Date.now();
+    const result = confirmCheckout("cs_test_pending");
+    await vi.runAllTimersAsync();
+    expect(await result).toMatchObject({ kind: "ok", data: { active: true } });
+    expect(fetchMock).toHaveBeenCalledTimes(retry ? 2 : 1);
+    expect(Date.now() - start).toBe(retry ? 7000 : 6000);
+  });
+
+  it("times out each stalled attempt at eight seconds and skips retries outside the budget", async () => {
+    const start = Date.now();
+    const abortedAt: number[] = [];
     fetchMock.mockImplementation((_url, init) => new Promise((_resolve, reject) => {
+      init.signal.addEventListener("abort", () => {
+        abortedAt.push(Date.now() - start);
+        reject(new Error("Timed out"));
+      });
+    }));
+    const result = confirmCheckout("cs_test_pending");
+    await vi.runAllTimersAsync();
+    expect(await result).toMatchObject({ kind: "unavailable" });
+    expect(abortedAt).toEqual([8000, 17000]);
+    expect(Date.now() - start).toBe(17000);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("caps the final attempt at the remaining twenty-second total budget", async () => {
+    fetchMock.mockImplementationOnce(() => new Promise((resolve) => {
+      setTimeout(() => resolve(Response.json({ error: "Unavailable" }, { status: 503 })), 2000);
+    })).mockImplementation((_url, init) => new Promise((_resolve, reject) => {
       init.signal.addEventListener("abort", () => reject(new Error("Timed out")));
     }));
     const start = Date.now();
     const result = confirmCheckout("cs_test_pending");
     await vi.runAllTimersAsync();
     expect(await result).toMatchObject({ kind: "unavailable" });
-    expect(Date.now() - start).toBe(10000);
+    expect(Date.now() - start).toBe(20000);
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 });

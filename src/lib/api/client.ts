@@ -225,17 +225,17 @@ export async function getCheckoutStatus(sessionId: string, timeoutMs = 8000): Pr
   return { kind: "ok", data: { active, email: str(d, "email") } };
 }
 
-/** Allow a pending checkout to settle, with a ten-second budget including request timeouts. */
+/** Allow a pending checkout to settle, with a twenty-second budget including request timeouts. */
 export async function confirmCheckout(sessionId: string): Promise<ApiOutcome<SubscriptionStatus>> {
-  const deadline = Date.now() + 10000;
-  let out = await getCheckoutStatus(sessionId, 2500);
+  const deadline = Date.now() + 20000;
+  let out = await getCheckoutStatus(sessionId, 8000);
   for (const delay of [1000, 3000, 5000]) {
     if (out.kind === "rejected" || (out.kind === "ok" && out.data.active)) return out;
     if (deadline - Date.now() <= delay) break;
     await new Promise((resolve) => setTimeout(resolve, delay));
     const remaining = deadline - Date.now();
     if (remaining <= 0) break;
-    out = await getCheckoutStatus(sessionId, Math.min(2500, remaining));
+    out = await getCheckoutStatus(sessionId, Math.min(8000, remaining));
   }
   return out;
 }
