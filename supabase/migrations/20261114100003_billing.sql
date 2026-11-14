@@ -59,7 +59,7 @@ begin
   if not found then return; end if;
   insert into subscriptions(id,email,checkout_id,customer_id,status,event_created,cancel_at_period_end,activated_at,current_period_end)
     values(p_subscription_id,p_email,p_checkout_id,p_customer_id,p_status,p_event_created,p_cancel_at_period_end,
-      case when p_status='active' then now() else null end,p_current_period_end)
+      case when p_status in ('active', 'trialing') then now() else null end,p_current_period_end)
   on conflict(id) do update set email=excluded.email, status=excluded.status,
     event_created=excluded.event_created, cancel_at_period_end=excluded.cancel_at_period_end, updated_at=now(),
     activated_at=coalesce(subscriptions.activated_at,excluded.activated_at), current_period_end=excluded.current_period_end
