@@ -6,6 +6,7 @@ import { AnimatedNumber } from "@/components/fx";
 import { Icon, categoryIcon } from "@/components/icons";
 import { AnimatePresence, EASE, m, MotionRoot } from "@/components/motion";
 import ReminderForm from "@/components/ReminderForm";
+import DealAlerts from "@/components/DealAlerts";
 import { Button, ButtonLink, Chip, Eyebrow, IconTile, Notice, StandardBadge } from "@/components/ui";
 import { cssVars } from "@/lib/css";
 import type { KitItemSnapshot } from "@/lib/api/contract";
@@ -295,7 +296,10 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
 
           {/* ---------- Sidebar ---------- */}
           <aside className="animate-rise space-y-4 lg:sticky lg:top-24 lg:self-start print:hidden" style={cssVars({ "--delay": "320ms" })}>
-            <ReminderForm getSlug={getSlug} items={snapshot} activeEmail={saved?.reminderEmail} onSubscribed={onSubscribed} />
+            <div id="replacement-reminders" tabIndex={-1} className="scroll-mt-24 rounded-3xl focus-visible:outline-accent">
+              <ReminderForm getSlug={getSlug} items={snapshot} activeEmail={saved?.reminderEmail} onSubscribed={onSubscribed} />
+            </div>
+            <DealAlerts key={slug ?? "unsaved"} kitSlug={slug} isPro={!!pro} />
 
             {kit.standards.length > 0 && (
               <div className="rounded-3xl border border-line bg-card p-5 sm:p-6">

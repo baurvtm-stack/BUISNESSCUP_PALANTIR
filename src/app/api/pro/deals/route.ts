@@ -60,20 +60,41 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   return handle(async () => {
-    await requirePro(request);
+    const pro = await requirePro(request);
     const kitSlug = kitSlugSchema.parse(
       new URL(request.url).searchParams.get("kitSlug"),
     );
     const { data: kit, error } = await db()
       .from("kits")
-      .select("items")
+      .select("id,items")
       .eq("slug", kitSlug)
       .maybeSingle();
     if (error) throw new ApiError(503, "Kit lookup unavailable");
     if (!kit) throw new ApiError(404, "Kit not found");
+    const { data: alert, error: alertError } = await db()
+      .from("pro_deal_alerts")
+      .select("enabled")
+      .eq("checkout_id", pro.checkoutId)
+      .eq("kit_slug", kitSlug)
+      .maybeSingle();
+    if (alertError) throw new ApiError(503, "Deal alerts unavailable");
+    let enabled = false;
+    if (alert?.enabled) {
+      const { data: reminder, error: consentError } = await db()
+        .from("reminders")
+        .select("id")
+        .eq("email", pro.email)
+        .eq("kit_id", kit.id)
+        .not("confirmed_at", "is", null)
+        .is("unsubscribed_at", null)
+        .maybeSingle();
+      if (consentError) throw new ApiError(503, "Reminder lookup unavailable");
+      enabled = !!reminder;
+    }
     return json({
-      deals: findDeals(kit.items as CategoryResult[]),
+      deals: await findDeals(kit.items as CategoryResult[]),
       source: "catalog_estimates",
+      enabled,
     });
   });
 }
