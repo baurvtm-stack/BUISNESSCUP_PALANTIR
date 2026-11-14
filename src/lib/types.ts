@@ -139,6 +139,7 @@ export interface Pick {
   costPerMonth: number;
   lifespanMonths: number;
   reasons: string[];
+  why: string;
   missing: string[];
 }
 
