@@ -18,10 +18,22 @@ const heading = Barlow_Condensed({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+/** Absolute base for share and OG links. A malformed env value must never break the build. */
+function siteUrl(): URL {
+  const env = process.env;
+  for (const value of [env.NEXT_PUBLIC_SITE_URL, env.VERCEL_PROJECT_PRODUCTION_URL, env.VERCEL_URL]) {
+    if (!value?.trim()) continue;
+    try {
+      return new URL(/^https?:\/\//.test(value.trim()) ? value.trim() : `https://${value.trim()}`);
+    } catch {
+      /* try the next candidate */
+    }
+  }
+  return new URL("http://localhost:3000");
+}
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: siteUrl(),
   title: {
     default: "GearFit | Work gear that passes the site check",
     template: "%s | GearFit",
