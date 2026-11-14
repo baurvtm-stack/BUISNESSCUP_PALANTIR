@@ -69,6 +69,11 @@ beforeEach(() => {
       claimed.add(key);
       return Response.json(granted);
     }
+    if (table === "deal_alert_deliveries" && method === "DELETE" && url.searchParams.get("sent_at") === "is.null") {
+      const alert = url.searchParams.get("alert_id")?.replace(/^eq\./, "");
+      const fingerprint = url.searchParams.get("fingerprint")?.replace(/^eq\./, "");
+      claimed.delete(`${alert}:${fingerprint}`);
+    }
     if (method !== "GET") {
       if (table === "pro_deal_alerts" && typeof body.enabled === "boolean") enabled = body.enabled;
       return new Response(null, { status: method === "POST" ? 201 : 204 });
@@ -151,6 +156,34 @@ describe("daily deal catalog reads", () => {
     enabled = false;
     expect(await dispatchDealAlerts()).toEqual({ sent: 0, failed: 0 });
     expect(fake.catalog).not.toHaveBeenCalled();
+  });
+});
+
+describe("daily deal delivery failures", () => {
+  it("releases only the rejected unsent row after 429 so the next run sends", async () => {
+    providerStatus = 429;
+    expect(await dispatchDealAlerts()).toEqual({ sent: 0, failed: 1 });
+    const claim = calls.find((call) => call.table === "claim_deal_delivery")!;
+    const releases = calls.filter((call) => call.table === "deal_alert_deliveries" && call.method === "DELETE");
+    expect(releases).toHaveLength(1);
+    expect(Object.fromEntries(releases[0].query)).toEqual({
+      alert_id: `eq.${alertId}`,
+      fingerprint: `eq.${claim.body.p_fingerprint}`,
+      sent_at: "is.null",
+    });
+    providerStatus = 200;
+    expect(await dispatchDealAlerts()).toEqual({ sent: 1, failed: 0 });
+    expect(emails).toHaveLength(2);
+    expect(emails[1].key).toBe(emails[0].key);
+  });
+
+  it("keeps an ambiguous 500 quarantined instead of risking duplicate mail", async () => {
+    providerStatus = 500;
+    expect(await dispatchDealAlerts()).toEqual({ sent: 0, failed: 1 });
+    expect(calls.some((call) => call.method === "DELETE")).toBe(false);
+    providerStatus = 200;
+    expect(await dispatchDealAlerts()).toEqual({ sent: 0, failed: 0 });
+    expect(emails).toHaveLength(1);
   });
 });
 

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { ApiError, baseUrl, db, env, hashToken } from "@/lib/retention/core";
 import { PRODUCTS } from "@/data/products";
 import type { CategoryResult, Product } from "@/lib/types";
-import { sendEmail } from "@/lib/retention/reminders";
+import { EmailError, sendEmail } from "@/lib/retention/reminders";
 import { getProducts } from "@/lib/server/catalog";
 import { proAccessTokenSchema } from "@/lib/retention/validation";
 
@@ -318,8 +318,18 @@ export async function dispatchDealAlerts(): Promise<{
         .eq("fingerprint", fingerprint);
       if (markError) throw new Error("Delivery acknowledgement unavailable");
       sent++;
-    } catch {
+    } catch (error) {
       failed++;
+      if (error instanceof EmailError && error.definiteFailure) {
+        // A definite rejection did not send mail; let the next daily run claim it again.
+        const { error: releaseError } = await db()
+          .from("deal_alert_deliveries")
+          .delete()
+          .eq("alert_id", alert.id)
+          .eq("fingerprint", fingerprint)
+          .is("sent_at", null);
+        if (releaseError) throw new ApiError(503, "Could not release failed deal delivery");
+      }
     }
   }
   return { sent, failed };
