@@ -53,7 +53,7 @@ Supported today: electrician, carpenter/framer, construction laborer, plumber/pi
 | | |
 | --- | --- |
 | **Standards-matched kit** | Trade, hazards, climate, hours and site rules become a list of requirements (ASTM F2413, ANSI Z87.1, ANSI Z89.1, ANSI/ISEA 105, 107 and 138, NFPA 70E). Only gear that meets every one of them is shown, and each pick says *why* it is there. |
-| **Real cost of wear** | Every item shows today's price, estimated months of use at *your* hours, and cost per month. The kit compares itself with the cheapest compliant kit, for example: pay $101 more today, save $70 a year. |
+| **Real cost of wear** | Every item shows today's price, estimated months of use at *your* hours, and cost per month. The kit leads with a savings counter against the cheapest compliant kit, for example: pay $101 more today, save $70 a year. The counter rolls to the new number on every swap. |
 | **Swap and compare** | Each slot offers alternatives (lowest price, lowest cost per month, top quality) with pros and cons computed from catalog data. Compare shows your kit three ways (*Lowest price today*, *Best value*, *Best quality*) side by side. |
 | **No account, one link** | The whole kit is encoded in its URL. Save it to My kits, share it with the phone's share sheet, print a shopping list, or get a short `/k/<slug>` link that rebuilds the same kit on any device. |
 | **Check price** | Opens the maker's own product page (152 of 153 products), logged as a click tied to the kit. Visitors outside the US get a US Google Shopping comparison for the same model, because many US stores block them. |
@@ -66,7 +66,7 @@ Supported today: electrician, carpenter/framer, construction laborer, plumber/pi
     <td width="50%" valign="top"><img src="docs/readme/wizard.jpg" alt="GearFit questionnaire with live kit preview"><br><sub><b>5 questions.</b> Trade, hazards, conditions, site rules, fit and budget, with the kit building live on the right.</sub></td>
   </tr>
   <tr>
-    <td width="50%" valign="top"><img src="docs/readme/kit.jpg" alt="A complete electrician kit with prices and cost per month"><br><sub><b>The kit.</b> Every piece with its standard, price, months of wear and cost per month, plus swap options.</sub></td>
+    <td width="50%" valign="top"><img src="docs/readme/kit.jpg" alt="A complete electrician kit with prices and cost per month"><br><sub><b>The kit.</b> What it saves a year, then every piece with its standard, price, months of wear and cost per month, plus swap options.</sub></td>
     <td width="50%" valign="top"><img src="docs/readme/compare.jpg" alt="The same kit at three budget levels side by side"><br><sub><b>Compare.</b> The same kit at three budget levels, item by item.</sub></td>
   </tr>
 </table>
@@ -81,7 +81,7 @@ Supported today: electrician, carpenter/framer, construction laborer, plumber/pi
 Everything below runs on production, with no sign-up.
 
 1. **Open a ready kit:** [electrician, 45 hours a week](https://palantirbuisness.vercel.app/kit?k=eyJ0cmFkZSI6ImVsZWN0cmljaWFuIiwiZ2VuZGVyIjoibWVuIiwiaG91cnNQZXJXZWVrIjo0NX0). Six pieces, **$291 today, $24.23 a month**, $101 more than the cheapest compliant kit today but **$70 a year cheaper** to keep up. Gloves are the first thing to replace, in about 4.6 months.
-2. **Swap the boots** for the other $110 pair under *Lowest price*. Same sticker price, and the monthly cost rises to $28.89, because that pair wears out sooner.
+2. **Swap the boots** for the other $110 pair under *Lowest price*. Same sticker price, and the monthly cost rises to $28.89, because that pair wears out sooner. The savings counter rolls from $70 down to $14 a year.
 3. **[Compare price tiers](https://palantirbuisness.vercel.app/compare?k=eyJ0cmFkZSI6ImVsZWN0cmljaWFuIiwiZ2VuZGVyIjoibWVuIiwiaG91cnNQZXJXZWVrIjo0NX0):** the same kit at *Lowest price today*, *Best value* and *Best quality*.
 4. **Save, then Share.** You get a short `/k/<slug>` link. Open it in a private window: the server rebuilds the identical kit.
 5. **Check price** on any item to land on the maker's product page.
