@@ -6,7 +6,8 @@ type Variant = "primary" | "dark" | "outline" | "ghost" | "light";
 type Size = "sm" | "md" | "lg";
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-accent text-[#15171a] hover:bg-accent-hover shadow-[0_1px_0_rgb(0_0_0/0.08)]",
+  primary:
+    "bg-accent text-[#15171a] shadow-[0_1px_0_rgb(0_0_0/0.08)] hover:bg-accent-hover hover:shadow-[0_10px_24px_-10px_rgb(255_106_19/0.75)]",
   dark: "bg-ink text-paper hover:opacity-90",
   outline: "border border-line-2 bg-card text-ink hover:border-ink-3",
   ghost: "text-ink-2 hover:bg-sunken hover:text-ink",
@@ -30,9 +31,12 @@ function mergeClasses(base: string, extra: string): string {
   return [...kept, extra].join(" ").trim();
 }
 
+/** Trailing icons lean toward where the button leads. */
+const NUDGE = "transition-transform duration-200 group-hover/btn:translate-x-0.5";
+
 export function buttonClass(variant: Variant = "primary", size: Size = "md", extra = ""): string {
   return mergeClasses(
-    `inline-flex shrink-0 select-none items-center justify-center font-semibold transition-[background,opacity,border-color,transform] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 ${VARIANTS[variant]} ${SIZES[size]}`,
+    `group/btn inline-flex shrink-0 select-none items-center justify-center font-semibold transition-[background,opacity,border-color,box-shadow,scale] duration-200 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 ${VARIANTS[variant]} ${SIZES[size]}`,
     extra,
   );
 }
@@ -50,7 +54,7 @@ export function ButtonLink({
     <Link className={buttonClass(variant, size, className)} {...props}>
       {icon && <Icon name={icon} className="size-[1.1em]" />}
       {children}
-      {iconRight && <Icon name={iconRight} className="size-[1.1em]" />}
+      {iconRight && <Icon name={iconRight} className={`size-[1.1em] ${NUDGE}`} />}
     </Link>
   );
 }
@@ -69,7 +73,7 @@ export function Button({
     <button type={type} className={buttonClass(variant, size, className)} {...props}>
       {icon && <Icon name={icon} className="size-[1.1em]" />}
       {children}
-      {iconRight && <Icon name={iconRight} className="size-[1.1em]" />}
+      {iconRight && <Icon name={iconRight} className={`size-[1.1em] ${NUDGE}`} />}
     </button>
   );
 }

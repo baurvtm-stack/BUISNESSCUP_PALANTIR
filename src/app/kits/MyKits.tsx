@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Icon, categoryIcon, tradeIcon } from "@/components/icons";
 import ReminderForm from "@/components/ReminderForm";
 import { Button, ButtonLink, Eyebrow } from "@/components/ui";
+import { cssVars } from "@/lib/css";
 import { monthYear, shortDate, usd } from "@/lib/format";
 import { ensureCloudSlug, shareUrl } from "@/lib/kit-actions";
 import { compareHref, kitHref, shortKitHref } from "@/lib/kit-url";
@@ -39,7 +40,7 @@ export default function MyKits() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6">
-      <header className="flex flex-wrap items-end justify-between gap-4">
+      <header className="animate-rise flex flex-wrap items-end justify-between gap-4">
         <div>
           <Eyebrow>Saved on this device</Eyebrow>
           <h1 className="mt-2 font-display text-5xl font-extrabold tracking-tight">My kits</h1>
@@ -67,8 +68,8 @@ export default function MyKits() {
         </div>
       ) : (
         <ul className="mt-8 space-y-5">
-          {kits.map((kit) => (
-            <li key={kit.id}>
+          {kits.map((kit, i) => (
+            <li key={kit.id} className="animate-rise" style={cssVars({ "--i": Math.min(i, 5), "--stagger": "70ms", "--rise-y": "16px" })}>
               <KitCard kit={kit} pro={!!pro} selected={selected.includes(kit.id)} onToggleCompare={() => toggle(kit.id)} />
             </li>
           ))}
@@ -76,7 +77,7 @@ export default function MyKits() {
       )}
 
       {chosen.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-card/95 backdrop-blur-md">
+        <div className="animate-rise fixed inset-x-0 bottom-0 z-30 border-t border-line bg-card/95 shadow-[0_-10px_30px_-18px_rgb(0_0_0/0.35)] backdrop-blur-md">
           <div className="pb-safe mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 pt-3 sm:px-6">
             <p className="text-sm font-medium">
               {chosen.length === 1 ? "Pick one more kit to compare" : `${chosen.length} kits selected`}
@@ -115,7 +116,7 @@ function PlanMeter({ count, proEmail }: { count: number; proEmail?: string }) {
       <div className="flex items-center gap-3">
         <div className="flex gap-1" aria-hidden>
           {Array.from({ length: FREE_KIT_LIMIT }, (_, i) => (
-            <span key={i} className={`h-2 w-6 rounded-full ${i < used ? "bg-accent" : "bg-line"}`} />
+            <span key={i} className={`h-2 w-6 rounded-full transition-colors duration-500 ${i < used ? "bg-accent" : "bg-line"}`} />
           ))}
         </div>
         <p className="text-sm text-ink-2">
@@ -283,7 +284,10 @@ type Row = { item: SavedKit["items"][number]; index: number; wear: Wear };
 function WearBar({ wear }: { wear: Wear }) {
   return (
     <div className="h-2 overflow-hidden rounded-full bg-sunken">
-      <div className={`h-full rounded-full ${STATUS_STYLE[wear.status].bar}`} style={{ width: `${Math.max(4, wear.pct * 100)}%` }} />
+      <div
+        className={`animate-grow-x h-full rounded-full transition-[width] duration-700 ${STATUS_STYLE[wear.status].bar}`}
+        style={{ width: `${Math.max(4, wear.pct * 100)}%` }}
+      />
     </div>
   );
 }
@@ -355,7 +359,7 @@ function LockedTracker({ next, rows }: { next: Row; rows: Row[] }) {
         </div>
         <Link
           href="/pro"
-          className="absolute inset-0 m-auto flex h-10 w-fit items-center gap-2 rounded-full bg-ink px-4 text-sm font-semibold text-paper shadow-lg"
+          className="absolute inset-0 m-auto flex h-10 w-fit items-center gap-2 rounded-full bg-ink px-4 text-sm font-semibold text-paper shadow-lg transition hover:scale-[1.03] active:scale-[0.98]"
         >
           <Icon name="lock" className="size-4" /> Track wear on every item with Pro
         </Link>
