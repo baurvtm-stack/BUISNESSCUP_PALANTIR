@@ -7,6 +7,14 @@ import { DEFAULT_ANSWERS, decodeAnswers } from "../src/lib/answers";
 import type { CatalogRow } from "../src/lib/catalog-schema";
 
 vi.mock("server-only", () => ({}));
+const afterJobs = vi.hoisted(() => [] as Array<() => Promise<unknown>>);
+vi.mock("next/server", async original => ({
+  ...await original<typeof import("next/server")>(),
+  after: (callback: () => Promise<unknown>) => { afterJobs.push(callback); },
+}));
+// Next's persistent cache requires a running server. Route unit tests exercise
+// cold reads; the production HTTP smoke verifies actual cached redirects.
+vi.mock("next/cache", () => ({ unstable_cache: (read: () => Promise<unknown>) => read }));
 
 const secret = "sb_secret_test_value_not_a_real_credential";
 const databaseBoot: CatalogRow = {
@@ -24,6 +32,7 @@ function configure() {
   vi.stubEnv("SUPABASE_SECRET_KEY", secret);
 }
 beforeEach(() => {
+  afterJobs.length = 0;
   for (const name of ["SUPABASE_URL", "SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY", "AFFILIATE_TAG", "AFFILIATE_PARAM"]) {
     vi.stubEnv(name, "");
   }
@@ -110,7 +119,7 @@ describe("click routes", () => {
   it("logs the validated click before returning the tagged retailer URL", async () => {
     configure();
     vi.stubEnv("AFFILIATE_TAG", "gearfit-20");
-    const fetch = vi.fn().mockResolvedValueOnce(Response.json([databaseBoot])).mockResolvedValueOnce(new Response(null, { status: 201 }));
+    const fetch = vi.fn().mockResolvedValueOnce(Response.json([databaseBoot], { headers: { "content-range": "0-0/1" } })).mockResolvedValueOnce(new Response(null, { status: 201 }));
     vi.stubGlobal("fetch", fetch);
     const response = await click(jsonRequest("/api/click", { productId: databaseBoot.id, kitId: "kit-token_123" }));
     expect(response.status).toBe(200);
@@ -125,14 +134,17 @@ describe("click routes", () => {
     expect(JSON.stringify(result)).not.toContain(secret);
   });
 
-  it("supports current anchor links through a noncached redirect and tracks them", async () => {
+  it("returns the redirect before starting analytics, then tracks through after()", async () => {
     configure();
-    const fetch = vi.fn().mockResolvedValueOnce(Response.json([databaseBoot])).mockResolvedValueOnce(new Response(null, { status: 201 }));
+    const fetch = vi.fn().mockResolvedValueOnce(Response.json([databaseBoot], { headers: { "content-range": "0-0/1" } })).mockResolvedValueOnce(new Response(null, { status: 201 }));
     vi.stubGlobal("fetch", fetch);
     const response = await clickRedirect(new Request(`https://gearfit.example/api/click?productId=${databaseBoot.id}`));
     expect(response.status).toBe(302);
     expect(response.headers.get("Location")).toBe(databaseBoot.retailer_url);
     expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(afterJobs).toHaveLength(1);
+    await afterJobs[0]();
     expect(fetch).toHaveBeenCalledTimes(2);
   });
 
@@ -146,21 +158,68 @@ describe("click routes", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 
-  it("rejects repeated or extra redirect query parameters", async () => {
+  it("rejects duplicate known parameters and ignores unknown link decorations", async () => {
     expect((await clickRedirect(new Request("https://gearfit.example/api/click?productId=a&productId=b"))).status).toBe(400);
-    expect((await clickRedirect(new Request("https://gearfit.example/api/click?productId=a&url=https://attacker.example"))).status).toBe(400);
+    expect((await clickRedirect(new Request(`https://gearfit.example/api/click?productId=${PRODUCTS[0].id}&kitId=a&kitId=b`))).status).toBe(400);
+    const response = await clickRedirect(new Request(`https://gearfit.example/api/click?productId=${PRODUCTS[0].id}&utm_source=email&utm_source=repeat&fbclid=tracking&url=https://attacker.example`));
+    expect(response.status).toBe(302);
+    expect(response.headers.get("Location")).toBe(PRODUCTS[0].retailer_url);
   });
 
   it("does not log unknown products and never reports success after a failed insert", async () => {
     configure();
     const fetch = vi.fn().mockResolvedValueOnce(Response.json([]))
-      .mockResolvedValueOnce(Response.json([databaseBoot])).mockResolvedValueOnce(new Response(`private ${secret}`, { status: 403 }));
+      .mockResolvedValueOnce(Response.json([databaseBoot], { headers: { "content-range": "0-0/1" } })).mockResolvedValueOnce(new Response(`private ${secret}`, { status: 403 }));
     vi.stubGlobal("fetch", fetch);
     expect((await click(jsonRequest("/api/click", { productId: "not-found" }))).status).toBe(404);
     expect(fetch).toHaveBeenCalledTimes(1);
     const failure = await click(jsonRequest("/api/click", { productId: databaseBoot.id }));
-    expect(failure.status).toBe(503);
-    expect(await failure.text()).not.toContain(secret);
+    expect(failure.status).toBe(200);
+    expect(await failure.json()).toEqual({ redirectUrl: databaseBoot.retailer_url, tracked: false });
+  });
+
+  it.each([404, 503, "network"])("uses the bundled destination when catalog storage fails: %s", async failure => {
+    configure();
+    const fetch = vi.fn().mockImplementation(() => failure === "network"
+      ? Promise.reject(new Error(`private ${secret}`))
+      : Promise.resolve(new Response(`private ${secret}`, { status: failure })));
+    vi.stubGlobal("fetch", fetch);
+    const redirect = await clickRedirect(new Request(`https://gearfit.example/api/click?productId=${PRODUCTS[0].id}`));
+    expect(redirect.status).toBe(302);
+    expect(redirect.headers.get("Location")).toBe(PRODUCTS[0].retailer_url);
+    expect(fetch).toHaveBeenCalledTimes(1);
+    await expect(afterJobs[0]()).resolves.toBeUndefined();
+    const response = await click(jsonRequest("/api/click", { productId: PRODUCTS[0].id }));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ redirectUrl: PRODUCTS[0].retailer_url, tracked: false });
+  });
+
+  it.each([404, 503, "network"])("keeps a live product's redirect when its click insert fails: %s", async failure => {
+    configure();
+    const fetch = vi.fn().mockResolvedValueOnce(Response.json([databaseBoot], { headers: { "content-range": "0-0/1" } }))
+      .mockImplementation(() => failure === "network"
+        ? Promise.reject(new Error(`private ${secret}`))
+        : Promise.resolve(new Response(`private ${secret}`, { status: failure })));
+    vi.stubGlobal("fetch", fetch);
+    const response = await clickRedirect(new Request(`https://gearfit.example/api/click?productId=${databaseBoot.id}&kitId=kit-123`));
+    expect(response.status).toBe(302);
+    expect(response.headers.get("Location")).toBe(databaseBoot.retailer_url);
+    expect(fetch).toHaveBeenCalledTimes(1);
+    await expect(afterJobs[0]()).resolves.toBeUndefined();
+    expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({ product_id: databaseBoot.id, kit_id: "kit-123" });
+    expect(response.status).toBe(302);
+  });
+
+  it("returns 404 for unknown IDs even during an outage, without queuing an insert", async () => {
+    configure();
+    const fetch = vi.fn().mockRejectedValue(new Error("Database down"));
+    vi.stubGlobal("fetch", fetch);
+    const get = await clickRedirect(new Request("https://gearfit.example/api/click?productId=unknown-product&utm_source=email"));
+    const post = await click(jsonRequest("/api/click", { productId: "unknown-product" }));
+    expect(get.status).toBe(404);
+    expect(post.status).toBe(404);
+    expect(afterJobs).toHaveLength(0);
+    expect(fetch).toHaveBeenCalledTimes(2);
   });
 });
 

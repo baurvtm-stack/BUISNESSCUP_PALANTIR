@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { getProduct } from "@/lib/server/catalog";
+import { after, NextResponse } from "next/server";
+import { getClickProduct } from "@/lib/server/click-catalog";
 import { affiliateUrl, clickSchema, logClick } from "@/lib/server/clicks";
 import { InvalidBodyError, readJsonBody } from "@/lib/server/http";
 
@@ -11,18 +11,24 @@ async function clickResponse(input: unknown, redirect: boolean) {
   const parsed = clickSchema.safeParse(input);
   if (!parsed.success) return NextResponse.json({ error: "Invalid click input" }, { status: 400, headers });
   try {
-    const product = await getProduct(parsed.data.productId);
+    const product = await getClickProduct(parsed.data.productId);
     if (!product) return NextResponse.json({ error: "Product not found" }, { status: 404, headers });
     const redirectUrl = affiliateUrl(product);
-    const tracked = await logClick(parsed.data);
-    if (redirect) return new NextResponse(null, { status: 302, headers: { ...headers, Location: redirectUrl } });
+    if (redirect) {
+      after(async () => {
+        // Analytics must never prevent a shopper reaching the retailer.
+        await logClick(parsed.data).catch(() => false);
+      });
+      return new NextResponse(null, { status: 302, headers: { ...headers, Location: redirectUrl } });
+    }
+    const tracked = await logClick(parsed.data).catch(() => false);
     return NextResponse.json({ redirectUrl, tracked }, { headers });
   } catch {
     return NextResponse.json({ error: "Click storage is temporarily unavailable" }, { status: 503, headers });
   }
 }
 
-/** POST logs before returning the destination; callers navigate to redirectUrl. */
+/** POST reports whether storage accepted the event; the destination survives insert failures. */
 export async function POST(request: Request) {
   try {
     return await clickResponse(await readJsonBody(request), false);
@@ -35,8 +41,12 @@ export async function POST(request: Request) {
 /** Existing buyUrl anchors can track clicks without changing frontend-owned components. */
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
-  if (new Set(params.keys()).size !== [...params.keys()].length) {
+  if (["productId", "kitId"].some(key => params.getAll(key).length > 1)) {
     return NextResponse.json({ error: "Duplicate query parameters" }, { status: 400, headers });
   }
-  return clickResponse(Object.fromEntries(params), true);
+  // Marketing/link-decoration parameters are unrelated to validated click input.
+  return clickResponse({
+    productId: params.get("productId"),
+    ...(params.has("kitId") ? { kitId: params.get("kitId") } : {}),
+  }, true);
 }
