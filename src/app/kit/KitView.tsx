@@ -170,7 +170,12 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
       <section aria-label="Kit summary" className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Stat label="Pay today" value={usd(totals.upfront)} sub={`${kit.items.length} items`} />
         <Stat label="Real cost of wear" value={`${usd(totals.perMonth, 2)}`} unit="/mo" sub={`${usd(totals.perYear)} a year`} highlight />
-        <Stat label="First to replace" value={next?.label.replace(/ \(main pair\)/, "") ?? "None"} sub={next ? `in about ${duration(next.lifespanMonths)}` : ""} small />
+        <Stat
+          label="First to replace"
+          value={next?.label.replace(/\s*\(.*\)$/, "") ?? "None"}
+          sub={next ? `${next.label.match(/\((.*)\)$/)?.[1].concat(", ") ?? ""}in about ${duration(next.lifespanMonths)}` : ""}
+          small
+        />
         {savingsPerYear > 1 ? (
           <Stat
             label="vs. cheapest compliant kit"
@@ -207,14 +212,21 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
         </Notice>
       )}
 
+      {kit.sizeNote && (
+        <Notice tone="info" className="mt-5">
+          {kit.sizeNote}
+        </Notice>
+      )}
+
       {kit.warnings.length > 0 && (
-        <div className="mt-5 space-y-2">
-          {kit.warnings.map((w) => (
-            <Notice key={w} tone="warn">
-              {w}
-            </Notice>
-          ))}
-        </div>
+        <Notice tone="warn" className="mt-5">
+          <p className="font-semibold">Before you buy</p>
+          <ul className={`mt-1 space-y-1.5 ${kit.warnings.length > 1 ? "list-disc pl-4" : ""}`}>
+            {kit.warnings.map((w) => (
+              <li key={w}>{w}</li>
+            ))}
+          </ul>
+        </Notice>
       )}
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">

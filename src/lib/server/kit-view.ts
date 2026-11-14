@@ -48,19 +48,47 @@ export interface KitView {
   totals: KitResult["totals"];
   standards: string[];
   warnings: string[];
+  /** Set when the shopper's sizes would have emptied a category, so sizes were relaxed. */
+  sizeNote?: string;
 }
 
 const withUrl = (pick: Pick): ViewPick => ({ ...pick, url: buyUrl(pick.product) });
 
+/**
+ * The engine drops a whole category when nothing comes in the requested size (old links,
+ * or an API caller sending only "L"). A kit with no pants is worse than unsized pants,
+ * so keep as many sizes as still give the full kit.
+ */
+function recommendWithSizes(answers: Answers, products: Product[]): { kit: KitResult; relaxed: boolean } {
+  const kit = recommend(answers, products);
+  if (!answers.shoeSize && !answers.clothingSize) return { kit, relaxed: false };
+  const variants: Answers[] = [
+    { ...answers, clothingSize: undefined },
+    { ...answers, shoeSize: undefined },
+    { ...answers, shoeSize: undefined, clothingSize: undefined },
+  ];
+  const unsized = recommend(variants[2], products);
+  if (kit.items.length >= unsized.items.length) return { kit, relaxed: false };
+  for (const v of variants.slice(0, 2)) {
+    const candidate = recommend(v, products);
+    if (candidate.items.length >= unsized.items.length) return { kit: candidate, relaxed: true };
+  }
+  return { kit: unsized, relaxed: true };
+}
+
 export async function buildKit(answers: Answers, { live = true }: { live?: boolean } = {}): Promise<KitView> {
-  const kit = recommend(answers, live ? await liveProducts() : PRODUCTS);
+  const { kit, relaxed } = recommendWithSizes(answers, live ? await liveProducts() : PRODUCTS);
   return {
-    token: encodeAnswers(kit.answers),
-    answers: kit.answers,
+    // The token keeps the shopper's own answers, so the link reads back exactly what they chose.
+    token: encodeAnswers(answers),
+    answers,
     tradeLabel: kit.tradeLabel,
     totals: kit.totals,
     standards: kit.standards,
     warnings: kit.warnings,
+    sizeNote: relaxed
+      ? "Some items don't come in the sizes you picked, so those show every size. Choose yours on the store page."
+      : undefined,
     items: kit.items.map((i) => ({
       label: i.label,
       category: i.category,

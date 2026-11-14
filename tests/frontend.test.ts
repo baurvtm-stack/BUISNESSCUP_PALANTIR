@@ -12,7 +12,7 @@ import {
 import { recommend } from "../src/lib/engine";
 import { duration, usd } from "../src/lib/format";
 import { compareHref, decodeChoices, encodeChoices, goHref, kitHref, shortKitHref } from "../src/lib/kit-url";
-import { getWizardData } from "../src/lib/server/kit-view";
+import { buildKit, getWizardData } from "../src/lib/server/kit-view";
 import type { Answers, Gender } from "../src/lib/types";
 import { wearLabel, wearOf } from "../src/lib/wear";
 
@@ -192,5 +192,22 @@ describe("questionnaire sizes", () => {
         }
       }
     }
+  });
+});
+
+describe("kit page sizes", () => {
+  it("keeps pants in the kit when an old link only has a top size", async () => {
+    const answers: Answers = { ...base, trade: "plumber", clothingSize: "L", shoeSize: "10.5" };
+    expect(recommend(answers).items.map((i) => i.category)).not.toContain("pants");
+    const kit = await buildKit(answers, { live: false });
+    expect(kit.items.map((i) => i.category)).toContain("pants");
+    expect(kit.sizeNote).toBeTruthy();
+    expect(decodeAnswers(kit.token)).toMatchObject({ clothingSize: "L", shoeSize: "10.5" });
+  });
+
+  it("leaves a kit alone when every size is in stock", async () => {
+    const kit = await buildKit({ ...base, shoeSize: "10.5", clothingSize: "L / 34x32" }, { live: false });
+    expect(kit.sizeNote).toBeUndefined();
+    expect(kit.items.map((i) => i.category)).toEqual(expect.arrayContaining(["boots", "shirt", "pants"]));
   });
 });
