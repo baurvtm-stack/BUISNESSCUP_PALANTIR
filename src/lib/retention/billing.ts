@@ -12,6 +12,7 @@ export { emailSchema, kitSlugSchema } from "@/lib/retention/validation";
 export const checkoutSessionSchema = z
   .string()
   .regex(/^cs_test_[A-Za-z0-9]{1,240}$/);
+const ACTIVE_SUBSCRIPTION_STATUSES = ["active", "trialing"] as const;
 
 export function stripeClient() {
   const key = env("STRIPE_SECRET_KEY");
@@ -82,8 +83,7 @@ export async function checkoutStatus(
   ) {
     throw new ApiError(400, "Unexpected subscription plan");
   }
-  const active =
-    subscription.status === "active" || subscription.status === "trialing";
+  const active = ACTIVE_SUBSCRIPTION_STATUSES.some((status) => status === subscription.status);
   if (active) {
     const { error: saveError } = await db().rpc("apply_stripe_subscription", {
       p_event_id: `checkout:${session.id}`,
@@ -124,7 +124,7 @@ export async function resolvePro(
     .from("subscriptions")
     .select("status")
     .eq("checkout_id", checkout.id)
-    .eq("status", "active")
+    .in("status", ACTIVE_SUBSCRIPTION_STATUSES)
     .gt("current_period_end", new Date().toISOString())
     .limit(1)
     .maybeSingle();
@@ -254,7 +254,7 @@ export async function dispatchDealAlerts(): Promise<{
       .from("subscriptions")
       .select("id")
       .eq("checkout_id", alert.checkout_id)
-      .eq("status", "active")
+      .in("status", ACTIVE_SUBSCRIPTION_STATUSES)
       .gt("current_period_end", new Date().toISOString())
       .limit(1)
       .maybeSingle();
@@ -380,7 +380,7 @@ export async function demoDealAlerts(kitSlug: string): Promise<{
       .from("subscriptions")
       .select("id")
       .eq("checkout_id", alert.checkout_id)
-      .eq("status", "active")
+      .in("status", ACTIVE_SUBSCRIPTION_STATUSES)
       .gt("current_period_end", new Date().toISOString())
       .limit(1)
       .maybeSingle();

@@ -10,6 +10,7 @@ const fake = vi.hoisted(() => ({
   rpc: vi.fn(),
   from: vi.fn(),
   gt: vi.fn(),
+  in: vi.fn(),
 }));
 vi.mock("@/lib/retention/core", async (importOriginal) => {
   const real = await importOriginal<typeof import("@/lib/retention/core")>();
@@ -35,14 +36,16 @@ beforeEach(() => {
   fake.rpc.mockReset().mockResolvedValue({ error: null });
   fake.from.mockReset();
   fake.gt.mockReset();
+  fake.in.mockReset();
   const chain = {
     select: vi.fn(),
     eq: vi.fn(),
     gt: fake.gt,
+    in: fake.in,
     limit: vi.fn(),
     maybeSingle: vi.fn(async () => fake.rows.shift()),
   };
-  for (const method of [chain.select, chain.eq, chain.gt, chain.limit])
+  for (const method of [chain.select, chain.eq, chain.gt, chain.in, chain.limit])
     method.mockReturnValue(chain);
   fake.from.mockReturnValue(chain);
   vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_unit_testing");
@@ -87,6 +90,19 @@ function event(type = "customer.subscription.updated", status = "active") {
 }
 
 describe("billing security and state", () => {
+  it.each(["active", "trialing"])("authorizes an unexpired %s subscription with the shared status filter", async (status) => {
+    fake.rows.push(
+      { data: { id: "own-checkout", email: "worker@example.com" }, error: null },
+      { data: { status }, error: null },
+    );
+    const request = new Request("https://gearfit.test", {
+      headers: { Authorization: `Bearer ${"a".repeat(43)}` },
+    });
+    expect(await resolvePro(request)).toEqual({ checkoutId: "own-checkout", email: "worker@example.com" });
+    expect(fake.in).toHaveBeenCalledExactlyOnceWith("status", ["active", "trialing"]);
+    expect(fake.gt).toHaveBeenCalledWith("current_period_end", expect.any(String));
+  });
+
   it("creates only a $4 monthly USD test checkout and returns a separate secret capability", async () => {
     vi.stubEnv("APP_URL", "https://gearfit.test");
     const insert = vi.fn().mockResolvedValue({ error: null });

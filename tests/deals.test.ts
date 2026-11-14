@@ -29,6 +29,7 @@ let brokenTable: string | undefined;
 let kitExists: boolean;
 let claimed: Set<string>;
 let alertCount: number;
+let subscriptionStatus: "active" | "trialing";
 
 beforeEach(() => {
   enabled = true;
@@ -39,6 +40,7 @@ beforeEach(() => {
   brokenTable = undefined;
   claimed = new Set();
   alertCount = 1;
+  subscriptionStatus = "active";
   calls.length = 0;
   emails.length = 0;
   fake.catalog.mockReset().mockResolvedValue([{ ...product, price: product.price - 10 }]);
@@ -73,7 +75,7 @@ beforeEach(() => {
     }
     const rows: Record<string, unknown[]> = {
       pro_checkouts: [{ id: checkoutId, email: "pro@example.com" }],
-      subscriptions: active ? [{ id: "sub_test", status: "active" }] : [],
+      subscriptions: active ? [{ id: "sub_test", status: subscriptionStatus }] : [],
       kits: kitExists ? [{ id: "kit-id", items: [snapshot()] }] : [],
       pro_deal_alerts: url.searchParams.get("enabled") === "eq.true" && !enabled ? [] : Array.from({ length: alertCount }, (_, i) => ({
         id: i === 0 ? alertId : `${alertId.slice(0, -1)}${i}`, checkout_id: checkoutId, email: "pro@example.com", kit_slug: slug, enabled,
@@ -153,6 +155,17 @@ describe("daily deal catalog reads", () => {
 });
 
 describe("Pro deal settings", () => {
+  it("accepts trialing for authenticated reads, daily alerts and the demo", async () => {
+    subscriptionStatus = "trialing";
+    expect((await getDeals(request(`/api/pro/deals?kitSlug=${slug}`))).status).toBe(200);
+    expect(await dispatchDealAlerts()).toEqual({ sent: 1, failed: 0 });
+    const result = await demo(demoRequest());
+    expect(await result.json()).toMatchObject({ sent: 1, failed: 0 });
+    const checks = calls.filter((call) => call.table === "subscriptions");
+    expect(checks).toHaveLength(3);
+    for (const check of checks) expect(check.query.get("status")).toBe("in.(active,trialing)");
+  });
+
   it("enables and disables alerts with the exact checkout/email/kit consent binding", async () => {
     const on = await setDeals(request("/api/pro/deals", { kitSlug: slug, enabled: true }));
     expect(on.status).toBe(200);
