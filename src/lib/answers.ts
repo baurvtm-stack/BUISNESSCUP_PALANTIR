@@ -1,10 +1,32 @@
 import { EMPLOYER_RULES, HAZARDS } from "../data/hazards";
 import { TRADES } from "../data/trades";
-import type { Answers, BudgetTier, Climate, EmployerRule, Gender } from "./types";
+import { z } from "zod";
+import type { Answers, EmployerRule } from "./types";
 
-const CLIMATES: Climate[] = ["hot", "mild", "cold", "wet"];
-const GENDERS: Gender[] = ["men", "women", "unisex"];
-const BUDGETS: BudgetTier[] = ["value", "balanced", "premium"];
+const optionalSize = z.string().trim().max(12).regex(/^[a-zA-Z0-9 .\/-]*$/)
+  .transform((value) => value || undefined).optional();
+const numericInput = z.union([
+  z.number(), z.string().trim().regex(/^\d+(\.\d+)?$/).transform(Number),
+]);
+const hazardIds = new Set(HAZARDS.map((hazard) => hazard.id));
+const ruleIds = new Set(EMPLOYER_RULES.map((rule) => rule.id));
+
+/** Defaults support existing share links; explicitly invalid values are rejected, never dropped. */
+export const answersSchema = z.object({
+  trade: z.string().refine((id) => TRADES.some((trade) => trade.id === id), "Unknown or missing trade"),
+  extraHazards: z.array(z.string().refine((id) => hazardIds.has(id), "Unknown hazard"))
+    .max(HAZARDS.length).default([]).transform((ids) => [...new Set(ids)]),
+  climate: z.enum(["hot", "mild", "cold", "wet"]).default("mild"),
+  gender: z.enum(["men", "women", "unisex"]).default("unisex"),
+  shoeSize: optionalSize,
+  clothingSize: optionalSize,
+  hoursPerWeek: numericInput.pipe(z.number().finite().min(5).max(84)).default(40),
+  budget: z.enum(["value", "balanced", "premium"]).default("balanced"),
+  maxBudget: z.preprocess((value) => value === "" ? undefined : value,
+    numericInput.pipe(z.number().finite().positive().max(10000)).optional()),
+  employer: z.array(z.string().refine((id) => ruleIds.has(id as EmployerRule), "Unknown employer rule"))
+    .max(EMPLOYER_RULES.length).default([]).transform((ids) => [...new Set(ids)] as EmployerRule[]),
+});
 
 export const DEFAULT_ANSWERS: Answers = {
   trade: "electrician",
@@ -18,30 +40,8 @@ export const DEFAULT_ANSWERS: Answers = {
 
 /** Validates untrusted input (URL or API body) into a safe Answers object. */
 export function parseAnswers(input: unknown): Answers | null {
-  if (!input || typeof input !== "object") return null;
-  const o = input as Record<string, unknown>;
-  if (typeof o.trade !== "string" || !TRADES.some((t) => t.id === o.trade)) return null;
-  const hazardIds = new Set(HAZARDS.map((h) => h.id));
-  const ruleIds = new Set(EMPLOYER_RULES.map((r) => r.id));
-  const str = (v: unknown, max = 12) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : undefined);
-  const hours = Number(o.hoursPerWeek);
-  const maxBudget = Number(o.maxBudget);
-  return {
-    trade: o.trade,
-    extraHazards: Array.isArray(o.extraHazards)
-      ? [...new Set(o.extraHazards.filter((h): h is string => typeof h === "string" && hazardIds.has(h)))]
-      : [],
-    climate: CLIMATES.includes(o.climate as Climate) ? (o.climate as Climate) : "mild",
-    gender: GENDERS.includes(o.gender as Gender) ? (o.gender as Gender) : "unisex",
-    shoeSize: str(o.shoeSize, 6),
-    clothingSize: str(o.clothingSize, 6),
-    hoursPerWeek: Number.isFinite(hours) ? Math.min(84, Math.max(5, Math.round(hours))) : 40,
-    budget: BUDGETS.includes(o.budget as BudgetTier) ? (o.budget as BudgetTier) : "balanced",
-    maxBudget: Number.isFinite(maxBudget) && maxBudget > 0 ? Math.min(10000, Math.round(maxBudget)) : undefined,
-    employer: Array.isArray(o.employer)
-      ? [...new Set(o.employer.filter((r): r is EmployerRule => typeof r === "string" && ruleIds.has(r as EmployerRule)))]
-      : [],
-  };
+  const result = answersSchema.safeParse(input);
+  return result.success ? result.data : null;
 }
 
 function toBase64Url(s: string): string {
