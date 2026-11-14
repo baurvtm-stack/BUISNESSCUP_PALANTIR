@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { AnimatedNumber } from "@/components/fx";
+import GearArt from "@/components/GearArt";
 import { Icon, categoryIcon } from "@/components/icons";
 import { AnimatePresence, EASE, m, MotionRoot } from "@/components/motion";
 import ReminderForm from "@/components/ReminderForm";
-import { Button, ButtonLink, Chip, Eyebrow, IconTile, Notice, StandardBadge } from "@/components/ui";
+import { Button, ButtonLink, Chip, Eyebrow, Notice, StandardBadge } from "@/components/ui";
 import { cssVars } from "@/lib/css";
 import type { KitItemSnapshot } from "@/lib/api/contract";
 import { duration, usd } from "@/lib/format";
@@ -291,6 +292,10 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
                 onChoose={(id) => setChoices((prev) => prev.map((c, k) => (k === i ? (id === item.pick.product.id ? "" : id) : c)))}
               />
             ))}
+            <p className="px-1 text-xs leading-relaxed text-ink-3 print:hidden">
+              Illustrations show the type of gear, not the exact product. Pros and cons compare the options shown for each item, using
+              only our catalog data: price, estimated wear life, rated levels and features.
+            </p>
           </section>
 
           {/* ---------- Sidebar ---------- */}
@@ -494,8 +499,20 @@ function ItemCard({
       {swaps > 0 && (
         <span key={swaps} className="animate-ring-out pointer-events-none absolute inset-0 rounded-3xl ring-2 ring-accent" aria-hidden />
       )}
-      <div className="flex gap-3.5 sm:gap-4">
-        <IconTile name={categoryIcon(item.category)} className="sm:size-12" />
+      <div className="flex gap-3.5 sm:gap-5">
+        <div className="relative shrink-0 self-start">
+          <AnimatePresence mode="popLayout" initial={false}>
+            <m.div
+              key={p.id}
+              initial={{ opacity: 0, scale: 0.88 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.1 } }}
+              transition={{ duration: 0.3, ease: EASE }}
+            >
+              <GearArt product={p} className="size-[76px] sm:size-28 sm:rounded-3xl" />
+            </m.div>
+          </AnimatePresence>
+        </div>
         <div className="relative min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-3">{item.label}</p>
@@ -552,6 +569,8 @@ function ItemCard({
         </div>
       </dl>
 
+      <ProsCons pick={pick} compared={options.length} />
+
       {item.mustHave.length > 0 && (
         <p className="mt-4 flex gap-2 text-sm">
           <Icon name="shield" className="mt-0.5 size-4 shrink-0 text-ok" />
@@ -569,7 +588,7 @@ function ItemCard({
       {pick.reasons.length > 0 && (
         <details className="group mt-3">
           <summary className="inline-flex cursor-pointer list-none items-center gap-1 text-sm font-semibold text-ink-2 hover:text-ink [&::-webkit-details-marker]:hidden">
-            Why this pick
+            Why it fits your job
             <Icon name="chevronDown" className="size-4 transition group-open:rotate-180" />
           </summary>
           <ul className="mt-2 space-y-1.5 text-sm text-ink-2">
@@ -592,33 +611,24 @@ function ItemCard({
       <div className="mt-4 border-t border-line pt-4 print:hidden">
         {options.length > 1 && (
           <>
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-3">Also meets your requirements</p>
-            <div className="no-scrollbar -mx-4 mt-2 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0" role="radiogroup" aria-label={`${item.label} options`}>
-              {options.map((o) => {
-                const active = o.pick.product.id === activeId;
-                return (
-                  <button
-                    key={o.pick.product.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={active}
-                    onClick={() => choose(o.pick.product.id)}
-                    title={`${o.pick.product.brand} ${o.pick.product.name}`}
-                    className={`shrink-0 rounded-xl border px-3 py-2 text-left transition active:scale-[0.97] ${
-                      active ? "border-accent bg-accent-soft ring-1 ring-accent" : "border-line bg-card hover:border-line-2 hover:bg-sunken/60"
-                    }`}
-                  >
-                    <span className="block text-xs font-bold">{o.label}</span>
-                    <span className="tabular block text-xs text-ink-3">
-                      {usd(o.pick.product.price)} · {usd(o.pick.costPerMonth, 2)}/mo
-                    </span>
-                  </button>
-                );
-              })}
+            <div className="flex items-baseline justify-between gap-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-3">Compare {options.length} options</p>
+              <p className="text-xs text-ink-3">All meet your requirements</p>
+            </div>
+            <div
+              role="radiogroup"
+              aria-label={`${item.label} options`}
+              className={`no-scrollbar -mx-4 mt-2.5 flex snap-x snap-mandatory scroll-px-4 gap-2.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:snap-none sm:overflow-visible sm:px-0 sm:pb-0 ${
+                options.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+              }`}
+            >
+              {options.map((o) => (
+                <OptionCard key={o.pick.product.id} label={o.label} pick={o.pick} active={o.pick.product.id === activeId} onChoose={choose} />
+              ))}
             </div>
           </>
         )}
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-3.5 flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs text-ink-3">
             Chosen from {item.optionsConsidered} compliant option{item.optionsConsidered === 1 ? "" : "s"}
           </p>
@@ -634,5 +644,145 @@ function ItemCard({
         </div>
       </div>
     </article>
+  );
+}
+
+/** A plus or minus bullet. The sign is drawn, so the line reads without relying on color. */
+function Sign({ kind }: { kind: "pro" | "con" }) {
+  return (
+    <span
+      className={`mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full ${
+        kind === "pro" ? "bg-ok-soft text-ok" : "bg-warn-soft text-warn"
+      }`}
+      aria-hidden
+    >
+      <Icon name={kind === "pro" ? "plus" : "minus"} className="size-3" strokeWidth={3} />
+    </span>
+  );
+}
+
+/**
+ * Pros and cons of the selected product. Every line comes from catalog data and compares
+ * it with the other options shown for this item (see lib/pros-cons).
+ */
+function ProsCons({ pick, compared }: { pick: ViewPick; compared: number }) {
+  if (!pick.pros.length && !pick.cons.length) return null;
+  return (
+    <div className="relative mt-4 print:hidden">
+      <AnimatePresence mode="popLayout" initial={false}>
+        <m.div
+          key={pick.product.id}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, transition: { duration: 0.1 } }}
+          transition={{ duration: 0.28, ease: EASE }}
+          className="grid gap-x-6 gap-y-3.5 sm:grid-cols-2"
+        >
+          {compared > 1 && (
+            <p className="text-xs text-ink-3 sm:col-span-2">
+              Against the other {compared - 1 === 1 ? "option" : `${compared - 1} options`} below
+            </p>
+          )}
+          <div>
+            <h4 className="text-[11px] font-semibold uppercase tracking-wide text-ok">Pros</h4>
+            <ul className="mt-1.5 space-y-1.5 text-sm text-ink-2">
+              {pick.pros.map((line) => (
+                <li key={line} className="flex gap-2">
+                  <Sign kind="pro" />
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-[11px] font-semibold uppercase tracking-wide text-warn">Cons</h4>
+            {pick.cons.length > 0 ? (
+              <ul className="mt-1.5 space-y-1.5 text-sm text-ink-2">
+                {pick.cons.map((line) => (
+                  <li key={line} className="flex gap-2">
+                    <Sign kind="con" />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-1.5 text-sm text-ink-3">
+                {compared > 1 ? "Nothing stands out against the other options shown." : "Nothing to compare it with: no other product qualifies."}
+              </p>
+            )}
+          </div>
+        </m.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/** One option for an item: what it is, what it costs, and its strongest pro and con. */
+function OptionCard({
+  label,
+  pick,
+  active,
+  onChoose,
+}: {
+  label: string;
+  pick: ViewPick;
+  active: boolean;
+  onChoose: (productId: string) => void;
+}) {
+  const p = pick.product;
+  const ours = label === "GearFit pick";
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={active}
+      aria-label={`${label}: ${p.brand} ${p.name}, ${usd(p.price)}, ${usd(pick.costPerMonth, 2)} per month`}
+      onClick={() => onChoose(p.id)}
+      className={`relative flex w-[78%] shrink-0 snap-start flex-col rounded-2xl border p-3 text-left transition active:scale-[0.98] sm:w-auto ${
+        active ? "border-accent bg-accent-soft ring-1 ring-accent" : "border-line bg-card hover:border-line-2 hover:bg-sunken/50"
+      }`}
+    >
+      <span className="flex items-start gap-2.5">
+        <GearArt product={p} className={`size-12 rounded-xl ${active ? "bg-card" : ""}`} />
+        <span className="min-w-0 flex-1">
+          <span className={`flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide ${ours ? "text-accent-ink" : "text-ink-3"}`}>
+            {ours && <Icon name="sparkle" className="size-3" />}
+            {label}
+          </span>
+          <span className="mt-0.5 line-clamp-2 text-sm font-semibold leading-snug">
+            {p.brand} {p.name}
+          </span>
+        </span>
+        <span
+          className={`flex size-5 shrink-0 items-center justify-center rounded-full border transition ${
+            active ? "border-accent bg-accent text-[#15171a]" : "border-line-2 text-transparent"
+          }`}
+          aria-hidden
+        >
+          <Icon name="check" className="size-3" strokeWidth={3.2} />
+        </span>
+      </span>
+      <span className="tabular mt-2.5 flex flex-wrap items-baseline gap-x-2 text-xs text-ink-3">
+        <span className="text-sm font-bold text-ink">{usd(p.price)}</span>
+        <span>~{Math.round(pick.lifespanMonths) || duration(pick.lifespanMonths).replace(" months", "")} mo</span>
+        <span className="ml-auto text-sm font-bold text-accent-ink">{usd(pick.costPerMonth, 2)}/mo</span>
+      </span>
+      {(pick.pros[0] || pick.cons[0]) && (
+        <span className="mt-2.5 block space-y-1 border-t border-line pt-2.5 text-xs leading-snug text-ink-2">
+          {pick.pros[0] && (
+            <span className="flex gap-1.5">
+              <Sign kind="pro" />
+              <span className="line-clamp-2">{pick.pros[0]}</span>
+            </span>
+          )}
+          {pick.cons[0] && (
+            <span className="flex gap-1.5">
+              <Sign kind="con" />
+              <span className="line-clamp-2">{pick.cons[0]}</span>
+            </span>
+          )}
+        </span>
+      )}
+    </button>
   );
 }

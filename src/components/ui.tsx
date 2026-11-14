@@ -124,15 +124,6 @@ export function Notice({
   );
 }
 
-/** Square tile with a gear icon, used on kit and catalog rows. */
-export function IconTile({ name, className = "" }: { name: IconName; className?: string }) {
-  return (
-    <span className={`flex size-11 shrink-0 items-center justify-center rounded-xl bg-sunken text-ink ${className}`} aria-hidden>
-      <Icon name={name} className="size-6" strokeWidth={1.7} />
-    </span>
-  );
-}
-
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`flex items-center gap-2 ${className}`}>
