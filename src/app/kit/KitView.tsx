@@ -12,7 +12,7 @@ import { Button, ButtonLink, Chip, Eyebrow, Notice, StandardBadge } from "@/comp
 import { cssVars } from "@/lib/css";
 import type { KitItemSnapshot } from "@/lib/api/contract";
 import { duration, usd } from "@/lib/format";
-import { ensureCloudSlug, saveKit, shareUrl, type KitDraft } from "@/lib/kit-actions";
+import { ensureCloudSlug, saveCloudKit, saveKit, shareUrl, type KitDraft } from "@/lib/kit-actions";
 import { compareHref, goHref, kitHref, shortKitHref } from "@/lib/kit-url";
 import { FREE_KIT_LIMIT, findSavedKit, proStore, savedKits, updateKit } from "@/lib/saved-kits";
 import { coveredStandards } from "@/lib/standards";
@@ -119,6 +119,7 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
 
   async function getSlug(): Promise<string | null> {
     if (saved) return ensureCloudSlug(saved);
+    if (!pro && kits.length >= FREE_KIT_LIMIT) return saveCloudKit(draft);
     const result = await saveKit(draft);
     return result.slug ?? null;
   }

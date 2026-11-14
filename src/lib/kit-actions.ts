@@ -32,6 +32,16 @@ export async function saveKit(draft: KitDraft, existing?: SavedKit): Promise<Sav
   return slug ? { ...kit, slug } : kit;
 }
 
+/** Free reminders can use a public cloud copy without consuming another device save. */
+export async function saveCloudKit(draft: KitDraft): Promise<string | null> {
+  return ensureCloudSlug({
+    ...draft,
+    id: newKitId(),
+    createdAt: new Date().toISOString(),
+    boughtAt: today(),
+  });
+}
+
 /** Returns the kit's cloud slug, creating the cloud copy if needed. Null when /api/kits is unavailable. */
 export async function ensureCloudSlug(kit: SavedKit): Promise<string | null> {
   if (kit.slug) return kit.slug;

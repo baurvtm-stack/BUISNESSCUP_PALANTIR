@@ -1,5 +1,11 @@
 import { expect, test } from "@playwright/test";
 
+const answers = {
+  trade: "electrician", gender: "men", hoursPerWeek: 45, budget: "balanced",
+  climate: "mild", shoeSize: "10", clothingSize: "L / 32x30", extraHazards: [], employer: [],
+};
+const kitToken = Buffer.from(JSON.stringify(answers)).toString("base64url");
+
 test.beforeEach(async ({ context, baseURL }) => {
   const secret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
   if (!secret) return;
@@ -23,4 +29,23 @@ test("unverified Checkout stays free and a refresh can confirm the same session"
   await page.reload();
   await expect(page.getByText("Payment confirmed. Welcome to Pro!")).toBeVisible();
   await expect(page).toHaveURL(/\/pro$/);
+});
+
+test("free reminders at the save limit create only a cloud copy", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("gearfit.kits.v1", JSON.stringify(Array.from({ length: 3 }, (_, i) => ({
+      id: `saved-${i}`, token: `old-token-${i}`, tradeLabel: "Electrician", createdAt: "2026-11-14",
+      choices: [], items: [], totals: { upfront: 0, perMonth: 0 },
+    }))));
+  });
+  await page.route(url => url.pathname === "/api/kits", route => route.fulfill({ status: 201, json: { slug: "CloudOnly001" } }));
+  await page.route(url => url.pathname === "/api/reminders", route => {
+    expect(route.request().postDataJSON().kitSlug).toBe("CloudOnly001");
+    return route.fulfill({ json: { status: "pending" } });
+  });
+  await page.goto(`/kit?k=${kitToken}`);
+  await page.getByRole("textbox", { name: "Email", exact: true }).fill("reminders@example.com");
+  await page.getByRole("button", { name: "Remind me", exact: true }).click();
+  await expect(page.getByText(/Check your inbox: we sent a confirmation link/)).toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("gearfit.kits.v1")!).length)).toBe(3);
 });
