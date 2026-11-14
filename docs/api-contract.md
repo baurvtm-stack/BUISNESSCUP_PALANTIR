@@ -100,7 +100,7 @@ each case and links back to `/k/<slug>`.
 { "email": "worker@example.com" }
 ```
 
-Response `200 { "url": "https://checkout.stripe.com/c/pay/cs_test_…", "accessToken": "opaque-capability", "testMode": true }`; the browser goes to `url`. The current UI does not retain `accessToken` or call the server Pro wear/deal APIs.
+Response `200 { "url": "https://checkout.stripe.com/c/pay/cs_test_…", "accessToken": "opaque-capability", "testMode": true }`. The UI saves the capability in the device's `gearfit.pro-access.v1` store **before** navigating to `url`. It is separate from shareable kit data and is sent only as `Authorization: Bearer <accessToken>` to Pro APIs, never in a URL or log. The current UI still uses local wear tracking rather than `/api/pro/wear`.
 The server creates the Checkout Session with:
 
 - `success_url`: `<origin>/pro?status=success&session_id={CHECKOUT_SESSION_ID}`
@@ -117,3 +117,11 @@ The backend checks the Stripe session, its server checkout binding and the subsc
 Response `200 { "kitsCreated": 128, "clicks": 342, "clickTrackingAvailable": true, "reminderSignups": 41, "confirmedReminders": 30, "proConversions": 6, "activePro": 5, "stripeMode": "test" }`. The client maps `proConversions` to its `proSubscribers` label. The numbers in this example are illustrative; the live endpoint returns real SQL counts.
 
 See [backend API examples](backend-handoff.md#retention-api-examples) for confirmation, unsubscribe, cron, webhook and retained Pro routes.
+
+## Deal-alert switch
+
+After checkout confirmation, `GET /api/pro` with the bearer capability returns `{ "pro": true, "features": ["unlimited_saved_kits", "wear_tracking", "deal_alerts"] }`. Device Pro state alone cannot authorize alerts.
+
+`GET /api/pro/deals?kitSlug=<slug>` uses the same header and returns `{ "enabled": true, "deals": [], "source": "catalog_estimates" }`. `enabled` reflects this checkout's saved setting and current reminder consent. Deals contain `productId`, `name`, `savedPrice` and `currentPrice`, comparing fresh catalog data with the saved snapshot.
+
+`POST /api/pro/deals` uses the bearer header and body `{ "kitSlug": "AbCdEf123_-x", "enabled": true }`; **200** returns `{ "enabled": true }` (or `false` when disabled). **409** asks the shopper to confirm replacement reminders for this email/kit and links to the form. **403** says "Pro isn't active on the server yet. Refresh in a minute." Network/5xx failures leave the switch off with a temporary-unavailability message. Free users see the Pro upsell.

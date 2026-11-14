@@ -4,6 +4,7 @@
  */
 import type { KitItemSnapshot } from "./api/contract";
 import { createLocalStore } from "./local-store";
+import { proAccessTokenSchema } from "@/lib/retention/validation";
 
 /** Free plan keeps this many kits; Pro is unlimited. */
 export const FREE_KIT_LIMIT = 3;
@@ -94,6 +95,12 @@ export const proStore = createLocalStore<ProState | null>("gearfit.pro.v1", null
   return typeof o.email === "string" && typeof o.activatedAt === "string"
     ? { email: o.email, activatedAt: o.activatedAt, source: o.source === "demo" ? "demo" : "stripe" }
     : null;
+});
+
+/** Checkout capability belongs only on this device, separate from shareable kit data. */
+export const proAccessStore = createLocalStore<string | null>("gearfit.pro-access.v1", null, (raw) => {
+  const parsed = proAccessTokenSchema.safeParse(raw);
+  return parsed.success ? parsed.data : null;
 });
 
 /** The shopper's email, remembered to prefill reminder and checkout forms. */

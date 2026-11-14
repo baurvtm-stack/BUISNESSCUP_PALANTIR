@@ -15,12 +15,13 @@ import { encodeAnswers } from "../answers";
 import { CATEGORY_LABELS, describeRequirement, effectiveLifespan, recommend } from "../engine";
 import { prosAndCons } from "../pros-cons";
 import type { Answers, Category, EmployerRule, Gender, KitResult, Pick, Product, Requirement } from "../types";
-import { getProduct, getProducts } from "./catalog";
+import { getProduct } from "./catalog";
+import { cachedCatalog } from "@/lib/server/click-catalog";
 
-/** One catalog read per request, shared by generateMetadata and the page. */
+/** Share the click route's 60-second catalog cache, plus deduplication within a render. */
 const liveProducts = cache(async (): Promise<Product[]> => {
   try {
-    return await getProducts();
+    return await cachedCatalog();
   } catch (error) {
     console.error("GearFit: live catalog unavailable, using the bundled snapshot.", error);
     return PRODUCTS;

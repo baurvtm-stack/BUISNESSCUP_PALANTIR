@@ -1,9 +1,12 @@
 import Stripe from "stripe";
+import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { ApiError, baseUrl, db, env, hashToken } from "@/lib/retention/core";
 import { PRODUCTS } from "@/data/products";
 import type { CategoryResult } from "@/lib/types";
 import { sendEmail } from "@/lib/retention/reminders";
+import { getProducts } from "@/lib/server/catalog";
+import { proAccessTokenSchema } from "@/lib/retention/validation";
 
 export { emailSchema, kitSlugSchema } from "@/lib/retention/validation";
 export const checkoutSessionSchema = z
@@ -106,14 +109,14 @@ export async function checkoutStatus(
 export async function resolvePro(
   request: Request,
 ): Promise<{ email: string; checkoutId: string } | null> {
-  const token = request.headers
+  const token = proAccessTokenSchema.safeParse(request.headers
     .get("authorization")
-    ?.match(/^Bearer ([A-Za-z0-9_-]{43})$/)?.[1];
-  if (!token) return null;
+    ?.match(/^Bearer (.+)$/)?.[1]);
+  if (!token.success) return null;
   const { data: checkout, error } = await db()
     .from("pro_checkouts")
     .select("id,email")
-    .eq("token_hash", hashToken(token))
+    .eq("token_hash", hashToken(token.data))
     .maybeSingle();
   if (error) throw new ApiError(503, "Subscription lookup unavailable");
   if (!checkout) return null;
@@ -200,9 +203,11 @@ export async function processStripeEvent(event: Stripe.Event, stripe: Stripe) {
   if (saveError) throw new ApiError(503, "Subscription update unavailable");
 }
 
-export function findDeals(items: CategoryResult[]) {
+export async function findDeals(items: CategoryResult[]) {
+  // Price checks deliberately bypass the page/click cache so edits are visible immediately.
+  const products = await getProducts().catch(() => PRODUCTS);
   return items.flatMap((item) => {
-    const current = PRODUCTS.find(
+    const current = products.find(
       (product) => product.id === item.pick.product.id,
     );
     return current && current.price < item.pick.product.price
@@ -279,7 +284,7 @@ export async function dispatchDealAlerts(): Promise<{
       continue;
     }
     if (!reminder) continue;
-    const deals = findDeals(kit.items as CategoryResult[]);
+    const deals = await findDeals(kit.items as CategoryResult[]);
     if (!deals.length) continue;
     const fingerprint = hashToken(
       JSON.stringify(
@@ -316,4 +321,117 @@ export async function dispatchDealAlerts(): Promise<{
     }
   }
   return { sent, failed };
+}
+
+type Deal = Awaited<ReturnType<typeof findDeals>>[number];
+type DemoReason =
+  | "no_enabled_alert"
+  | "no_confirmed_reminder"
+  | "no_active_pro"
+  | "no_price_drop"
+  | "delivery_failed";
+
+/** A deliberate rehearsal gets new delivery rows; real price fingerprints are untouched. */
+export async function demoDealAlerts(kitSlug: string): Promise<{
+  sent: number;
+  failed: number;
+  deals: Deal[];
+  reasons: DemoReason[];
+}> {
+  const client = db();
+  const { data: kit, error: kitError } = await client
+    .from("kits")
+    .select("id,items")
+    .eq("slug", kitSlug)
+    .maybeSingle();
+  if (kitError) throw new ApiError(503, "Kit lookup unavailable");
+  if (!kit) throw new ApiError(404, "Kit not found");
+  const { data: alerts, error: alertError } = await client
+    .from("pro_deal_alerts")
+    .select("id,email,checkout_id")
+    .eq("kit_slug", kitSlug)
+    .eq("enabled", true)
+    .order("id")
+    .limit(10);
+  if (alertError) throw new ApiError(503, "Deal alerts unavailable");
+  if (!alerts?.length) {
+    return { sent: 0, failed: 0, deals: [], reasons: ["no_enabled_alert"] };
+  }
+
+  const skipped = new Set<DemoReason>();
+  const recipients: { alertId: string; email: string; unsubscribeToken: string }[] = [];
+  for (const alert of alerts) {
+    const { data: reminder, error: reminderError } = await client
+      .from("reminders")
+      .select("unsubscribe_token")
+      .eq("email", alert.email)
+      .eq("kit_id", kit.id)
+      .not("confirmed_at", "is", null)
+      .is("unsubscribed_at", null)
+      .maybeSingle();
+    if (reminderError) throw new ApiError(503, "Reminder lookup unavailable");
+    if (!reminder) {
+      skipped.add("no_confirmed_reminder");
+      continue;
+    }
+    const { data: subscription, error: subscriptionError } = await client
+      .from("subscriptions")
+      .select("id")
+      .eq("checkout_id", alert.checkout_id)
+      .eq("status", "active")
+      .gt("current_period_end", new Date().toISOString())
+      .limit(1)
+      .maybeSingle();
+    if (subscriptionError) throw new ApiError(503, "Subscription lookup unavailable");
+    if (!subscription) {
+      skipped.add("no_active_pro");
+      continue;
+    }
+    recipients.push({ alertId: alert.id, email: alert.email, unsubscribeToken: reminder.unsubscribe_token });
+  }
+  if (!recipients.length) {
+    return { sent: 0, failed: 0, deals: [], reasons: [...skipped] };
+  }
+  const deals = await findDeals(kit.items as CategoryResult[]);
+  if (!deals.length) {
+    return { sent: 0, failed: 0, deals: [], reasons: ["no_price_drop"] };
+  }
+
+  let sent = 0;
+  let failed = 0;
+  for (const recipient of recipients) {
+    // A namespaced UUID is the demo delivery identity in the existing composite primary key.
+    const fingerprint = `demo:${randomUUID()}`;
+    const { error: insertError } = await client.from("deal_alert_deliveries").insert({
+      alert_id: recipient.alertId,
+      fingerprint,
+    });
+    if (insertError) {
+      failed++;
+      continue;
+    }
+    const unsubscribeUrl = `${baseUrl()}/api/reminders/unsubscribe?token=${recipient.unsubscribeToken}`;
+    try {
+      await sendEmail({
+        to: recipient.email,
+        subject: "GearFit demo: a saved item has a lower catalog price",
+        key: `deal-${recipient.alertId}-${fingerprint}`,
+        text: `DEMO — a repeatable rehearsal using real catalog price changes.\n\nCatalog prices for your kit have dropped:\n${deals.map((deal) => `${deal.name}: $${deal.currentPrice.toFixed(2)} (saved at $${deal.savedPrice.toFixed(2)})`).join("\n")}\n\nThese are catalog estimates, not a merchant offer. Confirm the current retailer price.\nView saved kit: ${baseUrl()}/k/${kitSlug}\n\nUnsubscribe: ${unsubscribeUrl}`,
+        unsubscribeUrl,
+      });
+      const { error: markError } = await client
+        .from("deal_alert_deliveries")
+        .update({ sent_at: new Date().toISOString() })
+        .eq("alert_id", recipient.alertId)
+        .eq("fingerprint", fingerprint);
+      if (markError) throw new Error("Delivery acknowledgement unavailable");
+      sent++;
+    } catch {
+      failed++;
+    }
+    if (recipient !== recipients.at(-1)) {
+      await new Promise((resolve) => setTimeout(resolve, 550));
+    }
+  }
+  return { sent, failed, deals, reasons: sent ? [] : ["delivery_failed"] };
 }

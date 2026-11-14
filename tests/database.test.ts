@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { PGlite } from "@electric-sql/pglite";
+import { randomUUID } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import catalog from "@/data/catalog.json";
@@ -312,6 +313,17 @@ describe("production SQL migrations", () => {
       [alert],
     );
     expect(await claim()).toBe(false);
+  });
+
+  it("accepts repeatable demo deal rows without altering real price-drop dedupe", async () => {
+    const alert = await scalar<string>("select id from pro_deal_alerts where kit_slug='DemoSaved001'");
+    const fingerprint = "a".repeat(64);
+    expect(await scalar<boolean>("select claim_deal_delivery($1,$2)", [alert, fingerprint])).toBe(true);
+    for (let i = 0; i < 2; i++) {
+      await sql.query("insert into deal_alert_deliveries(alert_id,fingerprint) values($1,$2)", [alert, `demo:${randomUUID()}`]);
+    }
+    expect(await scalar<number>("select count(*)::integer from deal_alert_deliveries where alert_id=$1 and fingerprint like 'demo:%'", [alert])).toBe(2);
+    expect(await scalar<boolean>("select claim_deal_delivery($1,$2)", [alert, fingerprint])).toBe(false);
   });
 
   it("counts actual click rows from the catalog migration, including zero clicks", async () => {
