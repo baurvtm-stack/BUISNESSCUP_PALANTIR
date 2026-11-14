@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { dealAlertProblem, getDealAlerts, getServerPro, setDealAlerts, startCheckout } from "@/lib/api/client";
+import { confirmCheckout, dealAlertProblem, getDealAlerts, getServerPro, setDealAlerts, startCheckout } from "@/lib/api/client";
 
 const token = "a".repeat(43);
 const slug = "DealSaved001";
@@ -8,7 +8,61 @@ beforeEach(() => {
   fetchMock.mockReset();
   vi.stubGlobal("fetch", fetchMock);
 });
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.useRealTimers();
+});
+
+describe("Checkout confirmation retries", () => {
+  beforeEach(() => vi.useFakeTimers());
+
+  it("retries unavailable then returns the verified active subscription", async () => {
+    fetchMock.mockResolvedValueOnce(Response.json({ error: "Unavailable" }, { status: 503 }))
+      .mockResolvedValueOnce(Response.json({ active: true, email: "pro@example.com" }));
+    const result = confirmCheckout("cs_test_pending");
+    await vi.runAllTimersAsync();
+    expect(await result).toEqual({ kind: "ok", data: { active: true, email: "pro@example.com" } });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("returns unavailable after bounded retries without inventing an activation", async () => {
+    fetchMock.mockImplementation(async () => Response.json({ error: "Unavailable" }, { status: 503 }));
+    const start = Date.now();
+    const result = confirmCheckout("cs_test_pending");
+    await vi.runAllTimersAsync();
+    expect(await result).toMatchObject({ kind: "unavailable" });
+    expect(fetchMock).toHaveBeenCalledTimes(4);
+    expect(Date.now() - start).toBe(9000);
+  });
+
+  it("returns a rejection immediately without retrying", async () => {
+    fetchMock.mockResolvedValue(Response.json({ error: "Checkout not found" }, { status: 404 }));
+    expect(await confirmCheckout("cs_test_unknown")).toMatchObject({ kind: "rejected", status: 404 });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("retries a valid but still inactive checkout", async () => {
+    fetchMock.mockResolvedValueOnce(Response.json({ active: false }))
+      .mockResolvedValueOnce(Response.json({ active: true }));
+    const result = confirmCheckout("cs_test_pending");
+    await vi.runAllTimersAsync();
+    expect(await result).toMatchObject({ kind: "ok", data: { active: true } });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("includes stalled requests in the total ten-second budget", async () => {
+    fetchMock.mockImplementation((_url, init) => new Promise((_resolve, reject) => {
+      init.signal.addEventListener("abort", () => reject(new Error("Timed out")));
+    }));
+    const start = Date.now();
+    const result = confirmCheckout("cs_test_pending");
+    await vi.runAllTimersAsync();
+    expect(await result).toMatchObject({ kind: "unavailable" });
+    expect(Date.now() - start).toBe(10000);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+});
 
 describe("Pro capability and deal client", () => {
   it("keeps the Checkout access token without placing it in the redirect URL", async () => {

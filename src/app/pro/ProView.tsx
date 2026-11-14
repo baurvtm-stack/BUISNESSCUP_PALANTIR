@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Confetti, Reveal } from "@/components/fx";
 import { Icon, type IconName } from "@/components/icons";
 import { Button, ButtonLink, Eyebrow, Notice } from "@/components/ui";
-import { getCheckoutStatus, getServerPro, MOCKS_ENABLED, startCheckout } from "@/lib/api/client";
+import { confirmCheckout, getServerPro, MOCKS_ENABLED, startCheckout } from "@/lib/api/client";
 import { cssVars } from "@/lib/css";
 import { isEmail, shortDate } from "@/lib/format";
 import { useHydrated } from "@/lib/local-store";
@@ -80,27 +80,31 @@ export default function ProView({
     if (checkout !== "success" || confirmed.current) return;
     confirmed.current = true;
     (async () => {
-      const looksReal = !!sessionId && (/^cs_(test|live)_/.test(sessionId) || (MOCKS_ENABLED && sessionId.startsWith("mock_")));
+      const fallbackEmail = emailStore.get();
+      const activatedAt = new Date().toISOString();
+      if (MOCKS_ENABLED && sessionId?.startsWith("mock_")) {
+        proStore.set({ email: fallbackEmail, activatedAt, source: "demo" });
+        setWelcome(true);
+        setState("idle");
+        window.history.replaceState(null, "", "/pro");
+        return;
+      }
+      const looksReal = !!sessionId && /^cs_(test|live)_/.test(sessionId);
       if (!sessionId || !looksReal) {
+        setError("We couldn't confirm the payment yet. If you were charged, refresh this page in a minute.");
         setState("idle");
         return;
       }
-      const out = await getCheckoutStatus(sessionId);
-      const fallbackEmail = emailStore.get();
-      const activatedAt = new Date().toISOString();
+      const out = await confirmCheckout(sessionId);
       if (out.kind === "ok" && out.data.active) {
         proStore.set({ email: out.data.email ?? fallbackEmail, activatedAt, source: "stripe" });
         setWelcome(true);
-      } else if (out.kind === "unavailable") {
-        // Stripe only sends people to success_url after payment. Server-side features still
-        // check the subscription stored by the webhook; this only unlocks the UI on this device.
-        proStore.set({ email: fallbackEmail, activatedAt, source: sessionId.startsWith("mock_") ? "demo" : "stripe" });
-        setWelcome(true);
+        window.history.replaceState(null, "", "/pro");
       } else {
         setError("We couldn't confirm the payment yet. If you were charged, refresh this page in a minute.");
+        if (out.kind === "rejected") window.history.replaceState(null, "", "/pro");
       }
       setState("idle");
-      window.history.replaceState(null, "", "/pro");
     })();
   }, [checkout, sessionId]);
 
