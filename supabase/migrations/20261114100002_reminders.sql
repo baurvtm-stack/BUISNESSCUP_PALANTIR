@@ -23,9 +23,11 @@ create table public.reminder_deliveries (
   claim_until timestamptz,
   first_attempt_at timestamptz,
   attempts integer not null default 0,
-  last_error text,
-  unique(reminder_id, item_index, is_demo)
+  last_error text
 );
+-- Real replacement jobs are unique; every deliberate demo gets a fresh ID.
+create unique index reminder_deliveries_real_item_idx
+  on public.reminder_deliveries(reminder_id, item_index) where is_demo = false;
 create index reminder_deliveries_due_idx on public.reminder_deliveries(due_at) where sent_at is null and canceled_at is null;
 alter table public.reminders enable row level security;
 alter table public.reminder_deliveries enable row level security;
@@ -49,36 +51,41 @@ begin
 end $$;
 
 create function public.confirm_reminder(p_hash text)
-returns boolean language plpgsql set search_path = public as $$
+returns jsonb language plpgsql set search_path = public as $$
 declare v_row public.reminders; v_kit public.kits;
 begin
   select * into v_row from public.reminders where confirm_hash = p_hash for update;
-  if not found then return false; end if;
-  -- An already consumed link never re-enables a later unsubscribe.
-  if v_row.confirmed_at is not null and v_row.unsubscribed_at is null then return true; end if;
-  if v_row.confirm_expires_at <= now() then return false; end if;
+  if not found then return jsonb_build_object('status', 'invalid', 'slug', null); end if;
   select * into v_kit from public.kits where id = v_row.kit_id;
+  -- An already consumed link never re-enables a later unsubscribe.
+  if v_row.confirmed_at is not null and v_row.unsubscribed_at is null then
+    return jsonb_build_object('status', 'confirmed', 'slug', v_kit.slug);
+  end if;
+  if v_row.confirm_expires_at <= now() then
+    return jsonb_build_object('status', 'expired', 'slug', v_kit.slug);
+  end if;
   update public.reminders set confirmed_at = now(), unsubscribed_at = null,
     confirm_expires_at = now() where id = v_row.id;
   insert into public.reminder_deliveries(reminder_id, item_index, item_name, due_at)
     select v_row.id, (item.ordinality - 1)::integer,
       item.value #>> '{pick,product,name}',
-      v_kit.created_at + ((item.value #>> '{pick,lifespanMonths}')::numeric * 30.4 * interval '1 day')
+      v_kit.created_at + ((item.value #>> '{pick,lifespanMonths}')::numeric * 30.4 * interval '1 day') - interval '7 days'
     from jsonb_array_elements(v_kit.items) with ordinality as item(value, ordinality)
-    on conflict (reminder_id, item_index, is_demo) do update set canceled_at = null
+    on conflict (reminder_id, item_index) where is_demo = false do update set canceled_at = null
       where reminder_deliveries.sent_at is null;
-  return true;
+  return jsonb_build_object('status', 'confirmed', 'slug', v_kit.slug);
 end $$;
 
 create function public.unsubscribe_reminder(p_token text)
-returns boolean language plpgsql set search_path = public as $$
-declare v_id uuid;
+returns jsonb language plpgsql set search_path = public as $$
+declare v_id uuid; v_kit_id uuid; v_slug text;
 begin
   update public.reminders set unsubscribed_at = now(), confirm_expires_at = now()
-    where unsubscribe_token = p_token returning id into v_id;
-  if v_id is null then return false; end if;
+    where unsubscribe_token = p_token returning id, kit_id into v_id, v_kit_id;
+  if v_id is null then return jsonb_build_object('status', 'invalid', 'slug', null); end if;
+  select slug into v_slug from public.kits where id = v_kit_id;
   update public.reminder_deliveries set canceled_at = now() where reminder_id = v_id and sent_at is null;
-  return true;
+  return jsonb_build_object('status', 'unsubscribed', 'slug', v_slug);
 end $$;
 
 create function public.queue_demo_reminders(p_slug text)
@@ -86,10 +93,10 @@ returns integer language plpgsql set search_path = public as $$
 declare v_count integer;
 begin
   insert into public.reminder_deliveries(reminder_id, item_index, item_name, due_at, is_demo)
-    select r.id, 0, 'Demo: your first kit item', now(), true from public.reminders r
+    select r.id, 0, k.items #>> '{0,pick,product,name}', now(), true from public.reminders r
     join public.kits k on k.id = r.kit_id
     where k.slug = p_slug and r.confirmed_at is not null and r.unsubscribed_at is null
-    on conflict do nothing;
+      and jsonb_array_length(k.items) > 0;
   get diagnostics v_count = row_count;
   return v_count;
 end $$;
