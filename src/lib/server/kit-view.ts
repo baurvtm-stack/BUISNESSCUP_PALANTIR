@@ -1,14 +1,30 @@
 /**
  * Server-side entry point the pages use to get kits and reference data.
- * Pages never import the engine or the catalog directly, so when the catalog moves to a
- * database (or recommend() becomes async) only this file has to change.
+ * Pages never import the engine or the catalog directly, so catalog changes stay in this file.
+ *
+ * Kits, the catalog page and the /go hop read the live catalog (Supabase when configured).
+ * If the database is down, pages fall back to the bundled snapshot instead of erroring:
+ * a kit built from yesterday's prices beats an error page in front of a customer.
+ * The landing page and the questionnaire use the snapshot on purpose, so they stay static.
  */
+import { cache } from "react";
 import { buyUrl, PRODUCTS } from "../../data/products";
 import { EMPLOYER_RULES, HAZARDS } from "../../data/hazards";
 import { TRADES } from "../../data/trades";
 import { encodeAnswers } from "../answers";
 import { CATEGORY_LABELS, describeRequirement, effectiveLifespan, recommend } from "../engine";
-import type { Answers, Category, EmployerRule, KitResult, Pick, Product, Requirement } from "../types";
+import type { Answers, Category, EmployerRule, Gender, KitResult, Pick, Product, Requirement } from "../types";
+import { getProduct, getProducts } from "./catalog";
+
+/** One catalog read per request, shared by generateMetadata and the page. */
+const liveProducts = cache(async (): Promise<Product[]> => {
+  try {
+    return await getProducts();
+  } catch (error) {
+    console.error("GearFit: live catalog unavailable, using the bundled snapshot.", error);
+    return PRODUCTS;
+  }
+});
 
 export type ViewPick = Pick & { url: string };
 
@@ -36,8 +52,8 @@ export interface KitView {
 
 const withUrl = (pick: Pick): ViewPick => ({ ...pick, url: buyUrl(pick.product) });
 
-export async function buildKit(answers: Answers): Promise<KitView> {
-  const kit = recommend(answers);
+export async function buildKit(answers: Answers, { live = true }: { live?: boolean } = {}): Promise<KitView> {
+  const kit = recommend(answers, live ? await liveProducts() : PRODUCTS);
   return {
     token: encodeAnswers(kit.answers),
     answers: kit.answers,
@@ -61,7 +77,12 @@ export async function buildKit(answers: Answers): Promise<KitView> {
 
 /** Product lookup for the outbound /go redirect. */
 export async function findProduct(id: string): Promise<{ product: Product; url: string } | null> {
-  const product = PRODUCTS.find((p) => p.id === id);
+  let product: Product | null | undefined;
+  try {
+    product = await getProduct(id);
+  } catch {
+    product = PRODUCTS.find((p) => p.id === id);
+  }
   return product ? { product, url: buyUrl(product) } : null;
 }
 
@@ -71,13 +92,19 @@ export interface CatalogItem extends Product {
   categoryLabel: string;
 }
 
-export async function getCatalog(): Promise<CatalogItem[]> {
-  return PRODUCTS.map((p) => ({
-    ...p,
-    url: buyUrl(p),
-    costPerMonth: Math.round((p.price / p.lifespanMonths) * 100) / 100,
-    categoryLabel: CATEGORY_LABELS[p.category],
-  }));
+/** The catalog with cost per month at a given weekly workload (40 h by default). */
+export async function getCatalog(hoursPerWeek = 40): Promise<CatalogItem[]> {
+  const products = await liveProducts();
+  return products.map((p) => {
+    const lifespanMonths = effectiveLifespan(p, hoursPerWeek);
+    return {
+      ...p,
+      lifespanMonths,
+      url: buyUrl(p),
+      costPerMonth: Math.round((p.price / lifespanMonths) * 100) / 100,
+      categoryLabel: CATEGORY_LABELS[p.category],
+    };
+  });
 }
 
 export const CATEGORIES: { id: Category; label: string }[] = (Object.keys(CATEGORY_LABELS) as Category[]).map((id) => ({
@@ -96,10 +123,58 @@ function effects(reqs: Requirement[]): string[] {
   ];
 }
 
+export interface SizeOptions {
+  /** US shoe sizes most boots come in, per sizing choice. */
+  shoes: Record<Gender, string[]>;
+  /** Shirt and jacket sizes most shirts come in. */
+  tops: Record<Gender, string[]>;
+  /** Pants sizes: waist x inseam for men ("32x30"), numeric for women ("8"). */
+  pants: Record<Gender, string[]>;
+}
+
 export interface WizardData {
   trades: { id: string; label: string; blurb: string; hazards: string[]; optionalHazards: string[] }[];
   hazards: { id: string; label: string; effects: string[] }[];
   employerRules: { id: EmployerRule; label: string; effects: string[] }[];
+  sizes: SizeOptions;
+}
+
+const TOP_ORDER = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];
+
+function sortSizes(sizes: string[]): string[] {
+  const key = (s: string) => {
+    const top = TOP_ORDER.indexOf(s.toUpperCase());
+    if (top >= 0) return [top, 0];
+    const [w, l = "0"] = s.toLowerCase().split("x");
+    return [Number(w), Number(l)];
+  };
+  return [...sizes].sort((a, b) => {
+    const [a1, a2] = key(a);
+    const [b1, b2] = key(b);
+    return a1 - b1 || a2 - b2;
+  });
+}
+
+/**
+ * Sizes offered in the questionnaire. The engine drops products that don't come in the
+ * requested size, so offering a size few products carry would empty a category.
+ * We list the sizes at least half of the matching products come in.
+ */
+function sizeOptions(products: Product[], category: Category, gender: Exclude<Gender, "unisex">): string[] {
+  const pool = products.filter((p) => p.category === category && (p.gender === gender || p.gender === "unisex"));
+  const counts = new Map<string, number>();
+  for (const p of pool) {
+    for (const size of new Set((p.sizes ?? []).flatMap((s) => s.split("/").map((x) => x.trim())))) {
+      if (size && size !== "one-size") counts.set(size, (counts.get(size) ?? 0) + 1);
+    }
+  }
+  return sortSizes([...counts].filter(([, n]) => n >= pool.length / 2).map(([size]) => size));
+}
+
+function bySizing(category: Category): Record<Gender, string[]> {
+  const men = sizeOptions(PRODUCTS, category, "men");
+  const women = sizeOptions(PRODUCTS, category, "women");
+  return { men, women, unisex: sortSizes([...new Set([...men, ...women])]) };
 }
 
 /** Reference data for the questionnaire, with what each hazard or rule adds to the kit. */
@@ -108,6 +183,7 @@ export async function getWizardData(): Promise<WizardData> {
     trades: TRADES.map(({ id, label, blurb, hazards, optionalHazards }) => ({ id, label, blurb, hazards, optionalHazards })),
     hazards: HAZARDS.map((h) => ({ id: h.id, label: h.label, effects: effects(h.requirements.filter((r) => r.hard)) })),
     employerRules: EMPLOYER_RULES.map((r) => ({ id: r.id, label: r.label, effects: effects(r.requirements) })),
+    sizes: { shoes: bySizing("boots"), tops: bySizing("shirt"), pants: bySizing("pants") },
   };
 }
 

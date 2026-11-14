@@ -46,8 +46,17 @@ const GENDERS: { id: Gender; label: string }[] = [
   { id: "unisex", label: "Show both" },
 ];
 
-const SHOE_SIZES = Array.from({ length: 21 }, (_, i) => String(5 + i * 0.5));
-const CLOTHING_SIZES = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"];
+type Fit = { top: string; pants: string };
+
+/** Clothing sizes travel as one answer, "L / 32x30"; the engine matches each garment to its part. */
+function splitClothing(value?: string): Fit {
+  const parts = (value ?? "").split("/").map((s) => s.trim()).filter(Boolean);
+  const pants = parts.find((p) => /^\d+(x\d+)?$/i.test(p)) ?? "";
+  return { top: parts.find((p) => p !== pants) ?? "", pants };
+}
+
+const joinClothing = ({ top, pants }: Fit) => (top && pants ? `${top} / ${pants}` : "");
+const pantsLabel = (size: string) => (/x/i.test(size) ? size.replace(/x/i, " × ") : `Women's ${size}`);
 
 interface Preview {
   key: string;
@@ -58,6 +67,7 @@ export default function Wizard({ data, initial, initialTrade }: { data: WizardDa
   const router = useRouter();
   const [a, setA] = useState<Answers>(() => (initial ? { ...DEFAULTS, ...initial } : { ...DEFAULTS, trade: initialTrade ?? "" }));
   const [step, setStep] = useState(initial || initialTrade ? 1 : 0);
+  const [fit, setFit] = useState<Fit>(() => splitClothing(initial?.clothingSize));
   const [busy, setBusy] = useState(false);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [previewLoading, setPreviewLoading] = useState(false);
@@ -73,9 +83,10 @@ export default function Wizard({ data, initial, initialTrade }: { data: WizardDa
     restored.current = true;
     if (initial || initialTrade) return;
     try {
-      const draft = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "null") as { answers?: Answers; step?: number } | null;
+      const draft = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "null") as { answers?: Answers; step?: number; fit?: Fit } | null;
       if (draft?.answers?.trade && data.trades.some((t) => t.id === draft.answers?.trade)) {
         setA({ ...DEFAULTS, ...draft.answers });
+        setFit(draft.fit ?? splitClothing(draft.answers.clothingSize));
         setStep(Math.min(STEPS.length - 1, Math.max(0, draft.step ?? 1)));
       }
     } catch {
@@ -85,11 +96,11 @@ export default function Wizard({ data, initial, initialTrade }: { data: WizardDa
 
   useEffect(() => {
     try {
-      sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ answers: a, step }));
+      sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ answers: a, step, fit }));
     } catch {
       /* storage unavailable */
     }
-  }, [a, step]);
+  }, [a, step, fit]);
 
   // Live kit preview: re-run the real engine (debounced) whenever an answer changes.
   useEffect(() => {
@@ -115,6 +126,25 @@ export default function Wizard({ data, initial, initialTrade }: { data: WizardDa
     setStep(Math.min(STEPS.length - 1, Math.max(0, next)));
     // Keep the next question in view on phones.
     requestAnimationFrame(() => topRef.current?.scrollIntoView({ block: "start", behavior: "smooth" }));
+  }
+
+  function setFitSize(part: keyof Fit, value: string) {
+    const next = { ...fit, [part]: value };
+    setFit(next);
+    set("clothingSize", joinClothing(next));
+  }
+
+  /** Switching sizing keeps only the sizes that exist for it. */
+  function chooseGender(gender: Gender) {
+    const keep = (list: string[], v?: string) => (v && list.includes(v) ? v : "");
+    const next = { top: keep(data.sizes.tops[gender], fit.top), pants: keep(data.sizes.pants[gender], fit.pants) };
+    setFit(next);
+    setA((prev) => ({
+      ...prev,
+      gender,
+      shoeSize: keep(data.sizes.shoes[gender], prev.shoeSize),
+      clothingSize: joinClothing(next),
+    }));
   }
 
   function chooseTrade(id: string) {
@@ -266,7 +296,7 @@ export default function Wizard({ data, initial, initialTrade }: { data: WizardDa
                     type="button"
                     role="radio"
                     aria-checked={a.gender === g.id}
-                    onClick={() => set("gender", g.id)}
+                    onClick={() => chooseGender(g.id)}
                     className={`h-11 rounded-xl text-sm font-semibold transition ${
                       a.gender === g.id ? "bg-card text-ink shadow-sm" : "text-ink-2 hover:text-ink"
                     }`}
@@ -275,20 +305,33 @@ export default function Wizard({ data, initial, initialTrade }: { data: WizardDa
                   </button>
                 ))}
               </div>
-              <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 <SelectField
-                  label="Shoe size (US)"
+                  label="Boots (US)"
                   value={a.shoeSize ?? ""}
                   onChange={(v) => set("shoeSize", v)}
-                  options={SHOE_SIZES}
+                  options={data.sizes.shoes[a.gender].map((s) => ({ value: s, label: s }))}
                 />
                 <SelectField
-                  label="Clothing size"
-                  value={a.clothingSize ?? ""}
-                  onChange={(v) => set("clothingSize", v)}
-                  options={CLOTHING_SIZES}
+                  label="Shirt & jacket"
+                  value={fit.top}
+                  onChange={(v) => setFitSize("top", v)}
+                  options={data.sizes.tops[a.gender].map((s) => ({ value: s, label: s }))}
+                />
+                <SelectField
+                  label={a.gender === "men" ? "Pants (waist × inseam)" : "Pants"}
+                  className="col-span-2 sm:col-span-1"
+                  value={fit.pants}
+                  onChange={(v) => setFitSize("pants", v)}
+                  options={data.sizes.pants[a.gender].map((s) => ({ value: s, label: pantsLabel(s) }))}
                 />
               </div>
+              <p className="mt-2.5 flex items-start gap-1.5 text-sm text-ink-3">
+                <Icon name="info" className="mt-0.5 size-4 shrink-0" />
+                {!fit.top !== !fit.pants
+                  ? "Pick both clothing sizes and we'll only show shirts and pants that come in them."
+                  : "Only sizes most of our gear comes in are listed. Not sure? Skip it and pick a size on the store page."}
+              </p>
               <p className="mb-3 mt-8 font-semibold">What matters most?</p>
               <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
                 {BUDGETS.map((b) => (
@@ -527,14 +570,18 @@ function SelectField({
   value,
   onChange,
   options,
+  className = "",
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
-  options: string[];
+  options: { value: string; label: string }[];
+  className?: string;
 }) {
+  // Keep a value from an older link visible even if the catalog no longer lists it.
+  const list = value && !options.some((o) => o.value === value) ? [{ value, label: value }, ...options] : options;
   return (
-    <label className="block">
+    <label className={`block ${className}`}>
       <span className="text-sm font-semibold">{label}</span>
       <span className="relative mt-1.5 block">
         <select
@@ -543,9 +590,9 @@ function SelectField({
           className="h-12 w-full appearance-none rounded-xl border border-line-2 bg-card px-3 pr-9 text-base outline-none focus:border-accent focus:ring-2 focus:ring-accent/30"
         >
           <option value="">Not sure</option>
-          {options.map((o) => (
-            <option key={o} value={o}>
-              {o}
+          {list.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
             </option>
           ))}
         </select>

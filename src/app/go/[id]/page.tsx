@@ -23,7 +23,7 @@ export default async function GoPage({
   return (
     <GoRedirect
       productId={id}
-      kitId={kit && /^[\w-]{1,64}$/.test(kit) ? kit : undefined}
+      kitId={kit && /^[\w-]{1,2000}$/.test(kit) ? kit : undefined}
       fallbackUrl={found?.url ?? null}
       name={found ? `${found.product.brand} ${found.product.name}` : null}
     />

@@ -171,7 +171,7 @@ export async function resolveClick(req: ClickRequest, fallbackUrl: string | null
   const out = await request("/api/click", { method: "POST", body: req, timeoutMs: 2500 });
   if (out.kind === "ok") {
     const url = str(out.data, "url", "redirectUrl", "redirect_url", "location", "href");
-    return { url: url && isSafeUrl(url) ? url : fallbackUrl, tracked: true };
+    return { url: url && isSafeUrl(url) ? url : fallbackUrl, tracked: out.data.tracked !== false };
   }
   return { url: fallbackUrl, tracked: false };
 }

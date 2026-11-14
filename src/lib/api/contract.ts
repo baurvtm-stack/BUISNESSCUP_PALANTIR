@@ -2,9 +2,9 @@
  * The HTTP contract between the GearFit frontend and the API routes.
  * Human-readable version with examples: docs/api-contract.md.
  *
- * Only /api/recommend and /api/catalog exist in the MVP. The rest are being built in
- * parallel; the adapters in ./client.ts fall back gracefully until they ship, so the
- * live site never breaks.
+ * /api/recommend, /api/catalog and /api/click are live. /api/kits, /api/reminders,
+ * /api/subscribe and /api/stats are being built in parallel; the adapters in ./client.ts
+ * fall back gracefully until they ship, so the live site never breaks.
  */
 import type { Answers, Category, KitResult } from "../types";
 
@@ -53,12 +53,14 @@ export interface StoredKit {
 /** POST /api/click — log an outbound click and get the (affiliate-tagged) retailer URL. */
 export interface ClickRequest {
   productId: string;
-  /** Saved kit slug, when the click comes from a saved kit. */
+  /** Saved-kit slug or the kit's answers token ([A-Za-z0-9_-], up to 2000 chars). */
   kitId?: string;
 }
 
 export interface ClickResponse {
-  url: string;
+  redirectUrl: string;
+  /** False when the click could not be stored (e.g. no database configured). */
+  tracked: boolean;
 }
 
 /** POST /api/reminders — double opt-in replacement reminders by email. */

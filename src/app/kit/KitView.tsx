@@ -124,7 +124,7 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
     CLIMATE[a.climate],
     a.gender === "women" ? "Women's sizing" : a.gender === "men" ? "Men's sizing" : null,
     a.shoeSize ? `Shoe ${a.shoeSize}` : null,
-    a.clothingSize ? `Size ${a.clothingSize}` : null,
+    a.clothingSize ? `Clothing ${a.clothingSize.replace(/(\d+)x(\d+)/i, "$1×$2")}` : null,
     PRIORITY[a.budget],
     a.maxBudget ? `Max ${usd(a.maxBudget)}` : null,
   ].filter((c): c is string => !!c);
@@ -226,7 +226,7 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
               item={item}
               pick={chosen[i]}
               choice={choices[i]}
-              kitSlug={slug}
+              kitRef={slug ?? kit.token}
               onChoose={(id) => setChoices((prev) => prev.map((c, k) => (k === i ? (id === item.pick.product.id ? "" : id) : c)))}
             />
           ))}
@@ -349,13 +349,14 @@ function ItemCard({
   item,
   pick,
   choice,
-  kitSlug,
+  kitRef,
   onChoose,
 }: {
   item: ViewItem;
   pick: ViewPick;
   choice: string;
-  kitSlug?: string;
+  /** Saved-kit slug, or the answers token: lets the click log tie back to this kit. */
+  kitRef?: string;
   onChoose: (productId: string) => void;
 }) {
   const p = pick.product;
@@ -479,7 +480,7 @@ function ItemCard({
             Chosen from {item.optionsConsidered} compliant option{item.optionsConsidered === 1 ? "" : "s"}
           </p>
           <a
-            href={goHref(p.id, kitSlug)}
+            href={goHref(p.id, kitRef)}
             target="_blank"
             rel="noopener sponsored"
             className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-ink px-4 text-sm font-semibold text-paper transition hover:opacity-90"

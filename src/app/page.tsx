@@ -20,7 +20,7 @@ const SHOWCASE_HAZARDS = ["electrical", "nails_debris", "noise", "highway"];
 
 export default async function Home() {
   const [example, facts, trades, wizard] = await Promise.all([
-    buildKit({ ...EXAMPLE, extraHazards: [], employer: [] }),
+    buildKit({ ...EXAMPLE, extraHazards: [], employer: [] }, { live: false }),
     getCatalogFacts(EXAMPLE.hoursPerWeek),
     getTrades(),
     getWizardData(),
