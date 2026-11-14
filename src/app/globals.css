@@ -1,24 +1,178 @@
 @import "tailwindcss";
 
+/*
+ * GearFit design tokens. Warm "canvas" neutrals, charcoal ink and one safety-orange accent.
+ * Orange is always paired with dark text (contrast 6.6:1); orange text on light surfaces
+ * uses --accent-ink, which passes WCAG AA.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #18181b;
+  --paper: #f6f4ef;
+  --card: #ffffff;
+  --sunken: #efece5;
+  --ink: #15171a;
+  --ink-2: #464b52;
+  --ink-3: #686d75;
+  --line: #e3ded4;
+  --line-2: #cdc6b8;
+  --accent: #ff6a13;
+  --accent-hover: #ff8136;
+  --accent-ink: #c2410c;
+  --accent-soft: #fff0e6;
+  --ok: #157f3c;
+  --ok-soft: #e8f6ed;
+  --warn: #9a5b06;
+  --warn-soft: #fff5dd;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+  --steel: #1b1e22;
+  --steel-2: #262a30;
+  --steel-ink: #f3f1ec;
+  --steel-muted: #a9aeb5;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0b0b0d;
-    --foreground: #ededed;
+    --paper: #0e1012;
+    --card: #16191c;
+    --sunken: #121417;
+    --ink: #f1efea;
+    --ink-2: #c3c7cd;
+    --ink-3: #959ba3;
+    --line: #272b30;
+    --line-2: #383d44;
+    --accent: #ff6a13;
+    --accent-hover: #ff8540;
+    --accent-ink: #ff8f52;
+    --accent-soft: rgb(255 106 19 / 0.13);
+    --ok: #4ade80;
+    --ok-soft: rgb(74 222 128 / 0.1);
+    --warn: #fbbf24;
+    --warn-soft: rgb(251 191 36 / 0.1);
+    --danger: #f87171;
+    --danger-soft: rgb(248 113 113 / 0.1);
+    --steel: #1c2024;
+    --steel-2: #262b31;
+    --steel-ink: #f3f1ec;
+    --steel-muted: #a9aeb5;
+    color-scheme: dark;
   }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-steel: var(--steel);
+  --color-steel-2: var(--steel-2);
+  --color-steel-ink: var(--steel-ink);
+  --color-steel-muted: var(--steel-muted);
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: var(--font-heading), var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: #15171a;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Diagonal safety stripes, used sparingly as an accent band. */
+@utility hazard {
+  background-image: repeating-linear-gradient(-45deg, var(--accent) 0 10px, #15171a 10px 20px);
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@utility animate-rise {
+  animation: rise 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@utility skeleton {
+  background: linear-gradient(90deg, var(--sunken) 25%, var(--line) 50%, var(--sunken) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
 }

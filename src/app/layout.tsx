@@ -1,39 +1,68 @@
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
+import { Barlow, Barlow_Condensed } from "next/font/google";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
 import "./globals.css";
 
+const body = Barlow({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const heading = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
-  title: "GearFit | The right work gear in 2 minutes",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "GearFit | Work gear that passes the site check",
+    template: "%s | GearFit",
+  },
   description:
-    "Answer 5 questions about your trade and get a work boots and PPE kit that meets OSHA, ASTM and ANSI standards, with the real cost per month.",
+    "Answer 5 questions about your trade and get a complete boots-to-hard-hat kit that meets OSHA, ASTM and ANSI standards, with the real cost per month of wear. Free, no sign-up.",
+  applicationName: "GearFit",
+  openGraph: {
+    type: "website",
+    siteName: "GearFit",
+    title: "GearFit | Work gear that passes the site check",
+    description: "A complete work boots and PPE kit for your trade in 2 minutes, matched to safety standards and priced per month.",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1 };
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f6f4ef" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1012" },
+  ],
+};
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className="flex min-h-screen flex-col antialiased">
-        <header className="border-b border-zinc-200 print:hidden dark:border-zinc-800">
-          <nav className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-            <Link href="/" className="flex items-center gap-2 font-bold tracking-tight">
-              <span className="flex size-7 items-center justify-center rounded-md bg-amber-500 text-sm text-zinc-950">GF</span>
-              GearFit
-            </Link>
-            <div className="flex items-center gap-1 text-sm">
-              <Link href="/catalog" className="rounded-md px-3 py-1.5 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">
-                Catalog
-              </Link>
-              <Link href="/build" className="rounded-md bg-zinc-900 px-3 py-1.5 font-semibold text-white dark:bg-white dark:text-zinc-900">
-                Build my kit
-              </Link>
-            </div>
-          </nav>
-        </header>
-        <div className="flex-1">{children}</div>
-        <footer className="border-t border-zinc-200 py-8 text-center text-xs text-zinc-500 print:hidden dark:border-zinc-800">
-          GearFit is a buying guide, not a substitute for your employer&apos;s safety program. Built at Business Cup 2.0.
-        </footer>
+    <html lang="en" className={`${body.variable} ${heading.variable}`}>
+      <body className="flex min-h-dvh flex-col font-sans antialiased">
+        <a
+          href="#main"
+          className="sr-only z-50 rounded-lg bg-accent px-4 py-2 font-semibold text-[#15171a] focus:not-sr-only focus:fixed focus:left-4 focus:top-3"
+        >
+          Skip to content
+        </a>
+        <SiteHeader />
+        <div id="main" className="flex flex-1 flex-col">
+          {children}
+        </div>
+        <SiteFooter />
       </body>
     </html>
   );
