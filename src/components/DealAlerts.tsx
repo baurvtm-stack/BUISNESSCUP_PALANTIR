@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "@/components/icons";
-import { Notice } from "@/components/ui";
+import { ButtonLink, Notice } from "@/components/ui";
 import { dealAlertProblem, getDealAlerts, getServerPro, setDealAlerts } from "@/lib/api/client";
+import type { CatalogDeal } from "@/lib/api/contract";
 import { useHydrated } from "@/lib/local-store";
+import { priceDropRows } from "@/lib/price-drops";
 import { proAccessStore } from "@/lib/saved-kits";
 
 type Problem = ReturnType<typeof dealAlertProblem>;
@@ -18,12 +20,14 @@ export default function DealAlerts({ kitSlug, isPro }: { kitSlug?: string; isPro
   const [enabled, setEnabled] = useState(false);
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<Problem | null>(null);
+  const [deals, setDeals] = useState<CatalogDeal[] | null>(null);
 
   useEffect(() => {
     const current = Symbol();
     generation.current = current;
     setEnabled(false);
     setProblem(null);
+    setDeals(null);
     if (!isPro || !kitSlug || !accessToken) {
       setBusy(false);
       return;
@@ -39,6 +43,7 @@ export default function DealAlerts({ kitSlug, isPro }: { kitSlug?: string; isPro
       if (generation.current !== current) return;
       if (out.kind === "ok") {
         setEnabled(out.data.enabled);
+        setDeals(out.data.deals);
       } else {
         setProblem(dealAlertProblem(out));
       }
@@ -65,6 +70,7 @@ export default function DealAlerts({ kitSlug, isPro }: { kitSlug?: string; isPro
   }
 
   const on = enabled && isPro && !!kitSlug && !!accessToken;
+  const drops = kitSlug ? priceDropRows(deals ?? [], kitSlug) : [];
   const thumb = <span className={`block size-6 rounded-full bg-white shadow-sm transition-transform ${on ? "translate-x-6" : "translate-x-0"}`} />;
 
   return (
@@ -125,6 +131,25 @@ export default function DealAlerts({ kitSlug, isPro }: { kitSlug?: string; isPro
               )}
             </Notice>
           )}
+          {drops.length > 0 ? (
+            <ul aria-label="Catalog price drops" className="mt-4 space-y-3">
+              {drops.map((drop) => (
+                <li key={drop.productId} className="animate-rise rounded-2xl border border-line bg-sunken p-4">
+                  <p className="text-sm font-semibold leading-relaxed">{drop.name}</p>
+                  <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm tabular-nums">
+                    <span className="font-semibold">{drop.now}</span>
+                    <span className="text-ink-3">{drop.was}</span>
+                    <span className="rounded-md bg-ok-soft px-2 py-0.5 font-semibold text-ok">{drop.saving}</span>
+                  </div>
+                  <ButtonLink href={drop.href} variant="outline" iconRight="external" className="mt-3 w-full" target="_blank" rel="noopener sponsored" prefetch={false}>
+                    Check price
+                  </ButtonLink>
+                </li>
+              ))}
+            </ul>
+          ) : deals !== null && on && !busy && !problem ? (
+            <p className="mt-3 text-sm text-ink-2">No price drops since you saved this kit.</p>
+          ) : null}
         </div>
       )}
       <p className="mt-3 text-xs leading-relaxed text-ink-3">Catalog prices are estimates. Check the retailer&apos;s current price before buying.</p>
