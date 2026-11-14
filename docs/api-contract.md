@@ -9,21 +9,21 @@ What the pages call, what they send and what they expect back. Types live in
 | JSON 4xx `{ "error": "…" }` | Shown to the shopper as is, so keep it short and human. |
 | 5xx, HTML (missing route), timeout | "Not available yet". The page falls back and keeps working. |
 
-So an endpoint can ship at any time: until it does, the site uses the fallback in the last column.
+The routes below are implemented. Provider-backed features require the environment and migrations described in the [backend deployment guide](backend-handoff.md). The frontend retains fallbacks when those services are unavailable.
 
-| Endpoint | Status | Fallback while missing |
+| Endpoint | Implementation | Fallback when unavailable |
 | --- | --- | --- |
-| `POST /api/recommend` | live | Kit page rebuilds the kit on the server from the token |
-| `GET /api/catalog` | live | — |
-| `POST /api/click` | live | `/go/[id]` sends the shopper to the product's `buyUrl` |
-| `POST /api/kits`, `GET /api/kits/[slug]` | planned | Kit saved on the device, share link is the long `/kit?k=…` URL |
-| `POST /api/reminders` | planned | "Add replacement dates to my calendar" (.ics download) |
-| `POST /api/subscribe`, `GET /api/subscribe?session_id=` | planned | Pro page says checkout is being connected |
-| `GET /api/stats` | planned | Nothing is shown |
+| `POST /api/recommend` | implemented | Kit page rebuilds the kit on the server from the token |
+| `GET /api/catalog` | implemented | — |
+| `POST /api/click` | implemented | `/go/[id]` sends the shopper to the product's `buyUrl` |
+| `POST /api/kits`, `GET /api/kits/[slug]` | implemented | Kit saved on the device, share link is the long `/kit?k=…` URL |
+| `POST /api/reminders` | implemented | "Add replacement dates to my calendar" (.ics download) |
+| `POST /api/subscribe`, `GET /api/subscribe?session_id=` | implemented | Pro page says checkout is being connected |
+| `GET /api/stats` | implemented | Nothing is shown |
 
-Set `NEXT_PUBLIC_API_MOCKS=1` locally to simulate the planned endpoints.
+Set `NEXT_PUBLIC_API_MOCKS=1` only for local frontend demonstrations. Leave it unset or `0` in production.
 
-## Live
+## Catalog and recommendations
 
 ### POST /api/recommend
 
@@ -52,7 +52,7 @@ Called by `/go/[productId]?kit=…` before it forwards the shopper (every "Check
 Response `200 { "redirectUrl": "https://…?tag=…", "tracked": true }`. Only `http(s)` URLs or
 same-site paths are followed.
 
-## Planned (backend-retention)
+## Saved kits, reminders and checkout
 
 ### POST /api/kits
 
@@ -74,7 +74,7 @@ already on their device by then).
 ```
 
 `choices[i]` is the product the shopper swapped in at item `i` (`""` = GearFit's pick).
-Response `201 { "slug": "k7Pq2x" }`. The short link `/k/<slug>` then works on any device.
+Response `201 { "slug": "k7Pq2x", "createdAt": "2026-11-14T10:00:00Z" }`. Only validated answers and allowed choices affect storage; client display fields are ignored, and stale choices use the default pick. The short link `/k/<slug>` then works on any device.
 
 ### GET /api/kits/[slug]
 
@@ -90,7 +90,7 @@ Response `200 { "slug": "k7Pq2x", "answers": { … }, "items": [ … ], "created
 Response `200 { "status": "pending" }` (double opt-in email sent) or `{ "status": "confirmed" }`.
 Errors as `{ "error": "…" }`: `400` bad email, `429` too many requests.
 
-Links in the emails should land on
+Confirmation and unsubscribe routes redirect to
 `/reminders?status=confirmed|unsubscribed|expired|invalid&kit=<slug>`; that page explains
 each case and links back to `/k/<slug>`.
 
@@ -100,8 +100,8 @@ each case and links back to `/k/<slug>`.
 { "email": "worker@example.com" }
 ```
 
-Response `200 { "url": "https://checkout.stripe.com/c/pay/cs_test_…" }`; the browser goes there.
-Create the Checkout Session with:
+Response `200 { "url": "https://checkout.stripe.com/c/pay/cs_test_…", "accessToken": "opaque-capability", "testMode": true }`; the browser goes to `url`. The current UI does not retain `accessToken` or call the server Pro wear/deal APIs.
+The server creates the Checkout Session with:
 
 - `success_url`: `<origin>/pro?status=success&session_id={CHECKOUT_SESSION_ID}`
 - `cancel_url`: `<origin>/pro?status=cancel`
@@ -110,8 +110,10 @@ Create the Checkout Session with:
 
 Called once when the shopper lands on the success URL.
 Response `200 { "active": true, "email": "worker@example.com" }` (`status: "active"` also works).
-Until this exists the Pro page trusts the redirect and unlocks Pro on that device only.
+The backend checks the Stripe session, its server checkout binding and the subscription status, then persists active/trialing subscriptions. A redirect alone does not establish server-side Pro.
 
 ### GET /api/stats
 
-Response `200 { "kitsCreated": 128, "clicks": 342, "reminderSignups": 41, "proSubscribers": 6 }`.
+Response `200 { "kitsCreated": 128, "clicks": 342, "clickTrackingAvailable": true, "reminderSignups": 41, "confirmedReminders": 30, "proConversions": 6, "activePro": 5, "stripeMode": "test" }`. The client maps `proConversions` to its `proSubscribers` label. The numbers in this example are illustrative; the live endpoint returns real SQL counts.
+
+See [backend API examples](backend-handoff.md#retention-api-examples) for confirmation, unsubscribe, cron, webhook and retained Pro routes.
