@@ -15,7 +15,9 @@ export const reminderSignupSchema = z
     kitSlug: kitSlugSchema,
   })
   .strict();
-export const demoSchema = reminderSignupSchema.pick({ kitSlug: true });
+export const demoSchema = reminderSignupSchema.pick({ kitSlug: true }).extend({
+  deals: z.boolean().optional(),
+});
 const tokenSchema = z.string().regex(/^[A-Za-z0-9_-]{40,128}$/);
 
 export function tokenFromRequest(request: Request): string | null {
