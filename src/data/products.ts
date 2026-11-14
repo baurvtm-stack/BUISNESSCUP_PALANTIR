@@ -5,7 +5,7 @@ import type { Product } from "../lib/types";
 /** Bundled, validated snapshot for offline builds and existing synchronous page imports. */
 export const PRODUCTS: Product[] = catalogSchema.parse(catalog).map(toProduct);
 
-/** Retailer destinations remain available to the existing synchronous views. */
+/** Existing links now use the server-side tracking/affiliate redirect without exposing env vars. */
 export function buyUrl(product: Product): string {
-  return product.retailer_url!;
+  return `/api/click?productId=${encodeURIComponent(product.id)}`;
 }
