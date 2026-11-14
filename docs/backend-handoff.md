@@ -138,7 +138,7 @@ Prerequisites: the existing SQL and catalog are deployed, Production variables a
    where id = '<id of an item in that kit>' returning id, price_usd;
    ```
 
-5. Send the immediate deal demo and open the email. The price comparison bypasses the 60-second page cache; there is no need to wait.
+5. Reload the saved kit: the Deal alerts card shows the drop. **My kits** also shows a price-drop badge. Then send the immediate deal demo and open the email. The price comparison bypasses the 60-second page cache; there is no need to wait.
 
    ```bash
    curl -X POST "$APP_URL/api/cron/reminders" \
