@@ -1,6 +1,7 @@
 import { CLIMATE_REQUIREMENTS, EMPLOYER_RULES, hazardById } from "../data/hazards";
 import { PRODUCTS } from "../data/products";
 import { tradeById } from "../data/trades";
+import { coveredStandards } from "@/lib/standards";
 import type {
   Answers,
   BudgetTier,
@@ -380,7 +381,7 @@ export function recommend(answers: Answers, products: Product[] = PRODUCTS): Kit
   const perMonth = items.reduce((s, i) => s + i.pick.costPerMonth, 0);
   const cheapestUpfront = items.reduce((s, i) => s + i.cheapest.product.price, 0);
   const cheapestPerMonth = items.reduce((s, i) => s + i.cheapest.costPerMonth, 0);
-  const standards = [...new Set(items.flatMap((i) => i.pick.product.standards))].filter((s) => /ASTM|ANSI|NFPA|NRR/.test(s));
+  const standards = coveredStandards(items.map((item) => item.pick.product));
 
   return {
     answers,
