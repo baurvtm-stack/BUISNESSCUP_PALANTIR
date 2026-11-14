@@ -6,7 +6,7 @@ import {
   requireBearer,
 } from "@/lib/retention/core";
 import { demoSchema, runReminders } from "@/lib/retention/reminders";
-import { dispatchDealAlerts } from "@/lib/retention/billing";
+import { demoDealAlerts, dispatchDealAlerts } from "@/lib/retention/billing";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -24,7 +24,8 @@ export async function POST(request: Request) {
     requireBearer(request, "CRON_SECRET");
     if (process.env.REMINDER_TEST_MODE !== "true")
       throw new ApiError(403, "Reminder test mode is disabled");
-    const { kitSlug } = await readJson(request, demoSchema);
+    const { kitSlug, deals } = await readJson(request, demoSchema);
+    if (deals) return json(await demoDealAlerts(kitSlug));
     return json(await runReminders(kitSlug));
   });
 }

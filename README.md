@@ -39,7 +39,7 @@ flowchart TD
     Next -->|Click redirect| Retailer[Retailer]
 ```
 
-- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS 4. `src/lib/server/kit-view.ts` supplies server-rendered kits and catalog views, with snapshot fallback and size relaxation when needed. Safety filters stay mandatory. Entrances and count-ups are CSS and small helpers in `src/components/fx.tsx`; Motion (lazy bundle, `src/components/motion.tsx`) handles exits and height changes on `/build` and `/kit` only. All motion respects `prefers-reduced-motion`.
+- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS 4. `src/lib/server/kit-view.ts` supplies server-rendered kits and catalog views using the same 60-second catalog cache as click redirects, with snapshot fallback and size relaxation when needed. Safety filters stay mandatory. Entrances and count-ups are CSS and small helpers in `src/components/fx.tsx`; Motion (lazy bundle, `src/components/motion.tsx`) handles exits and height changes on `/build` and `/kit` only. All motion respects `prefers-reduced-motion`.
 - **Engine and data:** `src/lib/engine.ts`, `src/data/catalog.json` and Zod schemas. The catalog APIs use the snapshot when database credentials are absent; a configured but unavailable/empty catalog returns 503. Landing-page reference facts use the snapshot.
 - **Persistence:** Supabase stores products, clicks, saved kit snapshots, consent, reminder deliveries, rate limits and test subscriptions. RLS/service-role access keeps direct table access server-side.
 - **Retention:** Resend handles double opt-in and reminders. Vercel cron processes due deliveries; Stripe Checkout status and signed webhooks persist subscription state.
@@ -60,7 +60,7 @@ JSON errors use `{ "error": "..." }`. Inputs are validated with Zod. Public kit 
 | `GET /api/reminders/confirm?token=...` | Confirmation form; POST confirms and redirects to `/reminders` |
 | `GET /api/reminders/unsubscribe?token=...` | Unsubscribe and redirect; POST supports one-click JSON response |
 | `GET /api/cron/reminders` | Bearer `CRON_SECRET`; sends due reminders and opted-in deals |
-| `POST /api/cron/reminders` | Same auth plus `REMINDER_TEST_MODE=true`; `{ kitSlug }` sends a repeatable demo |
+| `POST /api/cron/reminders` | Same auth plus `REMINDER_TEST_MODE=true`; `{ kitSlug }` demonstrates reminders, `{ kitSlug, deals: true }` demonstrates real price drops |
 | `POST /api/subscribe` | `{ email }` → `{ url, accessToken, testMode }` |
 | `GET /api/subscribe?session_id=...` | Verifies Checkout → `{ active, email }` |
 | `POST /api/stripe/webhook` | Signed Stripe event → `{ received: true }` |
@@ -71,7 +71,15 @@ JSON errors use `{ "error": "..." }`. Inputs are validated with Zod. Public kit 
 
 Click destinations use a catalog cached for 60 seconds, with the bundled snapshot as fallback when the read fails. For a known product, GET returns 302 before recording the click with Next.js `after()`; an insert failure cannot change the redirect. POST returns `{ redirectUrl, tracked: false }` when storage is missing or an insert fails. GET ignores unrelated query parameters such as `utm_*` and `fbclid`; duplicate `productId` or `kitId` values still return 400, and unknown products remain 404. Recommendation/catalog APIs retain their documented 503 behavior for configured database failures.
 
-The current UI does not use the server `/api/pro`, `/api/pro/wear`, `/api/pro/deals` routes or retain `accessToken`; device wear tracking remains local. Free kits are limited to three per device; the cloud-save abuse limit is 200/hour/IP. See the [frontend contract](docs/api-contract.md) and [full backend examples](docs/backend-handoff.md#retention-api-examples).
+Free kits are limited to three per device; the cloud-save abuse limit is 200/hour/IP. Wear tracking remains local; the current UI does not call `/api/pro/wear`. See the [frontend contract](docs/api-contract.md) and [full backend examples](docs/backend-handoff.md#retention-api-examples).
+
+## Pro deal alerts
+
+Checkout saves its secret `accessToken` on the current device before redirecting to Stripe. After confirmation, `GET /api/pro` verifies server access using the Authorization header. Tokens never go in share links or logs; use the same device/browser to manage alerts.
+
+On a cloud-saved kit, turn on **Deal alerts** next to replacement reminders. Alerts require active server-side Pro and a confirmed reminder for the **same Pro email and kit**. The switch restores its server setting and explains missing consent, pending Pro activation or temporary failures. Free users get a link to Pro.
+
+Daily cron compares saved prices with a fresh, uncached Supabase catalog read; a failed read falls back to the bundled snapshot. Only a lower recorded price qualifies. These are catalog estimates, not live retailer sale guarantees. The authenticated deal demo uses fresh delivery identities in the existing table, so rehearsals do not consume real delivery deduplication. **No new migration is needed.** See the [demo steps](docs/backend-handoff.md#60-second-production-demo).
 
 ## Local setup
 

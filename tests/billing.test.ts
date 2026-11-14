@@ -257,12 +257,12 @@ describe("billing security and state", () => {
     expect(tampered.status).toBe(400);
     expect(fake.rpc).not.toHaveBeenCalled();
   });
-  it("only produces deal alerts for lower current catalog prices", () => {
+  it("only produces deal alerts for lower current catalog prices", async () => {
     const product = PRODUCTS[0];
     const snapshot = (price: number) =>
       ({ pick: { product: { ...product, price } } }) as CategoryResult;
-    expect(findDeals([snapshot(product.price)])).toEqual([]);
-    expect(findDeals([snapshot(product.price + 10)])).toEqual([
+    expect(await findDeals([snapshot(product.price)])).toEqual([]);
+    expect(await findDeals([snapshot(product.price + 10)])).toEqual([
       expect.objectContaining({
         productId: product.id,
         currentPrice: product.price,

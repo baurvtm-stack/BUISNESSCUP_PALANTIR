@@ -20,7 +20,7 @@ Existing `buyUrl(product)` returns `/api/click?productId=...`; ordinary anchors 
 
 - Catalog and click tables have RLS and service-only access. Retention tables/RPCs are also private to the server service role. Keys remain in server modules; public APIs expose only their intended responses.
 - The catalog DAL uses native fetch, validated rows, stable ID pagination and a five-second request timeout. Without database credentials it uses the bundled JSON. A configured empty/invalid database makes `/api/catalog` and `/api/recommend` return 503, so missing migrations or seed data are visible.
-- Kit pages, catalog views and saved-kit rebuilding use `src/lib/server/kit-view.ts`: live catalog with snapshot fallback and size relaxation when needed. Engine safety filters remain mandatory. Landing-page reference facts and wizard size options use the bundled snapshot.
+- Kit pages, catalog views and saved-kit rebuilding use `src/lib/server/kit-view.ts`: the same 60-second catalog cache as click redirects, with snapshot fallback and size relaxation when needed. Engine safety filters remain mandatory. Landing-page reference facts and wizard size options use the bundled snapshot. Deal price checks deliberately call the uncached catalog DAL; `/api/catalog` and `/api/recommend` also retain their existing behavior.
 - Click destinations come from catalog retailer URLs, never a caller-supplied URL. The optional `kitId` is a slug or answer token, not a foreign key. Click events store a product, optional kit ID and timestamp, not raw IPs or user agents. Counts are events, not unique shoppers or purchases.
 - Missing required retention services yield a redacted 503. Persistent rate limits use hashed IP buckets; without `RATE_LIMIT_SECRET`, an unsalted SHA-256 hash keeps limits working but offers weaker privacy against guessed addresses.
 - Public `/k/<slug>` links can be viewed by anyone who has the link. Client prices and safety claims are ignored when saving a kit.
@@ -83,6 +83,11 @@ Unknown slug → **404** `{"error":"Kit not found"}`. `items[].productId` restor
 | `POST /api/reminders/unsubscribe?token=<opaque-token>` (mail provider's one-click unsubscribe) | **200** `{"status":"unsubscribed"}`; invalid token → **400** `{ "error": "Invalid unsubscribe link" }`. Shares the 60/hour/IP limit. |
 | `GET /api/cron/reminders`, bearer `CRON_SECRET` | **200** `{"sent":1,"failed":0,"queued":0,"deals":{"sent":0,"failed":0}}`; sends due confirmed items and opted-in Pro deal alerts. |
 | `POST /api/cron/reminders`, bearer `CRON_SECRET`, body `{"kitSlug":"AbCdEf123_-x"}` | Requires `REMINDER_TEST_MODE=true`. **200** `{"sent":1,"failed":0,"queued":1}` for one confirmed recipient. Each deliberate call creates a fresh demo delivery ID/idempotency key, using the first item's real name. No confirmed recipients → all counts zero. |
+| `POST /api/cron/reminders`, same auth/mode, body `{"kitSlug":"AbCdEf123_-x","deals":true}` | **200** `{"sent":1,"failed":0,"deals":[{"productId":"tb-pitboss-st","name":"Pit Boss","savedPrice":150,"currentPrice":140}],"reasons":[]}` (illustrative prices). Sends only real catalog drops to enabled, confirmed Pro subscribers for this kit. |
+
+The deal demo returns `{ "sent": 0, "failed": 0, "deals": [], "reasons": ["no_price_drop"] }` when no lower price exists. Other reasons are `no_enabled_alert`, `no_confirmed_reminder`, `no_active_pro`, or `delivery_failed` when delivery could not be completed (`failed` is then nonzero). Multiple ineligible subscribers can produce multiple reasons. Up to ten enabled subscribers are checked per demo request. Unknown kit → 404; wrong secret → 401; disabled demo mode → 403.
+
+**No new SQL migration is required for deal alerts.** Already-applied migrations are unchanged. Each demo send inserts a fresh `demo:<uuid>` fingerprint in the existing `deal_alert_deliveries` table and uses a fresh Resend idempotency key. It does not claim, reset or consume the daily cron's deterministic price fingerprint. Repeat the demo request without another price edit to rehearse again.
 
 Confirmation tokens expire after 24 hours and are stored hashed. `confirm_reminder` returns `{status,slug}`; an old consumed link cannot reactivate a later unsubscribe. Unsubscribe cancels unsent replacements and suppresses deal mail. Every email links to `${APP_URL}/k/<slug>`. Real reminder `due_at = kit.created_at + lifespanMonths × 30.4 days − 7 days`; daily cron sends on or after that time, once per item. A past-due signup is eligible at the next cron run. No live wear sensor or manufacturer service-life guarantee is implied.
 
@@ -99,15 +104,15 @@ Real jobs retain deduplication and leases across retries. Rehearsals are separat
 
 `POST /api/stripe/webhook`, raw signed Stripe event JSON such as `{"id":"evt_...","type":"customer.subscription.updated","data":{"object":{"id":"sub_..."}}}` plus `Stripe-Signature` → **200** `{"received":true}`. The example is abbreviated: Stripe sends the full signed event. Duplicate events are deduplicated; current state is retrieved from Stripe, and canceled subscriptions cannot be reactivated by stale delivery. Do not call this endpoint from the frontend.
 
-The current UI **does not call `/api/pro`, `/api/pro/wear`, `/api/pro/deals` or retain `accessToken`**. Those capabilities are preserved for a later client; device wear tracking continues as implemented by the frontend. They require the capability returned by the originating Checkout, not a claimed email address. Keep the token out of URLs and logs. Losing it loses that server capability; recovery is outside this no-account demo.
+The UI saves `accessToken` in the separate `gearfit.pro-access.v1` device store before leaving for Checkout. It verifies server Pro with `GET /api/pro`, restores deal settings with GET and toggles them with POST `/api/pro/deals`. Those routes require the originating checkout capability, not a claimed email address. Keep it out of URLs, shared kit records and logs. Losing browser storage loses that server capability; recovery is outside this no-account demo. Device wear tracking remains local; the current UI does not call `/api/pro/wear`.
 
 | Request (bearer `accessToken`) | Response example |
 | --- | --- |
 | `GET /api/pro` | **200** `{"pro":true,"features":["unlimited_saved_kits","wear_tracking","deal_alerts"]}`; inactive/missing token → `{"pro":false,"features":[]}`. |
 | `POST /api/pro/wear` body `{"kitSlug":"AbCdEf123_-x","productId":"tb-pitboss-st","date":"2026-11-14","hours":8}` | **200** `{"saved":true}`; replaces absolute hours for that item/day, 0–24. |
 | `GET /api/pro/wear?kitSlug=AbCdEf123_-x` | **200** `{"entries":[{"product_id":"tb-pitboss-st","worn_on":"2026-11-14","hours":8}]}`; latest 1,000 entries for this capability. |
-| `POST /api/pro/deals` body `{"kitSlug":"AbCdEf123_-x","enabled":true}` | **200** `{"enabled":true}`; enabling requires confirmed reminder consent for this email/kit. `false` disables it. |
-| `GET /api/pro/deals?kitSlug=AbCdEf123_-x` | **200** `{"deals":[],"source":"catalog_estimates"}`; compares the retained bundled catalog against saved prices, never invents retailer discounts. |
+| `POST /api/pro/deals` body `{"kitSlug":"AbCdEf123_-x","enabled":true}` | **200** `{"enabled":true}`; enabling requires confirmed reminder consent for this email/kit (otherwise 409) and active Pro (otherwise 403). `false` disables it without requiring renewed consent. |
+| `GET /api/pro/deals?kitSlug=AbCdEf123_-x` | **200** `{"enabled":true,"deals":[],"source":"catalog_estimates"}`; reads current settings for this checkout, checks consent and compares uncached Supabase prices against saved prices, with snapshot fallback on catalog failure. No invented retailer discounts. |
 
 ### Stats
 
@@ -121,20 +126,34 @@ Field names remain compatible. The frontend maps `proConversions` to its `proSub
 
 ## 60-second production demo
 
-Prerequisites: apply SQL once, seed the catalog, set Production environment variables, redeploy, use a permitted Resend inbox, and enable demo mode. Have the inbox and test card ready.
+Prerequisites: the existing SQL and catalog are deployed, Production variables are configured, `REMINDER_TEST_MODE=true`, and the inbox and test card are ready. No migrations need replaying. Have the SQL Editor open; mail/Checkout latency can make the demo longer than a minute.
 
-1. **0–15 s:** Build a kit, swap an item, tap **Save**, open `/k/<slug>` on a phone and check the selected product.
-2. **15–30 s:** Choose **Remind me**, enter your email, open its link, press **Confirm** and land on `/reminders?status=confirmed&kit=<slug>`.
-3. **30–40 s:** Run the following operator command and open the demo email. Repeat if needed; every call gets a new demo delivery.
+1. Build a kit, tap **Save**, choose **Remind me** with the Resend account owner's email, then open the email and press **Confirm**. A verified sending domain allows other recipients.
+2. Open `/pro` in the **same browser/device**, use the same email and test card **4242 4242 4242 4242** (future expiry, any CVC). Return to `/pro` with **Pro is active** and alert access ready.
+3. Open that saved kit and turn on **Deal alerts**. If it asks for consent, confirm reminders for the same Pro email and kit, then retry.
+4. Pick an item in that saved kit whose price is above $10. In Supabase SQL Editor, lower its current price once:
+
+   ```sql
+   update public.products set price_usd = price_usd - 10
+   where id = '<id of an item in that kit>' returning id, price_usd;
+   ```
+
+5. Send the immediate deal demo and open the email. The price comparison bypasses the 60-second page cache; there is no need to wait.
 
    ```bash
    curl -X POST "$APP_URL/api/cron/reminders" \
      -H "Authorization: Bearer $CRON_SECRET" \
      -H "Content-Type: application/json" \
-     -d '{"kitSlug":"<slug>"}'
+     -d '{"kitSlug":"<slug>","deals":true}'
    ```
 
-4. **40–55 s:** Open `/pro`, pay with test card **4242 4242 4242 4242**, any future expiry and CVC, return to `/pro` and see **Pro is active**.
-5. **55–60 s:** Open `GET /api/stats` and show the increased kit, reminder and Pro counts. Actual email/Checkout latency can lengthen the demo.
+6. Restore that item's price once, even if the email step failed:
+
+   ```sql
+   update public.products set price_usd = price_usd + 10
+   where id = '<same item id>' returning id, price_usd;
+   ```
+
+Repeat step 5 before restoring if another rehearsal is needed; each call gets a fresh demo delivery. The reminder-only demo still accepts `{ "kitSlug": "<slug>" }`. `GET /api/stats` shows real kit, reminder and test Pro counts. Turn demo mode off afterward.
 
 Run `npm run lint`, `npx tsc --noEmit`, `npm test`, and `npm run build` before every push. Tests cover the exact frontend payload, canonical snapshots, stale choices, redirects, Stripe session binding, limits/config fallbacks and real Postgres migration/RPC execution. Live delivery, Checkout, webhook callbacks and deployed counts require the production demo above.
