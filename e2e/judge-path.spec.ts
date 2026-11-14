@@ -117,9 +117,10 @@ test("judge journey: electrician questionnaire, swap, cloud save and retailer", 
     for (const candidate of candidates) {
       const price = money(await candidate.innerText());
       if (price === selected) continue;
-      const title = await candidate.getAttribute("title");
+      const label = await candidate.getAttribute("aria-label");
+      if (!label || !label.trim()) throw new Error("Boot swap option must have a non-empty aria-label");
       await candidate.click();
-      await expect(options.getByRole("radio", { checked: true })).toHaveAttribute("title", title!);
+      await expect(options.getByRole("radio", { checked: true })).toHaveAttribute("aria-label", label);
       await expect.poll(() => total(page, "Pay today")).toBe(before - selected + price);
       changed = true;
       break;
