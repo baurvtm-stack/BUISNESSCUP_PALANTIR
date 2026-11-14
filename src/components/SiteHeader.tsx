@@ -18,7 +18,16 @@ export default function SiteHeader() {
   const kits = savedKits.useValue();
   const pro = proStore.useValue();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // The bar picks up a shadow once the page moves under it.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Close the mobile menu on outside click and Escape (links close it on click).
   useEffect(() => {
@@ -39,7 +48,11 @@ export default function SiteHeader() {
   const onBuild = pathname.startsWith("/build");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-paper/85 backdrop-blur-md print:hidden">
+    <header
+      className={`sticky top-0 z-40 border-b bg-paper/85 backdrop-blur-md transition-[box-shadow,border-color] duration-300 print:hidden ${
+        scrolled ? "border-line shadow-[0_10px_30px_-22px_rgb(0_0_0/0.45)]" : "border-transparent"
+      }`}
+    >
       <nav className="mx-auto flex h-15 max-w-6xl items-center gap-2 px-4 sm:px-6" aria-label="Main">
         <Link href="/" className="mr-auto rounded-lg" aria-label="GearFit home">
           <Logo />
@@ -73,7 +86,10 @@ export default function SiteHeader() {
           <Icon name="bookmark" className="size-[18px]" />
           <span className="hidden sm:inline">My kits</span>
           {kits.length > 0 && (
-            <span className="tabular flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[11px] font-bold text-paper">
+            <span
+              key={kits.length}
+              className="animate-bump tabular flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[11px] font-bold text-paper"
+            >
               {kits.length}
             </span>
           )}

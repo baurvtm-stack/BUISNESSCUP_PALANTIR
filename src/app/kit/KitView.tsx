@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { AnimatedNumber } from "@/components/fx";
 import { Icon, categoryIcon } from "@/components/icons";
+import { AnimatePresence, EASE, m, MotionRoot } from "@/components/motion";
 import ReminderForm from "@/components/ReminderForm";
 import DealAlerts from "@/components/DealAlerts";
 import { Button, ButtonLink, Chip, Eyebrow, IconTile, Notice, StandardBadge } from "@/components/ui";
+import { cssVars } from "@/lib/css";
 import type { KitItemSnapshot } from "@/lib/api/contract";
 import { duration, usd } from "@/lib/format";
 import { ensureCloudSlug, saveKit, shareUrl, type KitDraft } from "@/lib/kit-actions";
@@ -15,6 +18,7 @@ import type { KitView as Kit, ViewItem, ViewPick } from "@/lib/server/kit-view";
 
 const CLIMATE = { hot: "Hot climate", mild: "Mild climate", cold: "Cold climate", wet: "Rainy climate" } as const;
 const PRIORITY = { value: "Lowest price first", balanced: "Best value", premium: "Best quality" } as const;
+
 
 /** Picks the option with this product id, or GearFit's pick. */
 function optionFor(item: ViewItem, productId: string): ViewPick {
@@ -34,6 +38,7 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
   const kits = savedKits.useValue();
   const pro = proStore.useValue();
   const [saving, setSaving] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
   const [limitHit, setLimitHit] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -99,6 +104,7 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
     setSaving(true);
     const result = await saveKit(draft);
     setSaving(false);
+    setJustSaved(true);
     flash(result.slug ? "Saved to My kits" : "Saved to My kits on this device");
   }
 
@@ -133,241 +139,337 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
   const saveLabel = saved ? "Saved" : saving ? "Saving…" : "Save kit";
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-      {/* ---------- Header ---------- */}
-      <header className="animate-rise">
-        <Eyebrow>Your kit</Eyebrow>
-        <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
-          <h1 className="font-display text-5xl font-extrabold leading-[0.95] tracking-tight sm:text-6xl">{kit.tradeLabel}</h1>
-          <div className="hidden flex-wrap gap-2 sm:flex print:hidden">
-            <Button onClick={onSave} icon={saved ? "bookmarkCheck" : "bookmark"} variant={saved ? "outline" : "primary"} disabled={saving}>
-              {saveLabel}
-            </Button>
-            <Button onClick={onShare} variant="outline" icon="share">
-              Share
-            </Button>
-            <ButtonLink href={compareHref([kit.token])} variant="outline" icon="scale">
-              Compare tiers
-            </ButtonLink>
-            <Button onClick={() => window.print()} variant="ghost" icon="printer" aria-label="Print shopping list" className="px-3">
-              <span className="sr-only">Print</span>
-            </Button>
+    <MotionRoot>
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        {/* ---------- Header ---------- */}
+        <header className="animate-rise">
+          <Eyebrow>Your kit</Eyebrow>
+          <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
+            <h1 className="font-display text-5xl font-extrabold leading-[0.95] tracking-tight sm:text-6xl">{kit.tradeLabel}</h1>
+            <div className="hidden flex-wrap gap-2 sm:flex print:hidden">
+              <Button
+                onClick={onSave}
+                icon={saved ? "bookmarkCheck" : "bookmark"}
+                variant={saved ? "outline" : "primary"}
+                disabled={saving}
+                className={justSaved && saved ? "animate-bump" : ""}
+              >
+                {saveLabel}
+              </Button>
+              <Button onClick={onShare} variant="outline" icon="share">
+                Share
+              </Button>
+              <ButtonLink href={compareHref([kit.token])} variant="outline" icon="scale">
+                Compare tiers
+              </ButtonLink>
+              <Button onClick={() => window.print()} variant="ghost" icon="printer" aria-label="Print shopping list" className="px-3">
+                <span className="sr-only">Print</span>
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          {chips.map((c) => (
-            <Chip key={c}>{c}</Chip>
-          ))}
-          <Link
-            href={`/build?k=${kit.token}`}
-            className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold text-accent-ink hover:underline print:hidden"
-          >
-            <Icon name="pencil" className="size-3.5" /> Edit answers
-          </Link>
-        </div>
-      </header>
-
-      {/* ---------- Summary ---------- */}
-      <section aria-label="Kit summary" className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Stat label="Pay today" value={usd(totals.upfront)} sub={`${kit.items.length} items`} />
-        <Stat label="Real cost of wear" value={`${usd(totals.perMonth, 2)}`} unit="/mo" sub={`${usd(totals.perYear)} a year`} highlight />
-        <Stat
-          label="First to replace"
-          value={next?.label.replace(/\s*\(.*\)$/, "") ?? "None"}
-          sub={next ? `${next.label.match(/\((.*)\)$/)?.[1].concat(", ") ?? ""}in about ${duration(next.lifespanMonths)}` : ""}
-          small
-        />
-        {savingsPerYear > 1 ? (
-          <Stat
-            label="vs. cheapest compliant kit"
-            value={`Save ${usd(savingsPerYear)}`}
-            unit="/yr"
-            sub={extraToday > 0 ? `Pay ${usd(extraToday)} more today, rebuy less often` : "And cheaper today too"}
-            small
-          />
-        ) : (
-          <Stat label="Cheapest compliant kit" value={usd(kit.totals.cheapestUpfront)} sub="Lowest price that meets every rule" small />
-        )}
-      </section>
-
-      <div className="mt-4 flex gap-2 sm:hidden print:hidden">
-        <ButtonLink href={compareHref([kit.token])} variant="outline" size="sm" icon="scale" className="flex-1">
-          Compare tiers
-        </ButtonLink>
-        <ButtonLink href={`/build?k=${kit.token}`} variant="outline" size="sm" icon="pencil" className="flex-1">
-          Edit answers
-        </ButtonLink>
-      </div>
-
-      {limitHit && (
-        <Notice tone="warn" className="mt-5">
-          You&apos;ve saved {FREE_KIT_LIMIT} kits, the free limit.{" "}
-          <Link href="/pro" className="font-semibold underline">
-            Go Pro for unlimited kits
-          </Link>{" "}
-          or remove one in{" "}
-          <Link href="/kits" className="font-semibold underline">
-            My kits
-          </Link>
-          .
-        </Notice>
-      )}
-
-      {kit.sizeNote && (
-        <Notice tone="info" className="mt-5">
-          {kit.sizeNote}
-        </Notice>
-      )}
-
-      {kit.warnings.length > 0 && (
-        <Notice tone="warn" className="mt-5">
-          <p className="font-semibold">Before you buy</p>
-          <ul className={`mt-1 space-y-1.5 ${kit.warnings.length > 1 ? "list-disc pl-4" : ""}`}>
-            {kit.warnings.map((w) => (
-              <li key={w}>{w}</li>
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            {chips.map((c) => (
+              <Chip key={c}>{c}</Chip>
             ))}
-          </ul>
-        </Notice>
-      )}
+            <Link
+              href={`/build?k=${kit.token}`}
+              className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold text-accent-ink hover:underline print:hidden"
+            >
+              <Icon name="pencil" className="size-3.5" /> Edit answers
+            </Link>
+          </div>
+        </header>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
-        {/* ---------- Items ---------- */}
-        <section aria-label="Kit items" className="space-y-4">
-          {kit.items.map((item, i) => (
-            <ItemCard
-              key={`${item.label}-${i}`}
-              item={item}
-              pick={chosen[i]}
-              choice={choices[i]}
-              kitRef={slug ?? kit.token}
-              onChoose={(id) => setChoices((prev) => prev.map((c, k) => (k === i ? (id === item.pick.product.id ? "" : id) : c)))}
+        {/* ---------- Summary ---------- */}
+        <section aria-label="Kit summary" className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-12">
+          <div
+            className="animate-rise relative col-span-2 flex flex-col overflow-hidden rounded-3xl bg-accent p-5 text-[#15171a] shadow-[0_18px_40px_-22px_rgb(255_106_19/0.9)] sm:p-6 lg:col-span-5 lg:row-span-2 print:shadow-none"
+            style={cssVars({ "--delay": "60ms", "--rise-y": "14px" })}
+          >
+            <span className="sheen print:hidden" aria-hidden />
+            <p className="text-xs font-semibold uppercase tracking-[0.1em] opacity-70">Real cost of wear</p>
+            <p className="mt-2 font-display text-6xl font-extrabold leading-none tracking-tight sm:text-7xl lg:text-[84px]">
+              <AnimatedNumber value={totals.perMonth} digits={2} duration={1100} delay={120} />
+              <span className="text-2xl font-bold tracking-normal">/mo</span>
+            </p>
+            <p className="mt-2 text-sm opacity-75">
+              <AnimatedNumber value={totals.perYear} countOnMount={false} /> a year, spread over how long each piece lasts
+            </p>
+            <ul className="mt-auto flex flex-wrap gap-1.5 pt-5 print:hidden" aria-label="Jump to an item">
+              {kit.items.map((item, i) => (
+                <li key={`${item.label}-${i}`} className="animate-pop" style={cssVars({ "--i": i, "--stagger": "70ms", "--delay": "350ms" })}>
+                  <a
+                    href={`#item-${i}`}
+                    title={item.label}
+                    className="flex size-10 items-center justify-center rounded-xl bg-[#15171a]/10 transition hover:bg-[#15171a] hover:text-accent"
+                  >
+                    <Icon name={categoryIcon(item.category)} className="size-5" strokeWidth={1.8} />
+                    <span className="sr-only">{item.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Stat
+            label="Pay today"
+            value={<AnimatedNumber value={totals.upfront} duration={900} delay={200} />}
+            sub={`${kit.items.length} items`}
+            className="lg:col-span-3"
+            delay={140}
+          />
+          <Stat
+            label="First to replace"
+            value={next?.label.replace(/\s*\(.*\)$/, "") ?? "None"}
+            sub={next ? `${next.label.match(/\((.*)\)$/)?.[1].concat(", ") ?? ""}in about ${duration(next.lifespanMonths)}` : ""}
+            className="lg:col-span-4"
+            delay={200}
+          />
+          {savingsPerYear > 1 ? (
+            <Savings perYear={totals.perYear} cheapestPerYear={kit.totals.cheapestPerYear} extraToday={extraToday} />
+          ) : (
+            <Stat
+              label="Cheapest compliant kit"
+              value={usd(kit.totals.cheapestUpfront)}
+              sub="Lowest price that meets every rule"
+              className="col-span-2 lg:col-span-7"
+              delay={260}
             />
-          ))}
+          )}
         </section>
 
-        {/* ---------- Sidebar ---------- */}
-        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start print:hidden">
-          <div id="replacement-reminders" tabIndex={-1} className="scroll-mt-24 rounded-3xl focus-visible:outline-accent">
-            <ReminderForm getSlug={getSlug} items={snapshot} activeEmail={saved?.reminderEmail} onSubscribed={onSubscribed} />
-          </div>
-          <DealAlerts key={slug ?? "unsaved"} kitSlug={slug} isPro={!!pro} />
+        <div className="mt-4 flex gap-2 sm:hidden print:hidden">
+          <ButtonLink href={compareHref([kit.token])} variant="outline" size="sm" icon="scale" className="flex-1">
+            Compare tiers
+          </ButtonLink>
+          <ButtonLink href={`/build?k=${kit.token}`} variant="outline" size="sm" icon="pencil" className="flex-1">
+            Edit answers
+          </ButtonLink>
+        </div>
 
-          {kit.standards.length > 0 && (
-            <div className="rounded-3xl border border-line bg-card p-5 sm:p-6">
-              <div className="flex items-center gap-2.5">
-                <span className="flex size-9 items-center justify-center rounded-xl bg-ok-soft text-ok">
-                  <Icon name="shield" className="size-5" />
-                </span>
-                <h2 className="font-display text-2xl font-bold leading-none">Standards covered</h2>
+        {limitHit && (
+          <Notice tone="warn" className="animate-rise mt-5">
+            You&apos;ve saved {FREE_KIT_LIMIT} kits, the free limit.{" "}
+            <Link href="/pro" className="font-semibold underline">
+              Go Pro for unlimited kits
+            </Link>{" "}
+            or remove one in{" "}
+            <Link href="/kits" className="font-semibold underline">
+              My kits
+            </Link>
+            .
+          </Notice>
+        )}
+
+        {kit.sizeNote && (
+          <Notice tone="info" className="animate-rise mt-5 [--delay:300ms]">
+            {kit.sizeNote}
+          </Notice>
+        )}
+
+        {kit.warnings.length > 0 && (
+          <Notice tone="warn" className="animate-rise mt-5 [--delay:300ms]">
+            <p className="font-semibold">Before you buy</p>
+            <ul className={`mt-1 space-y-1.5 ${kit.warnings.length > 1 ? "list-disc pl-4" : ""}`}>
+              {kit.warnings.map((w) => (
+                <li key={w}>{w}</li>
+              ))}
+            </ul>
+          </Notice>
+        )}
+
+        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+          {/* ---------- Items ---------- */}
+          <section aria-label="Kit items" className="space-y-4">
+            {kit.items.map((item, i) => (
+              <ItemCard
+                key={`${item.label}-${i}`}
+                index={i}
+                item={item}
+                pick={chosen[i]}
+                choice={choices[i]}
+                kitRef={slug ?? kit.token}
+                onChoose={(id) => setChoices((prev) => prev.map((c, k) => (k === i ? (id === item.pick.product.id ? "" : id) : c)))}
+              />
+            ))}
+          </section>
+
+          {/* ---------- Sidebar ---------- */}
+          <aside className="animate-rise space-y-4 lg:sticky lg:top-24 lg:self-start print:hidden" style={cssVars({ "--delay": "320ms" })}>
+            <div id="replacement-reminders" tabIndex={-1} className="scroll-mt-24 rounded-3xl focus-visible:outline-accent">
+              <ReminderForm getSlug={getSlug} items={snapshot} activeEmail={saved?.reminderEmail} onSubscribed={onSubscribed} />
+            </div>
+            <DealAlerts key={slug ?? "unsaved"} kitSlug={slug} isPro={!!pro} />
+
+            {kit.standards.length > 0 && (
+              <div className="rounded-3xl border border-line bg-card p-5 sm:p-6">
+                <div className="flex items-center gap-2.5">
+                  <span className="flex size-9 items-center justify-center rounded-xl bg-ok-soft text-ok">
+                    <Icon name="shield" className="size-5" />
+                  </span>
+                  <h2 className="font-display text-2xl font-bold leading-none">Standards covered</h2>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {kit.standards.map((s) => (
+                    <StandardBadge key={s}>{s}</StandardBadge>
+                  ))}
+                </div>
+                <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                  Prices are approximate and change often. Lifespans are GearFit estimates at {a.hoursPerWeek} h/week. Confirm the
+                  exact rating on the product page and follow your site&apos;s safety rules. GearFit may earn a commission from
+                  retailer links.
+                </p>
               </div>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {kit.standards.map((s) => (
-                  <StandardBadge key={s}>{s}</StandardBadge>
-                ))}
-              </div>
-              <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                Prices are approximate and change often. Lifespans are GearFit estimates at {a.hoursPerWeek} h/week. Confirm the
-                exact rating on the product page and follow your site&apos;s safety rules. GearFit may earn a commission from
-                retailer links.
+            )}
+
+            {!pro && (
+              <Link href="/pro" className="lift group relative block overflow-hidden rounded-3xl bg-steel p-5 text-steel-ink sm:p-6">
+                <div className="hazard absolute inset-x-0 top-0 h-1.5" aria-hidden />
+                <p className="flex items-center gap-2 text-sm font-semibold text-steel-muted">
+                  <Icon name="crown" className="size-4 text-accent" /> GearFit Pro · $4/month
+                </p>
+                <p className="mt-2 font-display text-2xl font-bold leading-tight">Track wear on this kit and get deal alerts on every item.</p>
+                <p className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+                  See what&apos;s included <Icon name="arrowRight" className="size-4 transition group-hover:translate-x-0.5" />
+                </p>
+              </Link>
+            )}
+          </aside>
+        </div>
+
+        {/* ---------- Phone action bar ---------- */}
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-card/95 backdrop-blur-md sm:hidden print:hidden">
+          <div className="pb-safe flex items-center gap-2 px-4 pt-3">
+            <div className="min-w-0 flex-1">
+              <p className="font-display text-2xl font-bold leading-none">
+                <AnimatedNumber value={totals.upfront} countOnMount={false} />
+              </p>
+              <p className="mt-0.5 text-xs text-ink-2">
+                <span className="font-semibold text-accent-ink">
+                  <AnimatedNumber value={totals.perMonth} digits={2} countOnMount={false} />
+                  /mo
+                </span>{" "}
+                of wear
               </p>
             </div>
-          )}
-
-          {!pro && (
-            <Link href="/pro" className="group relative block overflow-hidden rounded-3xl bg-steel p-5 text-steel-ink sm:p-6">
-              <div className="hazard absolute inset-x-0 top-0 h-1.5" aria-hidden />
-              <p className="flex items-center gap-2 text-sm font-semibold text-steel-muted">
-                <Icon name="crown" className="size-4 text-accent" /> GearFit Pro · $4/month
-              </p>
-              <p className="mt-2 font-display text-2xl font-bold leading-tight">Track wear on this kit and get deal alerts on every item.</p>
-              <p className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-accent">
-                See what&apos;s included <Icon name="arrowRight" className="size-4 transition group-hover:translate-x-0.5" />
-              </p>
-            </Link>
-          )}
-        </aside>
-      </div>
-
-      {/* ---------- Phone action bar ---------- */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-card/95 backdrop-blur-md sm:hidden print:hidden">
-        <div className="pb-safe flex items-center gap-2 px-4 pt-3">
-          <div className="min-w-0 flex-1">
-            <p className="tabular font-display text-2xl font-bold leading-none">{usd(totals.upfront)}</p>
-            <p className="mt-0.5 text-xs text-ink-2">
-              <span className="font-semibold text-accent-ink">{usd(totals.perMonth, 2)}/mo</span> of wear
-            </p>
-          </div>
-          <Button onClick={onShare} variant="outline" size="lg" className="w-12 px-0" aria-label="Share kit">
-            <Icon name="share" className="size-5" />
-          </Button>
-          {saved ? (
-            <ButtonLink href="/kits" variant="outline" size="lg" icon="bookmarkCheck">
-              Saved
-            </ButtonLink>
-          ) : (
-            <Button onClick={onSave} size="lg" icon="bookmark" disabled={saving}>
-              {saveLabel}
+            <Button onClick={onShare} variant="outline" size="lg" className="w-12 px-0" aria-label="Share kit">
+              <Icon name="share" className="size-5" />
             </Button>
-          )}
+            {saved ? (
+              <ButtonLink href="/kits" variant="outline" size="lg" icon="bookmarkCheck" className={justSaved ? "animate-bump" : ""}>
+                Saved
+              </ButtonLink>
+            ) : (
+              <Button onClick={onSave} size="lg" icon="bookmark" disabled={saving}>
+                {saveLabel}
+              </Button>
+            )}
+          </div>
+        </div>
+
+        <div role="status" aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-24 z-40 flex justify-center px-4 sm:bottom-8">
+          <AnimatePresence>
+            {toast && (
+              <m.span
+                key={toast}
+                initial={{ opacity: 0, y: 18, scale: 0.92 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 460, damping: 30 }}
+                className="flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper shadow-lg"
+              >
+                <Icon name="checkCircle" className="size-4 text-accent" />
+                {toast}
+              </m.span>
+            )}
+          </AnimatePresence>
         </div>
       </div>
-
-      <div
-        role="status"
-        aria-live="polite"
-        className={`pointer-events-none fixed inset-x-0 bottom-24 z-40 flex justify-center px-4 transition sm:bottom-8 ${
-          toast ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-        }`}
-      >
-        {toast && (
-          <span className="flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper shadow-lg">
-            <Icon name="checkCircle" className="size-4 text-accent" />
-            {toast}
-          </span>
-        )}
-      </div>
-    </div>
+    </MotionRoot>
   );
 }
 
 function Stat({
   label,
   value,
-  unit,
   sub,
-  highlight,
-  small,
+  className = "",
+  delay = 0,
 }: {
   label: string;
-  value: string;
-  unit?: string;
+  value: ReactNode;
   sub: string;
-  highlight?: boolean;
-  small?: boolean;
+  className?: string;
+  delay?: number;
 }) {
   return (
     <div
-      className={`flex flex-col rounded-3xl p-4 sm:p-5 ${
-        highlight ? "bg-accent text-[#15171a]" : "border border-line bg-card"
-      }`}
+      className={`animate-rise flex flex-col rounded-3xl border border-line bg-card p-4 sm:p-5 ${className}`}
+      style={cssVars({ "--delay": `${delay}ms`, "--rise-y": "14px" })}
     >
-      <p className={`text-xs font-semibold uppercase tracking-[0.1em] ${highlight ? "opacity-70" : "text-ink-3"}`}>{label}</p>
-      <p className={`tabular mt-1.5 font-display font-bold leading-none ${small ? "text-2xl sm:text-3xl" : "text-3xl sm:text-4xl"}`}>
-        {value}
-        {unit && <span className="text-base font-semibold">{unit}</span>}
-      </p>
-      {sub && <p className={`mt-1.5 text-xs sm:text-sm ${highlight ? "opacity-75" : "text-ink-3"}`}>{sub}</p>}
+      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-3">{label}</p>
+      <p className="tabular mt-1.5 font-display text-3xl font-bold leading-none sm:text-4xl">{value}</p>
+      {sub && <p className="mt-1.5 text-xs text-ink-3 sm:text-sm">{sub}</p>}
+    </div>
+  );
+}
+
+/** What this kit saves per year against the cheapest kit that still passes, as two bars. */
+function Savings({ perYear, cheapestPerYear, extraToday }: { perYear: number; cheapestPerYear: number; extraToday: number }) {
+  const max = Math.max(perYear, cheapestPerYear, 1);
+  const rows = [
+    { label: "Cheapest kit that passes", value: cheapestPerYear, bar: "bg-ink-3/40" },
+    { label: "This kit", value: perYear, bar: "bg-accent" },
+  ];
+  return (
+    <div
+      className="animate-rise col-span-2 flex flex-col justify-center rounded-3xl border border-line bg-card p-4 sm:p-5 lg:col-span-7"
+      style={cssVars({ "--delay": "260ms", "--rise-y": "14px" })}
+    >
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
+        <p className="flex items-center gap-2.5 font-display text-3xl font-bold leading-none sm:text-4xl">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-ok-soft text-ok">
+            <Icon name="trendingDown" className="size-5" />
+          </span>
+          <span>
+            Save <AnimatedNumber value={cheapestPerYear - perYear} duration={900} delay={420} />
+            <span className="text-base font-semibold">/yr</span>
+          </span>
+        </p>
+        <p className="text-xs text-ink-3 sm:text-sm">{extraToday > 0 ? `Pay ${usd(extraToday)} more today, rebuy less often` : "And cheaper today too"}</p>
+      </div>
+      <dl className="mt-4 space-y-2">
+        {rows.map((row, i) => (
+          <div key={row.label} className="grid grid-cols-[minmax(0,8.5rem)_minmax(0,1fr)_4.5rem] items-center gap-3 sm:grid-cols-[minmax(0,10.5rem)_minmax(0,1fr)_4.5rem]">
+            <dt className={`truncate text-xs sm:text-sm ${i === 1 ? "font-semibold text-ink" : "text-ink-3"}`}>{row.label}</dt>
+            <dd className="contents">
+              <span className="h-3 overflow-hidden rounded-full bg-sunken" aria-hidden>
+                <span
+                  className={`animate-grow-x block h-full rounded-full transition-[width] duration-500 ${row.bar}`}
+                  style={{ width: `${Math.max(4, (row.value / max) * 100)}%`, ...cssVars({ "--i": i, "--delay": "480ms" }) }}
+                />
+              </span>
+              <span className={`tabular text-right text-sm ${i === 1 ? "font-bold" : "text-ink-2"}`}>
+                <AnimatedNumber value={row.value} countOnMount={false} />
+                /yr
+              </span>
+            </dd>
+          </div>
+        ))}
+      </dl>
     </div>
   );
 }
 
 function ItemCard({
+  index,
   item,
   pick,
   choice,
   kitRef,
   onChoose,
 }: {
+  index: number;
   item: ViewItem;
   pick: ViewPick;
   choice: string;
@@ -378,12 +480,27 @@ function ItemCard({
   const p = pick.product;
   const options = [{ label: "GearFit pick", pick: item.pick }, ...item.alternatives];
   const activeId = choice || item.pick.product.id;
+  // Counts swaps, so the highlight ring replays on each one but never on the first render.
+  const [swaps, setSwaps] = useState(0);
+
+  function choose(productId: string) {
+    if (productId === activeId) return;
+    setSwaps((n) => n + 1);
+    onChoose(productId);
+  }
 
   return (
-    <article className="rounded-3xl border border-line bg-card p-4 sm:p-6 print:break-inside-avoid print:rounded-none print:border-x-0 print:border-t-0">
+    <article
+      id={`item-${index}`}
+      className="animate-rise relative scroll-mt-24 rounded-3xl border border-line bg-card p-4 sm:p-6 print:break-inside-avoid print:rounded-none print:border-x-0 print:border-t-0"
+      style={cssVars({ "--i": index, "--stagger": "80ms", "--delay": "240ms", "--rise-y": "22px" })}
+    >
+      {swaps > 0 && (
+        <span key={swaps} className="animate-ring-out pointer-events-none absolute inset-0 rounded-3xl ring-2 ring-accent" aria-hidden />
+      )}
       <div className="flex gap-3.5 sm:gap-4">
         <IconTile name={categoryIcon(item.category)} className="sm:size-12" />
-        <div className="min-w-0 flex-1">
+        <div className="relative min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-3">{item.label}</p>
             <span
@@ -394,34 +511,48 @@ function ItemCard({
               {item.required ? "Required" : "Everyday"}
             </span>
           </div>
-          <h3 className="mt-1 text-lg font-semibold leading-snug sm:text-xl">
-            {p.brand} {p.name}
-          </h3>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {p.standards.map((s) => (
-              <StandardBadge key={s}>{s}</StandardBadge>
-            ))}
-            {p.gender !== "unisex" && <Chip className="py-0.5">{p.gender === "men" ? "Men's" : "Women's"}</Chip>}
-            {p.pack && <Chip className="py-0.5">{p.pack}</Chip>}
-          </div>
+          <AnimatePresence mode="popLayout" initial={false}>
+            <m.div
+              key={p.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8, transition: { duration: 0.12 } }}
+              transition={{ duration: 0.28, ease: EASE }}
+            >
+              <h3 className="mt-1 text-lg font-semibold leading-snug sm:text-xl">
+                {p.brand} {p.name}
+              </h3>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {p.standards.map((s) => (
+                  <StandardBadge key={s}>{s}</StandardBadge>
+                ))}
+                {p.gender !== "unisex" && <Chip className="py-0.5">{p.gender === "men" ? "Men's" : "Women's"}</Chip>}
+                {p.pack && <Chip className="py-0.5">{p.pack}</Chip>}
+              </div>
+            </m.div>
+          </AnimatePresence>
         </div>
       </div>
 
       <dl className="mt-4 grid grid-cols-3 divide-x divide-line rounded-2xl bg-sunken py-3 text-center">
         <div>
           <dt className="text-[11px] font-semibold uppercase tracking-wide text-ink-3">Price</dt>
-          <dd className="tabular mt-0.5 font-display text-2xl font-bold">{usd(p.price)}</dd>
+          <dd className="mt-0.5 font-display text-2xl font-bold">
+            <AnimatedNumber value={p.price} countOnMount={false} />
+          </dd>
         </div>
         <div>
           <dt className="text-[11px] font-semibold uppercase tracking-wide text-ink-3">Lasts</dt>
           <dd className="tabular mt-0.5 font-display text-2xl font-bold">
-            ~{Math.round(pick.lifespanMonths)}
+            ~<AnimatedNumber value={Math.round(pick.lifespanMonths)} kind="int" countOnMount={false} />
             <span className="text-sm font-semibold"> mo</span>
           </dd>
         </div>
         <div>
           <dt className="text-[11px] font-semibold uppercase tracking-wide text-ink-3">Per month</dt>
-          <dd className="tabular mt-0.5 font-display text-2xl font-bold text-accent-ink">{usd(pick.costPerMonth, 2)}</dd>
+          <dd className="mt-0.5 font-display text-2xl font-bold text-accent-ink">
+            <AnimatedNumber value={pick.costPerMonth} digits={2} countOnMount={false} />
+          </dd>
         </div>
       </dl>
 
@@ -475,10 +606,10 @@ function ItemCard({
                     type="button"
                     role="radio"
                     aria-checked={active}
-                    onClick={() => onChoose(o.pick.product.id)}
+                    onClick={() => choose(o.pick.product.id)}
                     title={`${o.pick.product.brand} ${o.pick.product.name}`}
-                    className={`shrink-0 rounded-xl border px-3 py-2 text-left transition ${
-                      active ? "border-accent bg-accent-soft ring-1 ring-accent" : "border-line bg-card hover:border-line-2"
+                    className={`shrink-0 rounded-xl border px-3 py-2 text-left transition active:scale-[0.97] ${
+                      active ? "border-accent bg-accent-soft ring-1 ring-accent" : "border-line bg-card hover:border-line-2 hover:bg-sunken/60"
                     }`}
                   >
                     <span className="block text-xs font-bold">{o.label}</span>
@@ -499,10 +630,10 @@ function ItemCard({
             href={goHref(p.id, kitRef)}
             target="_blank"
             rel="noopener sponsored"
-            className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-ink px-4 text-sm font-semibold text-paper transition hover:opacity-90"
+            className="group/buy inline-flex h-10 items-center gap-1.5 rounded-xl bg-ink px-4 text-sm font-semibold text-paper transition hover:opacity-90 active:scale-[0.98]"
           >
             Check price
-            <Icon name="external" className="size-4" />
+            <Icon name="external" className="size-4 transition-transform group-hover/buy:-translate-y-0.5 group-hover/buy:translate-x-0.5" />
           </a>
         </div>
       </div>

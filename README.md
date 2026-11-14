@@ -39,7 +39,7 @@ flowchart TD
     Next -->|Click redirect| Retailer[Retailer]
 ```
 
-- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS 4. `src/lib/server/kit-view.ts` supplies server-rendered kits and catalog views using the same 60-second catalog cache as click redirects, with snapshot fallback and size relaxation when needed. Safety filters stay mandatory.
+- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS 4. `src/lib/server/kit-view.ts` supplies server-rendered kits and catalog views using the same 60-second catalog cache as click redirects, with snapshot fallback and size relaxation when needed. Safety filters stay mandatory. Entrances and count-ups are CSS and small helpers in `src/components/fx.tsx`; Motion (lazy bundle, `src/components/motion.tsx`) handles exits and height changes on `/build` and `/kit` only. All motion respects `prefers-reduced-motion`.
 - **Engine and data:** `src/lib/engine.ts`, `src/data/catalog.json` and Zod schemas. The catalog APIs use the snapshot when database credentials are absent; a configured but unavailable/empty catalog returns 503. Landing-page reference facts use the snapshot.
 - **Persistence:** Supabase stores products, clicks, saved kit snapshots, consent, reminder deliveries, rate limits and test subscriptions. RLS/service-role access keeps direct table access server-side.
 - **Retention:** Resend handles double opt-in and reminders. Vercel cron processes due deliveries; Stripe Checkout status and signed webhooks persist subscription state.

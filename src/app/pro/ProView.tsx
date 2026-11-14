@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { Confetti, Reveal } from "@/components/fx";
 import { Icon, type IconName } from "@/components/icons";
 import { Button, ButtonLink, Eyebrow, Notice } from "@/components/ui";
 import { getCheckoutStatus, getServerPro, MOCKS_ENABLED, startCheckout } from "@/lib/api/client";
+import { cssVars } from "@/lib/css";
 import { isEmail, shortDate } from "@/lib/format";
 import { useHydrated } from "@/lib/local-store";
 import { emailStore, FREE_KIT_LIMIT, proAccessStore, proStore } from "@/lib/saved-kits";
@@ -139,8 +141,8 @@ export default function ProView({
               reorder.
             </p>
             <ul className="mt-8 space-y-4">
-              {FEATURES.map((f) => (
-                <li key={f.title} className="flex gap-3.5">
+              {FEATURES.map((f, i) => (
+                <li key={f.title} className="animate-rise flex gap-3.5" style={cssVars({ "--i": i, "--stagger": "90ms", "--delay": "200ms" })}>
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/[0.08] text-accent">
                     <Icon name={f.icon} className="size-5" />
                   </span>
@@ -153,14 +155,15 @@ export default function ProView({
             </ul>
           </div>
 
-          <div className="animate-rise rounded-[28px] bg-card p-6 text-ink shadow-2xl shadow-black/30 [animation-delay:100ms] sm:p-8">
+          <div className="animate-rise relative rounded-[28px] bg-card p-6 text-ink shadow-2xl shadow-black/30 [--delay:120ms] [--rise-y:20px] sm:p-8">
+            {welcome && pro && <Confetti />}
             {checkout === "cancel" && !pro && (
               <Notice tone="info" className="mb-5">
                 Checkout canceled. You weren&apos;t charged.
               </Notice>
             )}
             {welcome && pro && (
-              <Notice tone="ok" className="mb-5">
+              <Notice tone="ok" className="animate-rise mb-5">
                 Payment confirmed. Welcome to Pro!
               </Notice>
             )}
@@ -172,7 +175,13 @@ export default function ProView({
                 <div className="skeleton h-12 rounded-xl" />
               </div>
             ) : pro ? (
-              <div>
+              <div className="animate-rise">
+                {welcome && (
+                  <svg className="draw-check mb-4 size-16 text-ok" viewBox="0 0 48 48" fill="none" aria-hidden>
+                    <circle cx="24" cy="24" r="21" pathLength={1} stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                    <path d="m15 24.5 6.5 6.5L34 18" pathLength={1} stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
                 <p className="flex items-center gap-2 font-semibold text-ok">
                   <Icon name="checkCircle" className="size-5" /> Pro is active
                 </p>
@@ -267,7 +276,7 @@ export default function ProView({
               Build a kit first, it&apos;s free <Icon name="arrowRight" className="size-4" />
             </Link>
           </div>
-          <div className="overflow-hidden rounded-3xl border border-line bg-card">
+          <Reveal className="overflow-hidden rounded-3xl border border-line bg-card">
             <table className="w-full text-left text-sm">
               <caption className="sr-only">Free and Pro plans compared</caption>
               <thead className="bg-sunken text-xs uppercase tracking-[0.12em] text-ink-3">
@@ -296,7 +305,7 @@ export default function ProView({
                 ))}
               </tbody>
             </table>
-          </div>
+          </Reveal>
         </div>
       </section>
 
