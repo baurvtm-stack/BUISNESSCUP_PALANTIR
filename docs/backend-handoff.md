@@ -12,7 +12,7 @@ This branch is based on MVP commit `100e863` from PR #1 because `main` contained
 
 ## Click integration
 
-Existing `buyUrl(product)` now returns `/api/click?productId=...`; ordinary anchors therefore log without frontend changes. POST clients send `{productId, kitId?}` and navigate to the returned `redirectUrl`. A kit token from `POST /api/recommend` is valid as `kitId`; it is optional and not a foreign key because kits remain stateless. The API rejects arbitrary redirect URLs. With credentials set, it returns success only after a successful insert. Missing credentials yield usable links and `tracked:false` for POST. A configured storage failure returns 503 rather than pretending a click was logged.
+Existing `buyUrl(product)` returns `/api/click?productId=...`; ordinary anchors therefore log without frontend changes. POST clients send `{productId, kitId?}` and navigate to the returned `redirectUrl`. A kit token from `POST /api/recommend` is valid as `kitId`; it is optional and not a foreign key. Destinations come only from the validated catalog, cached for 60 seconds, or the bundled snapshot if that lookup fails. GET sends a 302 before recording the click with Next.js `after()`; an insert failure cannot change the redirect. POST reports `tracked:true` only after a successful insert; missing storage or a failed insert returns the same destination with `tracked:false`. Unknown products remain 404. GET ignores unrelated query parameters, including repeated marketing parameters, but rejects duplicate `productId` or `kitId` values. POST still rejects arbitrary redirect URLs in its body.
 
 ## Smoke checks after migration and seed
 

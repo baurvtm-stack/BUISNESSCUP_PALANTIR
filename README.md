@@ -20,9 +20,9 @@ Business Cup 2.0, Money track.
 - `POST /api/recommend` with answers JSON → `{ token, kit }`
 - `GET /api/catalog?category=boots` → `{ count, products, trades, hazards }`
 - `POST /api/click` with `{ "productId": "tb-pitboss-st", "kitId": "optional-url-safe-token" }` → `{ redirectUrl, tracked }`
-- `GET /api/click?productId=tb-pitboss-st` → logs the event and returns a 302 to the retailer (for existing anchors).
+- `GET /api/click?productId=tb-pitboss-st` → returns a 302 to the retailer, then records the event using Next.js `after()` (for existing anchors).
 
-All original response fields remain. Products additionally expose `model`, `price_usd`, `price_approximate`, `last_checked`, `lifespan_months`, `sizes`, `climate`, `retailer_url` and `source_url`; picks add `why` while retaining `reasons`. Invalid inputs return 400, JSON bodies over 16 KiB return 413, unknown click products return 404, and configured database failures return 503. A configured-but-empty or malformed database fails visibly; it is never silently replaced by the snapshot. Local clicks return `tracked: false` because they were not persisted.
+All original response fields remain. Products additionally expose `model`, `price_usd`, `price_approximate`, `last_checked`, `lifespan_months`, `sizes`, `climate`, `retailer_url` and `source_url`; picks add `why` while retaining `reasons`. Invalid inputs return 400, JSON bodies over 16 KiB return 413, and unknown click products return 404. Recommendation/catalog APIs return 503 for a configured-but-empty, invalid or unavailable database. Click destinations use a catalog cached for 60 seconds, with the bundled snapshot as fallback if the lookup fails. GET redirects do not await analytics; POST returns the destination with `tracked: false` when storage is missing or an insert fails. GET ignores unrelated query parameters such as `utm_*` and `fbclid`; duplicate `productId` or `kitId` values still return 400.
 
 ## Run locally
 
