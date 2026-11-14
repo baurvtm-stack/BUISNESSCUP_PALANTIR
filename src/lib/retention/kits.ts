@@ -16,7 +16,7 @@ export const saveKitSchema = z.object({
 });
 
 export async function kitSnapshot(input: z.output<typeof saveKitSchema>) {
-  const kit = await buildKit(input.answers);
+  const kit = await buildKit(input.answers, { keep: input.choices });
   return {
     answers: kit.answers,
     items: kit.items.map((item, index) => {

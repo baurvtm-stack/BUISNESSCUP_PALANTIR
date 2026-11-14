@@ -213,6 +213,27 @@ function makePick(product: Product, reqs: Requirement[], hoursPerWeek: number): 
   };
 }
 
+/** Preserve a previously selected product without relaxing fit or mandatory protection. */
+export function withSavedChoice(
+  item: CategoryResult,
+  productId: string | undefined,
+  answers: Answers,
+  products: readonly Product[],
+): CategoryResult {
+  if (!productId || item.pick.product.id === productId ||
+    item.alternatives.some((option) => option.pick.product.id === productId)) return item;
+  const product = products.find((candidate) => candidate.id === productId);
+  if (!product || product.category !== item.category || !genderOk(product, answers.gender) ||
+    !sizeOk(product, answers) || !item.requirements.filter((req) => req.hard).every((req) => meets(product, req))) return item;
+  return {
+    ...item,
+    alternatives: [
+      { label: "Saved choice", pick: makePick(product, item.requirements, answers.hoursPerWeek) },
+      ...item.alternatives,
+    ],
+  };
+}
+
 function scoreAll(
   pool: Product[],
   reqs: Requirement[],

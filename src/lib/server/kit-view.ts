@@ -12,7 +12,7 @@ import { buyUrl, PRODUCTS } from "../../data/products";
 import { EMPLOYER_RULES, HAZARDS } from "../../data/hazards";
 import { TRADES } from "../../data/trades";
 import { encodeAnswers } from "../answers";
-import { CATEGORY_LABELS, describeRequirement, effectiveLifespan, recommend } from "../engine";
+import { CATEGORY_LABELS, describeRequirement, effectiveLifespan, recommend, withSavedChoice } from "../engine";
 import { prosAndCons } from "../pros-cons";
 import type { Answers, Category, EmployerRule, Gender, KitResult, Pick, Product, Requirement } from "../types";
 import { getProduct } from "./catalog";
@@ -96,8 +96,9 @@ function recommendWithSizes(answers: Answers, products: Product[]): { kit: KitRe
   return { kit: unsized, relaxed: true };
 }
 
-export async function buildKit(answers: Answers, { live = true }: { live?: boolean } = {}): Promise<KitView> {
-  const { kit, relaxed } = recommendWithSizes(answers, live ? await liveProducts() : PRODUCTS);
+export async function buildKit(answers: Answers, { live = true, keep = [] }: { live?: boolean; keep?: string[] } = {}): Promise<KitView> {
+  const products = live ? await liveProducts() : PRODUCTS;
+  const { kit, relaxed } = recommendWithSizes(answers, products);
   return {
     // The token keeps the shopper's own answers, so the link reads back exactly what they chose.
     token: encodeAnswers(answers),
@@ -109,7 +110,7 @@ export async function buildKit(answers: Answers, { live = true }: { live?: boole
     sizeNote: relaxed
       ? "Some items don't come in the sizes you picked, so those show every size. Choose yours on the store page."
       : undefined,
-    items: kit.items.map((i) => ({
+    items: kit.items.map((i, index) => ({
       label: i.label,
       category: i.category,
       optionsConsidered: i.optionsConsidered,
@@ -117,7 +118,7 @@ export async function buildKit(answers: Answers, { live = true }: { live?: boole
       mustHave: [...new Set(i.requirements.filter((r) => r.hard).map(describeRequirement))].filter(
         (d) => d !== "rated protection",
       ),
-      ...viewOptions(i, answers),
+      ...viewOptions(withSavedChoice(i, keep[index], kit.answers, products), answers),
     })),
   };
 }
