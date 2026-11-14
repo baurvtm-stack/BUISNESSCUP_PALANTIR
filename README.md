@@ -14,7 +14,7 @@ GearFit turns those decisions into one kit with documented standards, approximat
 
 1. Answer five steps: trade; hazards; climate and hours/week; employer requirements; sizes and budget.
 2. The deterministic engine filters by required protection and standards for one of 11 trades, then ranks eligible products by price, lifetime cost and quality. Hours/week scale lifespan; product ID breaks ties. An unmet safety requirement produces a warning.
-3. Compare the full kit and alternatives side by side, swap products, and follow **Check price** to the maker's product page for the current price. Each option lists pros and cons computed from catalog data only (price, estimated wear life, cost per month, quality score, rated levels against the requirement, features, sizing), ranked among the options shown; a metric where every option ties produces no line. An optional affiliate tag is added on the server, to Amazon fallback links only.
+3. Compare the full kit and alternatives side by side, swap products, and follow **Check price** to the maker's product page for the current price. Visitors outside the US, where many US stores refuse connections, get a US Google Shopping comparison for the same model. Each option lists pros and cons computed from catalog data only (price, estimated wear life, cost per month, quality score, rated levels against the requirement, features, sizing), ranked among the options shown; a metric where every option ties produces no line. An optional affiliate tag is added on the server, to Amazon fallback links only.
 4. Save on the device or create a public `/k/<slug>` link. Cloud saves rebuild the kit on the server, preserving eligible swaps while ignoring client prices and safety claims.
 5. Download calendar replacement dates or opt into email reminders. Confirmed reminders become due seven days before estimated replacement. Pro uses **Stripe test mode**, at $4/month, with subscription status verified on the server.
 
@@ -129,7 +129,7 @@ Copy the documented defaults from [.env.example](.env.example). Vercel injects t
 | `NEXT_PUBLIC_API_MOCKS` | Keep `0`/unset in production; `1` enables local frontend mocks |
 | `NEXT_PUBLIC_SITE_URL` | Optional canonical origin for frontend metadata/share previews |
 | `VERCEL_URL` | Injected deployment hostname; final frontend metadata fallback |
-| `VERCEL` | Injected `1` selects Vercel's trusted forwarded-IP header for rate limits |
+| `VERCEL` | Injected `1` selects Vercel's trusted forwarded-IP header for rate limits and its visitor-country header for Check price |
 | `PLAYWRIGHT_BASE_URL` | Test runner only: explicit existing target; blank starts an isolated production app at `http://localhost:3000` |
 | `VERCEL_AUTOMATION_BYPASS_SECRET` | Optional test/Actions secret for protected Vercel previews; sent only to the selected app origin |
 

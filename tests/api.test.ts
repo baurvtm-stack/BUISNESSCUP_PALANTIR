@@ -33,7 +33,7 @@ function configure() {
 }
 beforeEach(() => {
   afterJobs.length = 0;
-  for (const name of ["SUPABASE_URL", "SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY", "AFFILIATE_TAG", "AFFILIATE_PARAM"]) {
+  for (const name of ["SUPABASE_URL", "SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY", "AFFILIATE_TAG", "AFFILIATE_PARAM", "VERCEL"]) {
     vi.stubEnv(name, "");
   }
 });
@@ -145,6 +145,29 @@ describe("click routes", () => {
     expect(response.headers.get("Location")).toBe(databaseBoot.retailer_url);
     await afterJobs[0]();
     expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({ product_id: databaseBoot.id, kit_id: null });
+  });
+
+  it("sends visitors outside the US to a US price comparison on both click routes and still logs them", async () => {
+    configure();
+    vi.stubEnv("VERCEL", "1");
+    const fetch = vi.fn().mockImplementation((url: string) => Promise.resolve(url.includes("/products")
+      ? Response.json([databaseBoot], { headers: { "content-range": "0-0/1" } })
+      : new Response(null, { status: 201 })));
+    vi.stubGlobal("fetch", fetch);
+    const abroad = { "x-vercel-ip-country": "KZ" };
+    const comparison = "https://www.google.com/search?tbm=shop&gl=us&hl=en&q=Database+fixture+Safety+boot";
+    const redirect = await clickRedirect(new Request(`https://gearfit.example/api/click?productId=${databaseBoot.id}`, { headers: abroad }));
+    expect(redirect.status).toBe(302);
+    expect(redirect.headers.get("Location")).toBe(comparison);
+    const response = await click(new Request("https://gearfit.example/api/click", {
+      method: "POST", headers: { ...abroad, "Content-Type": "application/json" }, body: JSON.stringify({ productId: databaseBoot.id }),
+    }));
+    expect(await response.json()).toEqual({ redirectUrl: comparison, tracked: true });
+    const home = await clickRedirect(new Request(`https://gearfit.example/api/click?productId=${databaseBoot.id}`, { headers: { "x-vercel-ip-country": "US" } }));
+    expect(home.headers.get("Location")).toBe(databaseBoot.retailer_url);
+    vi.stubEnv("VERCEL", "");
+    const local = await clickRedirect(new Request(`https://gearfit.example/api/click?productId=${databaseBoot.id}`, { headers: abroad }));
+    expect(local.headers.get("Location")).toBe(databaseBoot.retailer_url);
   });
 
   it("returns the redirect before starting analytics, then tracks through after()", async () => {

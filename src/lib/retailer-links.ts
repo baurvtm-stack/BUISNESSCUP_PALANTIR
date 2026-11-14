@@ -1,14 +1,25 @@
 import type { CatalogRow } from "./catalog-schema";
 
 /**
- * "Check price" opens the maker's own product page. A model-specific Amazon search is
- * only a fallback for products whose maker page could not be verified, and it is the
- * only kind of link that carries an affiliate tag.
+ * "Check price" opens the maker's own product page for US visitors. A model-specific
+ * Amazon search is only a fallback for products whose maker page could not be verified,
+ * and it is the only kind of link that carries an affiliate tag.
  */
 const AMAZON_HOSTS = new Set(["amazon.com", "www.amazon.com"]);
 
 export function isAmazonUrl(value: string | URL): boolean {
   return AMAZON_HOSTS.has(new URL(value).hostname);
+}
+
+/**
+ * A US price comparison for one model. Many US maker and retail sites refuse visitors from
+ * other countries (Carhartt answers Kazakhstan with "Access Denied"), so Check price sends
+ * visitors outside the US here instead. gl=us keeps results to US stores and dollar prices.
+ */
+export function priceComparisonUrl(product: { brand: string; name: string }): string {
+  const url = new URL("https://www.google.com/search");
+  url.search = new URLSearchParams({ tbm: "shop", gl: "us", hl: "en", q: `${product.brand} ${product.name}` }).toString();
+  return url.toString();
 }
 
 const quote = (value: string) => `'${value.replaceAll("'", "''")}'`;

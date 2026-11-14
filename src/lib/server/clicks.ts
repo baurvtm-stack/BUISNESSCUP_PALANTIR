@@ -1,7 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { productIdSchema } from "../catalog-schema";
-import { isAmazonUrl } from "../retailer-links";
+import { isAmazonUrl, priceComparisonUrl } from "../retailer-links";
 import type { Product } from "../types";
 import { DataUnavailableError, getSupabaseConfiguration, supabaseRequest } from "./supabase";
 
@@ -17,12 +17,24 @@ const affiliateSchema = z.object({
   parameter: z.string().regex(/^[a-zA-Z][a-zA-Z0-9_]*$/).max(40),
 });
 
-export function affiliateUrl(product: Product): string {
+/** The visitor's country as Vercel's edge reports it; null off Vercel, where the header could be forged. */
+export function visitorCountry(request: Request): string | null {
+  if (process.env.VERCEL !== "1") return null;
+  const country = request.headers.get("x-vercel-ip-country")?.trim().toUpperCase();
+  return country && /^[A-Z]{2}$/.test(country) ? country : null;
+}
+
+/**
+ * Where Check price sends a shopper. Visitors in the US, or from an unknown country, get the
+ * catalog link (the partner tag goes on Amazon fallbacks only). Visitors elsewhere get a US
+ * price comparison, because US maker and retail sites often refuse them.
+ */
+export function outboundUrl(product: Product, country: string | null = null): string {
   if (!product.retailer_url) throw new DataUnavailableError();
   const url = new URL(product.retailer_url);
   if (url.protocol !== "https:" || url.username || url.password) throw new DataUnavailableError();
+  if (country && country !== "US") return priceComparisonUrl(product);
   const tag = process.env.AFFILIATE_TAG?.trim();
-  // The partner tag belongs to Amazon fallback links only; maker pages get their clean URL.
   if (tag && isAmazonUrl(url)) {
     const config = affiliateSchema.safeParse({ tag, parameter: process.env.AFFILIATE_PARAM || "tag" });
     if (!config.success) throw new DataUnavailableError();

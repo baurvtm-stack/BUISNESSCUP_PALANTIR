@@ -1,5 +1,6 @@
 import { test, expect, type BrowserContext, type Page } from "@playwright/test";
 import { z } from "zod";
+import { priceComparisonUrl } from "../src/lib/retailer-links";
 
 const categories = ["Work boots", "Work pants", "Work shirt", "Gloves", "Safety glasses", "Hard hat"];
 const answers = {
@@ -173,7 +174,7 @@ test("judge journey: electrician questionnaire, swap, cloud save and retailer", 
   await test.step("Check price reaches the real catalog retailer destination", async () => {
     const catalogResponse = await request.get("/api/catalog", { headers: protectionHeaders(), maxRedirects: 0 });
     expect(catalogResponse.status()).toBe(200);
-    const catalog = z.object({ products: z.array(z.object({ id: z.string(), retailer_url: z.url() })) }).parse(await catalogResponse.json());
+    const catalog = z.object({ products: z.array(z.object({ id: z.string(), brand: z.string(), name: z.string(), retailer_url: z.url() })) }).parse(await catalogResponse.json());
     const product = catalog.products.find(product => product.id === chosenIds[0]);
     expect(product).toBeDefined();
     const retailer = new URL(product!.retailer_url);
@@ -184,14 +185,18 @@ test("judge journey: electrician questionnaire, swap, cloud save and retailer", 
     });
     expect(redirect.status()).toBe(302);
     const destination = new URL(redirect.headers().location);
-    expect(destination.origin).toBe(retailer.origin);
-    expect(destination.pathname).toBe(retailer.pathname);
-    for (const [key, value] of retailer.searchParams) {
-      if (key !== (process.env.AFFILIATE_PARAM || "tag")) expect(destination.searchParams.get(key)).toBe(value);
+    if (destination.origin === retailer.origin) {
+      expect(destination.pathname).toBe(retailer.pathname);
+      for (const [key, value] of retailer.searchParams) {
+        if (key !== (process.env.AFFILIATE_PARAM || "tag")) expect(destination.searchParams.get(key)).toBe(value);
+      }
+    } else {
+      // A deployed target sends visitors outside the US to a US price comparison instead.
+      expect(destination.href).toBe(priceComparisonUrl(product!));
     }
     // Only the final third-party document is intercepted. GearFit's /go and click
     // handlers run unchanged; retailer bot protection/outages cannot make CI flaky.
-    await page.context().route(url => url.origin === retailer.origin, route => route.fulfill({
+    await page.context().route(url => url.origin === destination.origin, route => route.fulfill({
       contentType: "text/html", body: "<!doctype html><title>Retailer destination reached</title>",
     }));
     const popupReady = page.waitForEvent("popup");
