@@ -12,7 +12,8 @@
     "lint": "eslint",
     "test": "vitest run",
     "seed": "tsx --conditions=react-server scripts/seed.ts",
-    "catalog:check": "tsx --conditions=react-server scripts/seed.ts --check"
+    "catalog:check": "tsx --conditions=react-server scripts/seed.ts --check",
+    "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {
     "@next/env": "^15.5.29",

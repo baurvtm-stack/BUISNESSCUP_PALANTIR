@@ -8,7 +8,7 @@ async function main() {
   const args = z.array(z.literal("--check")).max(1).parse(process.argv.slice(2));
   const rows = catalogSchema.parse(catalog);
   if (args.includes("--check")) {
-    console.log(`Validated ${rows.length} unique products; no database connection made.`);
+    process.stdout.write(`Validated ${rows.length} unique products; no database connection made.\n`);
     return;
   }
   loadEnvConfig(process.cwd());
@@ -29,7 +29,7 @@ async function main() {
       body: JSON.stringify(batch),
     });
   }
-  console.log(`Upserted ${rows.length} products. Existing IDs updated; other products and click history retained.`);
+  process.stdout.write(`Upserted ${rows.length} products. Existing IDs updated; other products and click history retained.\n`);
 }
 
 main().catch((error: unknown) => {
