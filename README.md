@@ -22,9 +22,9 @@ matched to the safety standards your job requires, and shows what each piece rea
 
 <br>
 
-<img src="docs/readme/demo.webp" width="880" alt="Building an electrician's kit in GearFit: five questions, then a complete kit with prices, cost per month and a boot swap that changes the monthly cost">
+<img src="docs/readme/demo.webp" width="880" alt="Building an electrician's kit in GearFit: five questions, then a complete kit with its cost per month and a savings counter that rolls from $70 to $14 a year after a boot swap">
 
-<sub>Recorded on a production build of <code>main</code>: an electrician adds "loud tools", gets a 7-piece kit, then swaps boots for a pair with the same price tag and a higher cost of wear.</sub>
+<sub>Recorded on a production build of <code>main</code>: an electrician adds "loud tools", gets a 7-piece kit that saves $70 a year, then swaps boots for a pair with the same price tag and a higher cost of wear, and the savings counter rolls down to $14.</sub>
 
 </div>
 
