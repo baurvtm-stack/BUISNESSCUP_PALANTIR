@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon, categoryIcon, tradeIcon } from "@/components/icons";
 import ReminderForm from "@/components/ReminderForm";
 import { Button, ButtonLink, Eyebrow } from "@/components/ui";
 import { cssVars } from "@/lib/css";
 import { monthYear, shortDate, usd } from "@/lib/format";
 import { ensureCloudSlug, shareUrl } from "@/lib/kit-actions";
+import { loadKitPriceDrops } from "@/lib/kit-price-drops";
 import { compareHref, kitHref, shortKitHref } from "@/lib/kit-url";
 import { useHydrated } from "@/lib/local-store";
-import { FREE_KIT_LIMIT, proStore, removeKit, savedKits, updateKit, type SavedKit } from "@/lib/saved-kits";
+import { formatSaving } from "@/lib/price-drops";
+import { FREE_KIT_LIMIT, proAccessStore, proStore, removeKit, savedKits, updateKit, type SavedKit } from "@/lib/saved-kits";
 import { wearLabel, wearOf, type Wear } from "@/lib/wear";
 
 const STATUS_STYLE = {
@@ -23,7 +25,18 @@ export default function MyKits() {
   const hydrated = useHydrated();
   const kits = savedKits.useValue();
   const pro = proStore.useValue();
+  const accessToken = proAccessStore.useValue();
   const [selected, setSelected] = useState<string[]>([]);
+  const [priceDrops, setPriceDrops] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    let active = true;
+    setPriceDrops({});
+    void loadKitPriceDrops(kits, !!pro, accessToken).then((drops) => {
+      if (active) setPriceDrops(drops);
+    });
+    return () => { active = false; };
+  }, [kits, pro, accessToken]);
 
   if (!hydrated) {
     return (
@@ -70,7 +83,7 @@ export default function MyKits() {
         <ul className="mt-8 space-y-5">
           {kits.map((kit, i) => (
             <li key={kit.id} className="animate-rise" style={cssVars({ "--i": Math.min(i, 5), "--stagger": "70ms", "--rise-y": "16px" })}>
-              <KitCard kit={kit} pro={!!pro} selected={selected.includes(kit.id)} onToggleCompare={() => toggle(kit.id)} />
+              <KitCard kit={kit} pro={!!pro} savingCents={pro && accessToken && kit.slug ? priceDrops[kit.slug] : undefined} selected={selected.includes(kit.id)} onToggleCompare={() => toggle(kit.id)} />
             </li>
           ))}
         </ul>
@@ -133,11 +146,13 @@ function PlanMeter({ count, proEmail }: { count: number; proEmail?: string }) {
 function KitCard({
   kit,
   pro,
+  savingCents,
   selected,
   onToggleCompare,
 }: {
   kit: SavedKit;
   pro: boolean;
+  savingCents?: number;
   selected: boolean;
   onToggleCompare: () => void;
 }) {
@@ -186,6 +201,12 @@ function KitCard({
             Compare
           </label>
         </div>
+
+        {savingCents !== undefined && savingCents > 0 && (
+          <p className="animate-rise mt-3 inline-flex items-center gap-1.5 rounded-full bg-ok-soft px-3 py-1 text-xs font-semibold text-ok" role="status">
+            <Icon name="tag" className="size-3.5" /> Price drop {formatSaving(savingCents)}
+          </p>
+        )}
 
         <div className="mt-5 grid grid-cols-3 gap-2 text-center sm:text-left">
           <Figure label="Paid" value={usd(kit.totals.upfront)} />

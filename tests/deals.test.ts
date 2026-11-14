@@ -28,6 +28,7 @@ let providerStatus: number;
 let brokenTable: string | undefined;
 let kitExists: boolean;
 let claimed: Set<string>;
+let alertCount: number;
 
 beforeEach(() => {
   enabled = true;
@@ -37,6 +38,7 @@ beforeEach(() => {
   providerStatus = 200;
   brokenTable = undefined;
   claimed = new Set();
+  alertCount = 1;
   calls.length = 0;
   emails.length = 0;
   fake.catalog.mockReset().mockResolvedValue([{ ...product, price: product.price - 10 }]);
@@ -60,7 +62,7 @@ beforeEach(() => {
     calls.push({ table, method, query: url.searchParams, body });
     if (table === brokenTable) return Response.json({ message: "private database failure" }, { status: 503 });
     if (table === "claim_deal_delivery") {
-      const key = String(body.p_fingerprint);
+      const key = `${body.p_alert_id}:${body.p_fingerprint}`;
       const granted = !claimed.has(key);
       claimed.add(key);
       return Response.json(granted);
@@ -73,9 +75,9 @@ beforeEach(() => {
       pro_checkouts: [{ id: checkoutId, email: "pro@example.com" }],
       subscriptions: active ? [{ id: "sub_test", status: "active" }] : [],
       kits: kitExists ? [{ id: "kit-id", items: [snapshot()] }] : [],
-      pro_deal_alerts: url.searchParams.get("enabled") === "eq.true" && !enabled ? [] : [{
-        id: alertId, checkout_id: checkoutId, email: "pro@example.com", kit_slug: slug, enabled,
-      }],
+      pro_deal_alerts: url.searchParams.get("enabled") === "eq.true" && !enabled ? [] : Array.from({ length: alertCount }, (_, i) => ({
+        id: i === 0 ? alertId : `${alertId.slice(0, -1)}${i}`, checkout_id: checkoutId, email: "pro@example.com", kit_slug: slug, enabled,
+      })),
       reminders: confirmed ? [{ id: "reminder-id", unsubscribe_token: "u".repeat(43) }] : [],
     };
     if (!(table in rows)) throw new Error(`Unexpected test request: ${table}`);
@@ -99,6 +101,11 @@ const demoRequest = (body: unknown = { kitSlug: slug, deals: true }, auth = "Bea
   request("/api/cron/reminders", body, auth);
 
 describe("live catalog deals", () => {
+  it("compares against a supplied catalog without reading it again", async () => {
+    const deals = await findDeals([snapshot()], [{ ...product, price: product.price - 5 }]);
+    expect(deals[0].currentPrice).toBe(product.price - 5);
+    expect(fake.catalog).not.toHaveBeenCalled();
+  });
   it("uses a fresh catalog read for each comparison, even when the bundled price has not changed", async () => {
     expect(await findDeals([snapshot()])).toEqual([{
       productId: product.id, name: product.name, savedPrice: product.price, currentPrice: product.price - 10,
@@ -115,6 +122,33 @@ describe("live catalog deals", () => {
   it.each(["same", "higher", "missing"])("does not invent a discount for a %s live price", async (kind) => {
     fake.catalog.mockResolvedValue(kind === "missing" ? [] : [{ ...product, price: product.price + (kind === "higher" ? 10 : 0) }]);
     expect(await findDeals([snapshot()])).toEqual([]);
+  });
+});
+
+describe("daily deal catalog reads", () => {
+  it("reads once for several alerts and refreshes on the next run", async () => {
+    alertCount = 3;
+    expect(await dispatchDealAlerts()).toEqual({ sent: 3, failed: 0 });
+    expect(fake.catalog).toHaveBeenCalledTimes(1);
+    expect(emails).toHaveLength(3);
+    fake.catalog.mockResolvedValue([{ ...product, price: product.price - 20 }]);
+    expect(await dispatchDealAlerts()).toEqual({ sent: 3, failed: 0 });
+    expect(fake.catalog).toHaveBeenCalledTimes(2);
+    expect(emails[3].text).toContain(`$${(product.price - 20).toFixed(2)}`);
+  });
+
+  it("falls back to the bundled snapshot once for all alerts", async () => {
+    alertCount = 3;
+    fake.catalog.mockRejectedValue(new Error("Database unavailable"));
+    expect(await dispatchDealAlerts()).toEqual({ sent: 0, failed: 0 });
+    expect(fake.catalog).toHaveBeenCalledTimes(1);
+    expect(calls.filter(call => call.table === "reminders")).toHaveLength(3);
+  });
+
+  it("does not read the catalog when no alerts are enabled", async () => {
+    enabled = false;
+    expect(await dispatchDealAlerts()).toEqual({ sent: 0, failed: 0 });
+    expect(fake.catalog).not.toHaveBeenCalled();
   });
 });
 
