@@ -282,7 +282,10 @@ function KitCard({
               getSlug={() => ensureCloudSlug(kit)}
               items={kit.items}
               activeEmail={kit.reminderEmail}
-              onSubscribed={(email) => updateKit(kit.id, { reminderEmail: email })}
+              confirmedEmail={kit.reminderConfirmed}
+              onSubscribed={(email, status) =>
+                updateKit(kit.id, { reminderEmail: email, ...(status === "confirmed" ? { reminderConfirmed: email } : {}) })
+              }
             />
           </div>
         )}

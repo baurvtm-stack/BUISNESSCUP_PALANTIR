@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Icon, type IconName } from "@/components/icons";
 import { ButtonLink } from "@/components/ui";
+import RecordLink from "./RecordLink";
 
 export const metadata: Metadata = { title: "Reminders", robots: { index: false } };
 
@@ -38,9 +39,11 @@ const STATES: Record<string, { icon: IconName; tone: string; title: string; body
 export default async function RemindersPage({ searchParams }: { searchParams: Promise<{ status?: string; kit?: string }> }) {
   const { status, kit } = await searchParams;
   const state = STATES[status ?? ""] ?? STATES.invalid;
-  const kitLink = kit && /^[\w-]{1,64}$/.test(kit) ? `/k/${kit}` : "/kits";
+  const slug = kit && /^[\w-]{1,64}$/.test(kit) ? kit : null;
+  const kitLink = slug ? `/k/${slug}` : "/kits";
   return (
     <main className="flex flex-1 items-center justify-center px-4 py-24">
+      {slug && (status === "confirmed" || status === "unsubscribed") && <RecordLink slug={slug} status={status} />}
       <div className="max-w-md text-center">
         <span className={`mx-auto flex size-14 items-center justify-center rounded-2xl ${state.tone}`}>
           <Icon name={state.icon} className="size-7" />

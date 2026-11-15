@@ -5,7 +5,7 @@ import { subscribeReminders } from "@/lib/api/client";
 import type { KitItemSnapshot } from "@/lib/api/contract";
 import { isEmail } from "@/lib/format";
 import { downloadReminders } from "@/lib/kit-actions";
-import { emailStore } from "@/lib/saved-kits";
+import { emailStore, reminderState } from "@/lib/saved-kits";
 import { Icon } from "./icons";
 import { Button, Notice } from "./ui";
 
@@ -19,18 +19,25 @@ export default function ReminderForm({
   getSlug,
   items,
   activeEmail,
+  confirmedEmail,
   onSubscribed,
   tone = "card",
 }: {
   getSlug: () => Promise<string | null>;
   items: KitItemSnapshot[];
   activeEmail?: string;
-  onSubscribed?: (email: string) => void;
+  /** The email this device saw confirmed; shows "Reminders are on" instead of "check your inbox". */
+  confirmedEmail?: string;
+  onSubscribed?: (email: string, status: "pending" | "confirmed") => void;
   tone?: "card" | "plain";
 }) {
   const savedEmail = emailStore.useValue();
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<Status>(activeEmail ? "pending" : "idle");
+  // Null until the shopper acts here. Until then the card shows what this device recorded for
+  // the kit, which only arrives after hydration and changes if the emailed link is opened in another tab.
+  const [action, setAction] = useState<Status | null>(null);
+  const recorded = reminderState(activeEmail, confirmedEmail);
+  const status = action ?? recorded;
   const [error, setError] = useState<string | null>(null);
   const value = email || savedEmail;
 
@@ -42,27 +49,28 @@ export default function ReminderForm({
       return;
     }
     setError(null);
-    setStatus("sending");
+    setAction("sending");
     emailStore.set(address);
     const slug = await getSlug();
     if (!slug) {
-      setStatus("unavailable");
+      setAction("unavailable");
       return;
     }
     const out = await subscribeReminders({ email: address, kitSlug: slug });
     if (out.kind === "ok") {
-      setStatus(out.data.status === "confirmed" ? "confirmed" : "pending");
-      onSubscribed?.(address);
+      setAction(out.data.status);
+      onSubscribed?.(address, out.data.status);
     } else if (out.kind === "rejected") {
-      setStatus("idle");
+      setAction("idle");
       setError(out.status === 429 ? "Too many tries. Please wait a minute and try again." : out.message);
     } else {
-      setStatus("unavailable");
+      setAction("unavailable");
     }
   }
 
   const done = status === "pending" || status === "confirmed";
-  const shown = activeEmail && status === "pending" && !email ? activeEmail : value;
+  const confirmed = status === "confirmed" || (status === "pending" && recorded === "confirmed");
+  const shown = activeEmail && done && !email ? activeEmail : value;
 
   return (
     <div className={tone === "card" ? "rounded-3xl border border-line bg-card p-5 sm:p-6" : ""}>
@@ -79,7 +87,7 @@ export default function ReminderForm({
       {done ? (
         <div className="mt-4">
           <Notice tone="ok">
-            {status === "confirmed" ? (
+            {confirmed ? (
               <>Reminders are on for <b>{shown}</b>.</>
             ) : (
               <>
@@ -91,12 +99,12 @@ export default function ReminderForm({
             type="button"
             onClick={() => {
               setEmail(shown);
-              setStatus("idle");
+              setAction("idle");
               setError(null);
             }}
             className="mt-1 min-h-11 text-left text-sm font-semibold text-accent-ink underline-offset-4 hover:underline"
           >
-            {status === "pending" ? "Resend or use another email" : "Add another email"}
+            {confirmed ? "Add another email" : "Resend or use another email"}
           </button>
         </div>
       ) : (
