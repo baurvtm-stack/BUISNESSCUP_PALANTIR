@@ -137,9 +137,9 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
     return result.slug ?? null;
   }
 
-  function onSubscribed(email: string) {
+  function onSubscribed(email: string, status: "pending" | "confirmed") {
     const current = findSavedKit(savedKits.get(), kit.token, choices);
-    if (current) updateKit(current.id, { reminderEmail: email });
+    if (current) updateKit(current.id, { reminderEmail: email, ...(status === "confirmed" ? { reminderConfirmed: email } : {}) });
   }
 
   const a = kit.answers;
@@ -314,7 +314,13 @@ export default function KitView({ kit, initialChoices, sharedSlug }: { kit: Kit;
           {/* ---------- Sidebar ---------- */}
           <aside className="animate-rise space-y-4 lg:sticky lg:top-24 lg:self-start print:hidden" style={cssVars({ "--delay": "320ms" })}>
             <div id="replacement-reminders" tabIndex={-1} className="scroll-mt-24 rounded-3xl focus-visible:outline-accent">
-              <ReminderForm getSlug={getSlug} items={snapshot} activeEmail={saved?.reminderEmail} onSubscribed={onSubscribed} />
+              <ReminderForm
+                getSlug={getSlug}
+                items={snapshot}
+                activeEmail={saved?.reminderEmail}
+                confirmedEmail={saved?.reminderConfirmed}
+                onSubscribed={onSubscribed}
+              />
             </div>
             <DealAlerts key={slug ?? "unsaved"} kitSlug={slug} isPro={!!pro} />
 

@@ -51,6 +51,37 @@ test("free reminders at the save limit create only a cloud copy", async ({ page 
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("gearfit.kits.v1")!).length)).toBe(3);
 });
 
+test("the emailed confirm and unsubscribe links update the kit's reminder card", async ({ page }) => {
+  const email = "pro@example.com";
+  const slug = "Reminder0002";
+  await page.addInitScript(({ token, email, slug }) => {
+    if (localStorage.getItem("gearfit.kits.v1")) return;
+    localStorage.setItem("gearfit.kits.v1", JSON.stringify([{
+      id: "saved-confirm", slug, token, tradeId: "electrician", tradeLabel: "Electrician",
+      choices: Array(6).fill(""), createdAt: "2026-11-15", boughtAt: "2026-11-15", reminderEmail: email,
+      items: [], totals: { upfront: 0, perMonth: 0 },
+    }]));
+  }, { token: kitToken, email, slug });
+  const card = page.locator("#replacement-reminders");
+  const stored = () => page.evaluate(() => JSON.parse(localStorage.getItem("gearfit.kits.v1") ?? "[]")[0] ?? {});
+
+  await page.goto(`/kit?k=${kitToken}`);
+  await expect(card).toContainText(`Check your inbox: we sent a confirmation link to ${email}`);
+
+  await page.goto(`/reminders?status=confirmed&kit=${slug}`);
+  await expect(page.getByRole("heading", { name: "Reminders are on", exact: true })).toBeVisible();
+  await expect.poll(async () => (await stored()).reminderConfirmed).toBe(email);
+  await page.getByRole("link", { name: "Open my kit", exact: true }).click();
+  await expect(card).toContainText(`Reminders are on for ${email}.`);
+  await expect(card.getByRole("button", { name: "Add another email", exact: true })).toBeVisible();
+
+  await page.goto(`/reminders?status=unsubscribed&kit=${slug}`);
+  await expect.poll(async () => (await stored()).reminderEmail).toBeUndefined();
+  await page.getByRole("link", { name: "Open my kit", exact: true }).click();
+  await expect(card.getByRole("button", { name: "Remind me", exact: true })).toBeVisible();
+  await expect(card).not.toContainText("Reminders are on");
+});
+
 for (const view of ["kit", "kits"] as const) {
   test(`${view}: resend reminders and change the email after a previous signup`, async ({ page }) => {
     const email = "earlier@example.com";

@@ -28,6 +28,29 @@ export interface SavedKit {
   totals: { upfront: number; perMonth: number };
   items: SavedItem[];
   reminderEmail?: string;
+  /** The reminder email this device saw confirmed (the emailed link, or the API saying so). */
+  reminderConfirmed?: string;
+}
+
+/** What the reminder card shows for a saved kit: a confirmation seen on this device beats "check your inbox". */
+export function reminderState(activeEmail?: string, confirmedEmail?: string): "idle" | "pending" | "confirmed" {
+  if (!activeEmail) return "idle";
+  return confirmedEmail === activeEmail ? "confirmed" : "pending";
+}
+
+/**
+ * The links in reminder emails land on /reminders with the kit's slug. Record the result on
+ * this device, so the kit page stops asking the shopper to check their inbox once they have
+ * confirmed, and stops saying reminders are on once they have unsubscribed.
+ */
+export function recordReminderLink(kits: SavedKit[], slug: string, status: string): SavedKit[] {
+  if (status === "confirmed") {
+    return kits.map((k) => (k.slug === slug && k.reminderEmail ? { ...k, reminderConfirmed: k.reminderEmail } : k));
+  }
+  if (status === "unsubscribed") {
+    return kits.map((k) => (k.slug === slug ? { ...k, reminderEmail: undefined, reminderConfirmed: undefined } : k));
+  }
+  return kits;
 }
 
 function isSavedKit(v: unknown): v is SavedKit {
