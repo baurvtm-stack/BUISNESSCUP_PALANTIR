@@ -18,7 +18,7 @@ matched to the safety standards your job requires, and shows what each piece rea
 [![Stripe test mode](https://img.shields.io/badge/Stripe-test_mode-635BFF?logo=stripe&logoColor=white)](src/app/api/subscribe/route.ts)
 [![Business Cup 2.0](https://img.shields.io/badge/Business_Cup_2.0-Money_track-15171a)](#team)
 
-**[Try it live](https://palantirbuisness.vercel.app)** · [Demo in 60 seconds](#try-it-in-60-seconds) · [How it works](#how-the-recommendation-works) · [Business model](#business-model) · [Architecture](#architecture) · [Run locally](#run-locally)
+**[Try it live](https://palantirbuisness.vercel.app)** · [For judges](#for-judges) · [Demo in 60 seconds](#try-it-in-60-seconds) · [How it works](#how-the-recommendation-works) · [Business model](#business-model) · [Architecture](#architecture) · [Run locally](#run-locally)
 
 <br>
 
@@ -31,6 +31,20 @@ matched to the safety standards your job requires, and shows what each piece rea
 <br>
 
 > **No sign-up, no app to install: the kit lives in the link.** 153 real products from 35 brands in 9 categories, 11 trades, women's sizing included.
+
+## For judges
+
+Everything here runs on production with no account. Each criterion points to where you can check it.
+
+| Criterion | Where to check it |
+| --- | --- |
+| **Does it work?** | Open [a ready electrician kit](https://palantirbuisness.vercel.app/kit?k=eyJ0cmFkZSI6ImVsZWN0cmljaWFuIiwiZ2VuZGVyIjoibWVuIiwiaG91cnNQZXJXZWVrIjo0NX0): $291 today, $24.23 a month, $70 a year saved against the cheapest kit that passes. [Try it in 60 seconds](#try-it-in-60-seconds) walks the full path: questionnaire, kit, swap, save, short link, Check price and Pro checkout in Stripe test mode. [CI](https://github.com/baurvtm-stack/BUISNESSCUP_PALANTIR/actions/workflows/ci.yml) runs lint, types, 327 unit tests, the build and 24 Playwright tests on every push. |
+| **What do we sell?** | A free, standards-matched kit priced per month of wear, and GearFit Pro at $4 a month: wear tracker, deal alerts and price drops, unlimited saved kits. Every Check price is a logged click tied to its kit, the base for retailer commission. See [Business model](#business-model). |
+| **Who do we sell to?** | US tradespeople aged 25–45 who pay for their own boots and PPE, in 11 trades, women's sizing included. See [The problem](#the-problem) and [Who it is for](#who-it-is-for). |
+| **Why does it make money?** | Gear wears out on a schedule, so every replacement date brings the buyer back to a saved kit one tap from Check price. One 25% sale on $200 work boots saves $50, more than a year of Pro ($48). See [Business model](#business-model). |
+| **Is it new?** | One kit for the whole job, filtered by the standards the site requires and priced by cost per month of wear at the buyer's own hours, with replacement reminders. See [How the recommendation works](#how-the-recommendation-works). |
+
+Code to read first: [`src/lib/engine.ts`](src/lib/engine.ts) (the pure, deterministic engine), then [`src/lib/server/`](src/lib/server), [`src/lib/retention/`](src/lib/retention) and [`tests/`](tests).
 
 ## The problem
 
@@ -331,8 +345,8 @@ npm run e2e     # Playwright judge journey; needs Docker for a disposable databa
 npm run smoke   # read-only checks against production (logs one click)
 ```
 
-- **323 Vitest tests in 22 files** cover all 11 trades, mandatory standards, deterministic picks, workload scaling, tiny budgets, women's sizes, API validation, saved swaps, reminder timing and consent, Stripe binding, deal alerts and stats. The SQL migrations and RPCs run for real in PGlite.
-- **22 Playwright tests** (11 scenarios on desktop Chromium and a Pixel 7 profile) walk the judge's path end to end: landing → questionnaire → kit → swap → save → `/k/<slug>` in a fresh browser → Check price. Locally they run against a disposable PostgreSQL 17 and PostgREST with every real migration. No mocked GearFit APIs and no fixed sleeps.
+- **327 Vitest tests in 23 files** cover all 11 trades, mandatory standards, deterministic picks, workload scaling, tiny budgets, women's sizes, API validation, saved swaps, reminder timing and consent, Stripe binding, deal alerts and stats. The SQL migrations and RPCs run for real in PGlite.
+- **24 Playwright tests** (12 scenarios on desktop Chromium and a Pixel 7 profile) walk the judge's path end to end: landing → questionnaire → kit → swap → save → `/k/<slug>` in a fresh browser → Check price. Locally they run against a disposable PostgreSQL 17 and PostgREST with every real migration. No mocked GearFit APIs and no fixed sleeps.
 - **GitHub Actions** runs lint, types, unit tests and the production build on every push and pull request, then the Playwright journey against the PR's Vercel preview or a local production stack.
 
 Details, including how CI picks its target: [docs/testing.md](docs/testing.md). New to the code? Start with [`src/lib/engine.ts`](src/lib/engine.ts), then [`src/lib/server/`](src/lib/server), [`src/lib/retention/`](src/lib/retention), [`supabase/migrations/`](supabase/migrations) and [`tests/`](tests).
